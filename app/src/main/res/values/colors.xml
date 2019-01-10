@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="orange">#FF8737</color>
+    <color name="blue">#5E78E1</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_1">#19FFFFFF</color>
+    <color name="white_2">#33FFFFFF</color>
+    <color name="white_6">#99FFFFFF</color>
+    <color name="black_8">#CC000000</color>
+    <color name="black_6">#99000000</color>
+    <color name="black_5">#80000000</color>
+    <color name="black_3">#4D000000</color>
+    <color name="bg_common">#FFFFFF</color>
+    <color name="white_pressed">#FFE6E6E6</color>
+    <color name="bg_default">@color/bg_common</color>
+    <color name="color_orange_weak">#FFA938</color>
+    <color name="color_orange_strong">#FF8737</color>
+    <color name="color_blue_weak">#708CFE</color>
+    <color name="color_blue_strong">#526BCE</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="text_white">@color/color_white</color>
+    <color name="color_white_5">#88FFFFFF</color>
+    <color name="color_gray">#F2F2F5</color>
+
+    <color name="error">#F5354B</color>
+    <color name="secondary_text">#54545C</color>
+    <color name="border">#E8E8ED</color>
+
+    <color name="divider">#F5F5F7</color>
+    <color name="color_margin">#F7F7FA</color>
+    <color name="text_strong">#36363D</color>
+    <color name="text_weak">#939399</color>
+    <color name="transparent">#00000000</color>
+    <color name="divider_2">#3cf5f5f7</color>
+    <color name="blur">#1cf5f5f7</color>
+    <color name="white_9">#E6FFFFFF</color>
+    <color name="text_red">#E63939</color>
+    <color name="text_hint">@color/text_weak</color>
+    <color name="text_green">#24B34A</color>
+    <color name="passwordStrength1">#BB020C</color>
+    <color name="passwordStrength2">#F46514</color>
+    <color name="passwordStrength3">#E6D20B</color>
+    <color name="passwordStrength4">#9BC714</color>
+    <color name="passwordStrength5">#19B425</color>
+    <color name="color_line">#E8E8ED</color>
+    <color name="color_root">#FAFAFA</color>
+    <color name="color_password_bg">#F5F5F5</color>
+    <color name="color_label">#81818A</color>
+</resources>

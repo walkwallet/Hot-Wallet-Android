@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_common"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/color_root"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/ico_back_black"
+            app:title="@string/word_backup_word" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_root"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/start_end_padding"
+                    android:paddingTop="24dp"
+                    android:paddingEnd="@dimen/start_end_padding"
+                    android:paddingBottom="24dp">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_marginEnd="@dimen/normal_padding"
+                        android:src="@drawable/ico_backup_big" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|top"
+                        android:layout_marginEnd="20dp"
+                        android:text="@string/word_backup_tips"
+                        android:textColor="@color/text_strong"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_word"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_padding"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="@dimen/normal_padding"
+                    android:background="@drawable/bg_white_with_stroke_radius_6"
+                    android:gravity="center|top"
+                    android:lineSpacingMultiplier="1.5"
+                    android:minLines="3"
+                    android:padding="24dp"
+                    android:textColor="@color/text_strong"
+                    android:textSize="16sp" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btn_next"
+                    style="@style/BasicButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:gravity="center"
+                    android:text="@string/word_confirm"
+                    android:textColor="@color/text_white" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

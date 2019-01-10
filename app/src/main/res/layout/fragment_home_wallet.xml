@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="click"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_default"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <systems.v.wallet.ui.widget.XyTabLayout
+                android:id="@+id/tl_wallet"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:xy_colorChangeFirst="@color/orange"
+                app:xy_colorChangeSecond="@color/blue"
+                app:xy_colorChangeable="true"
+                app:xy_tabGravity="fill"
+                app:xy_tabIndicatorHeight="3dp"
+                app:xy_tabIndicatorWidth="20dp"
+                app:xy_tabMode="fixed"
+                app:xy_tabTextAppearance="@style/TextAppearance.Tab"
+                app:xy_tabTextColor="@color/text_weak" />
+
+        </LinearLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_wallet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</layout>

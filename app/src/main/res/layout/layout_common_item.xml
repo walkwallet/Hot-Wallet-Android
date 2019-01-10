@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/common_item_ll_item"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="@dimen/normal_padding"
+        android:layout_marginRight="@dimen/normal_padding"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/common_item_iv_left_icon"
+            android:layout_width="@dimen/common_item_left_icon_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/common_item_left_icon_space"
+            android:layout_marginRight="@dimen/common_item_left_icon_space"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/common_item_tv_left_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:textColor="@color/text_strong"
+            android:textSize="@dimen/common_item_text_size_normal" />
+
+        <TextView
+            android:id="@+id/common_item_tv_left_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_weak"
+            android:textSize="@dimen/common_item_text_size_small"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/common_item_tv_right_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/text_weak"
+            android:textSize="@dimen/common_item_text_size_small"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/common_item_tv_badge"
+            android:layout_width="@dimen/common_item_badge_size"
+            android:layout_height="@dimen/common_item_badge_size"
+            android:gravity="center"
+            android:padding="2dp"
+            android:textColor="@color/white_9"
+            android:textSize="@dimen/common_item_badge_text_size"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/common_item_iv_right_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_item_right_icon_space"
+            android:layout_marginLeft="@dimen/common_item_right_icon_space"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/common_item_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/common_item_divider_left"
+        android:layout_marginLeft="@dimen/common_item_divider_left"
+        android:layout_marginEnd="@dimen/common_item_divider_right"
+        android:layout_marginRight="@dimen/common_item_divider_right"
+        android:background="@color/divider"
+        tools:visibility="visible" />
+</merge>

@@ -1,0 +1,255 @@
+<resources>
+    <string name="app_name">Walk Wallet</string>
+    <string name="nav_wallet">Wallet</string>
+    <string name="nav_settings">Settings</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="next">Continue</string>
+    <string name="scan">Scan</string>
+    <string name="send">Send</string>
+    <string name="complete">Complete</string>
+    <string name="done">Done</string>
+    <string name="unsupported_qrcode">Unsupported QR code types</string>
+    <string name="official_warning">Officials Hint</string>
+    <string name="got_it">I got it</string>
+
+    <!--other start-->
+    <string name="scan_tip">Align QR code within frame to scan</string>
+    <string name="next_step">Next</string>
+    <string name="clear">Clear</string>
+    <string name="welcome_use">Welcome to WALK WALLET</string>
+    <string name="welcome_tips">Please create or import your wallet</string>
+    <string name="password_input">Enter Password</string>
+    <string name="password_input_tips">Please enter the password of the wallet</string>
+    <string name="password_wrong">Password Error</string>
+    <string name="copy_right">2018 V SYSTEMS ALL rights reserved</string>
+    <string name="grant_permissions">Please grant all permissions</string>
+    <string name="select_network_environment">Choose Network</string>
+    <string name="network_main_net">Mainnet</string>
+    <string name="network_test_net">Testnet</string>
+    <string name="network_main_net_caption">Under the formal network environment, users can safely store the real assets of VSYS. This environment is suitable for ordinary users\' daily use.</string>
+    <string name="network_test_net_caption">Under the test network environment, users are not allowed to store the real assets of VSYS safely. This environment is suitable for developers to do simulation test. If you are not a professional developer, you are recommended to use the formal environment</string>
+    <string name="network_switch_to_test_net">Click to switch to the developer test environment</string>
+    <string name="network_switch_to_main_net">Click to switch back to the formal environment</string>
+    <string name="network_switch_warning">The test environment is only available for developers to test. Are you sure you want to use it?</string>
+    <string name="not_office_seed_title"> Unofficial mnemonic detected</string>
+    <string name="not_office_seed_tips">Mnemonic words from unknown sources can completely lose your assets. Still using the mnemonic?</string>
+    <string name="text_continue">Continue</string>
+    <string name="network_warning">Select Testnet or Mainnet for your wallet.This will be disable after you creat your wallet</string>
+    <string name="password_repeat_error">Passwords do not match</string>
+    <string name="at_least_8_word">Password should contain at least 8 characters</string>
+    <string name="log_out_wallet_tips">Before you cancel your wallet, please make sure that you have recorded your mnemonic words. Once you cancel your wallet, you cannot find it without mnemonic words.</string>
+    <string name="continue_input">Continue input</string>
+
+    <string name="fingerprint_title">Touch ID for “Walk Wallet”</string>
+    <string name="fingerprint_tips">Unlock Walk Wallet</string>
+    <string name="fingerprint_disable">Fingerprint verification is not supported</string>
+    <string name="fingerprint_no_data">No fingerprints entered</string>
+    <string name="fingerprint_success">Successful verification</string>
+    <string name="fingerprint_faild">Verification failed</string>
+
+    <string name="official_web">v.systems</string>
+    <!--other end-->
+
+    <!-- start>>>  home list (wallet list /monitor list) -->
+
+    <string name="home_total_assets">Total Balance</string>
+    <string name="home_add_address">Add Address</string>
+    <string name="home_add_address_tips">You can add one address at a time</string>
+    <string name="home_add_monitor">Scan QR to Monitor Cold Wallet</string>
+    <string name="home_add_monitor_tips">You can Create the Cold Wallet with a Offline Mobile</string>
+    <string name="home_add_new">Add a new address</string>
+    <string name="home_add_new_tips">You will add a new account that could not be deleted. Are you sure to add?</string>
+    <string name="home_add">Add</string>
+    <!--end>>>  home list (wallet list /monitor list) -->
+
+    <!--start>>>  detail  (wallet detail/ monitor detail) -->
+    <string name="detail_wallet_title">Wallet</string>
+    <string name="detail_monitor_title">Cold Wallet</string>
+    <string name="detail_available_balance">Available Balance</string>
+    <string name="detail_total_balance">Total Balance</string>
+    <string name="detail_leased_out">Leased Out</string>
+    <string name="detail_leased_in">Leased In</string>
+    <string name="detail_send">Send</string>
+    <string name="detail_receive">Receive</string>
+    <string name="detail_lease">Minting</string>
+    <string name="detail_records">Records</string>
+    <string name="detail_sent">Sent</string>
+    <string name="detail_received">Received</string>
+    <string name="detail_start_leasing">Start Leasing</string>
+    <string name="detail_canceled_out_leasing">Canceled Out Leasing</string>
+    <string name="detail_incoming_leasing">Incoming Leasing</string>
+    <string name="detail_canceled_int_leasing">Canceled Incoming Leasing</string>
+    <string name="detail_address_management">Address Management</string>
+    <string name="detail_copy_address">Copy the Address</string>
+    <string name="detail_cancel_out_leasing_btn">Cancel Out Leasing</string>
+    <!--end>>>  detail  (wallet detail/ monitor detail) -->
+
+    <!--start>>>  records -->
+    <string name="records_title">Transaction Records</string>
+    <string name="records_all">All</string>
+    <!--end>>>  records -->
+
+    <!--start>>>  dateSelect -->
+    <string name="date_title">Filter by date</string>
+    <string name="date_no_filter">No Filter</string>
+    <string name="date_past_1_month">Past 1 Month</string>
+    <string name="date_select_date_range">CHOOSE A DATE RANGE</string>
+    <string name="date_default_format">DD/MM/YY</string>
+    <!--end>>>  dateSelect -->
+
+    <!--start>>>  transaction detail -->
+    <string name="transaction_detail_title">Transaction Detail</string>
+    <string name="transaction_detail_from">From</string>
+    <string name="transaction_detail_to">To</string>
+    <string name="transaction_detail_type">Type</string>
+    <string name="transaction_detail_txid">TxId</string>
+    <string name="transaction_detail_amount">Amount</string>
+    <string name="transaction_detail_fee">Fee</string>
+    <string name="transaction_detail_time">Time</string>
+    <string name="transaction_detail_description">Description</string>
+    <!--end>>>  transaction detail -->
+
+    <!--start>>>  setting -->
+    <string name="setting_security">SECURITY</string>
+    <string name="setting_device_lock">Device lock</string>
+    <string name="setting_wallet">WALLET</string>
+    <string name="setting_recovery_phrase">Backup Mnemonic</string>
+    <string name="setting_back_up">Backup Now</string>
+    <string name="setting_address">Address management</string>
+    <string name="setting_other">OTHER</string>
+    <string name="setting_network">Network</string>
+    <string name="setting_language">Language</string>
+    <string name="setting_about_us">About us</string>
+    <string name="setting_sign_out">Sign out</string>
+    <string name="setting_official_website">Official website</string>
+    <string name="setting_version">Version</string>
+    <string name="setting_fingerprint">Fingerprint</string>
+    <string name="setting_auto_lock">Auto-lock</string>
+    <string name="setting_5_min">5 min</string>
+    <string name="setting_10_min">10 min</string>
+    <string name="setting_wallet_address">Wallet Address</string>
+    <string name="setting_monitor_address">Monitor Address</string>
+    <string name="setting_address_and_available_balance">Address &amp; Available Balance</string>
+    <string name="setting_public_key">Public Key</string>
+    <string name="setting_private_key">Private Key</string>
+    <string name="setting_show_private_key">Show Private Key</string>
+    <string name="setting_seed">Mnemonic Phrase</string>
+    <string name="setting_show_seed">Show Mnemonic Phrase</string>
+    <string name="setting_secret_tips">Please input your password to show</string>
+    <string name="setting_delete">Delete</string>
+    <string name="setting_delete_monitor_tips">Are you sure you want to remove this address from the cold wallet monitoring list?</string>
+    <string name="setting_lan_cn">简体中文</string>
+    <string name="setting_lan_en">English</string>
+    <string name="setting_logout">Logout</string>
+    <!--end>>>  setting -->
+
+    <!-- receive start-->
+    <string name="receive_title">Receive</string>
+    <string name="receive_qrcode_title">Click on the QR code to save the image</string>
+    <!-- receive end -->
+
+    <!--wallet start-->
+    <string name="wallet_backup">Backup wallet</string>
+    <string name="wallet_backup_later">Backup later</string>
+    <string name="wallet_create">Create wallet</string>
+    <string name="wallet_import">Import wallet</string>
+    <string name="wallet_word_import">Mnemonic Words</string>
+    <!--wallet end-->
+
+    <!--wallet create start-->
+    <string name="wallet_set_password">Set password</string>
+    <string name="wallet_create_tips">Walk Wallet does not store your password.It cannot be recovered if forgotten.Please keep it properly</string>
+    <string name="wallet_create_password_label">Create password</string>
+    <string name="wallet_create_password_tips">At least 8 characters</string>
+    <string name="wallet_create_comfirm_password_label">Confirm password</string>
+    <string name="wallet_create_comfirm_password_tips">Please input</string>
+    <string name="wallet_create_password_weak_label">Password strength is too weak</string>
+    <string name="wallet_create_password_weak_tips">For your wallet security, password strength should be at least "good"</string>
+    <string name="wallet_reset_password">Reset Password</string>
+    <string name="wallet_continue_create">Complete creation</string>
+    <string name="password_strength_0"> </string>
+    <string name="password_strength_1">Weak</string>
+    <string name="password_strength_2">Fair</string>
+    <string name="password_strength_3">Good</string>
+    <string name="password_strength_4">Strong</string>
+    <string name="password_strength_5">Perfect</string>
+    <string name="wallet_password_create_success_label">Successful created</string>
+    <string name="wallet_password_create_success_tips">We strongly recommend backing up your wallet now.</string>
+    <!--wallet create end-->
+
+    <!--seed import start-->
+    <string name="word_import_label">Mnemonic words consist of 15 words, please pay attention to the input space separated</string>
+    <string name="word_import_hint">Please input</string>
+    <string name="word_backup_tips">Screenshots are not safe and your images may be used by other applications. Please use pen and paper to copy the following mnemonic words and save them properly. We will confirm on the next screen</string>
+    <string name="word_confirm">I have saved them orderly</string>
+    <string name="word_backup_success">Backed up successful</string>
+    <string name="word_backup_success_tips">Please keep your mnemonic words carefully</string>
+    <string name="word_input_in_order">Click on the mnemonic words orderly to confirm.</string>
+    <string name="word_backup_word">Backup mnemonics</string>
+    <!--seed import end-->
+
+    <!--receive start-->
+    <string name="receive_address_caption">Receive Address</string>
+    <string name="receive_set_amount">Set amount</string>
+    <string name="receive_copy_address">Copy address</string>
+    <string name="receive_save_image_success">Save Image success</string>
+    <string name="receive_copy_success">Copy success</string>
+    <string name="receive_image_title">Scan QR code for transfer</string>
+    <!--receive end-->
+
+    <!-- send start-->
+    <string name="send_payment_title">Send</string>
+    <string name="send_lease_title">Minting</string>
+    <string name="send_amount">Amount</string>
+    <string name="send_lease_amount">Lease Amount</string>
+    <string name="send_insufficient_balance_error">Insufficient balance</string>
+    <string name="send_available_balance">Available balance: %1$s</string>
+    <string name="send_payment_to">To</string>
+    <string name="send_lease_to">To</string>
+    <string name="send_address_input_hint">Receive Address</string>
+    <string name="send_lease_address_input_hint">Node Address</string>
+    <string name="send_address_input_error">You can only send tokens to an VSYS address.</string>
+    <string name="send_to_self_error">The receiving address cannot be the current address</string>
+    <string name="send_max_btn">Max</string>
+    <string name="send_paste_btn">PASTE</string>
+    <string name="send_scan_btn">SCAN QR</string>
+    <string name="send_explain_btn">What is the lease?</string>
+    <string name="send_supernode_btn">Supernode Ranklist</string>
+    <string name="send_description">Description</string>
+    <string name="send_description_input_hint">Input or not</string>
+    <string name="send_fee">Fee</string>
+    <string name="send_time">Time</string>
+    <string name="send_fee_tip">Transaction Fee</string>
+    <string name="send_review_title">Review Transaction</string>
+    <string name="send_review_from">My Address</string>
+    <string name="send_review_send_to">To</string>
+    <string name="send_review_lease_to">To</string>
+    <string name="send_review_type">Type</string>
+    <string name="send_generate_qr_code_btn">Generate QR Code</string>
+    <string name="send_scan_qr_code_title">Scan QR Code</string>
+    <string name="send_scan_qr_code_tip"><![CDATA[1. Please use your <b><font color="#5E78E1">Cold Wallet</font></b> client to scan this QR code.<br><br>2. And click continue after your cold wallet client generates a QR code.]]></string>
+    <string name="send_payment_success">You Sent %1$s to</string>
+    <string name="send_lease_success">You Started Leasing  %1$s to</string>
+    <string name="send_cancel_lease_success">You  Canceled Out Leasing  %1$s to</string>
+    <string name="send_success_check_tip">You can check in your transaction records</string>
+    <!-- send end -->
+
+    <!-- verify password -->
+    <string name="verify_dialog_title">Wallet Password</string>
+    <string name="verify_dialog_input_hint">Please input</string>
+
+    <!-- add cold account -->
+    <string name="add_cold_account_title">Address &#038; Public key</string>
+    <string name="add_cold_account_scan_tip">You must input both Address and Public key of the cold wallet in order to add it.</string>
+    <string name="add_cold_account_field_address">Cold Wallet Address</string>
+    <string name="add_cold_account_field_address_hint">Please input cold wallet address</string>
+    <string name="add_cold_account_field_public_key">Cold Wallet Public Key</string>
+    <string name="add_cold_account_address_exist_error">Address already exist</string>
+
+    <!--init start-->
+    <string name="wallet_init_official_warning_dialog_msg">To ensure the security of your personal property, please make sure that your wallet APP is downloaded from v.systems, the official website of VSYS</string>
+    <string name="first_enter_tips">You can download a cold wallet from the v.stems website with a phone that you barely use and can completely disconnect from the Internet</string>
+    <!--init end-->
+</resources>

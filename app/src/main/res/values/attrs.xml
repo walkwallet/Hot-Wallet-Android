@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CommonItem">
+        <attr name="common_item_padding_left" format="dimension" />
+        <attr name="common_item_padding_right" format="dimension" />
+
+        <attr name="common_item_left_text" format="string" />
+        <attr name="common_item_left_tip" format="string" />
+        <attr name="common_item_right_text" format="string" />
+
+        <attr name="common_item_left_text_text_size" format="dimension" />
+        <attr name="common_item_left_tip_text_size" format="dimension" />
+        <attr name="common_item_right_text_text_size" format="dimension" />
+
+        <attr name="common_item_left_text_text_color" format="reference" />
+        <attr name="common_item_left_tip_text_color" format="reference" />
+        <attr name="common_item_right_text_text_color" format="reference" />
+
+        <attr name="common_item_left_icon" format="reference" />
+        <attr name="common_item_right_icon" format="reference" />
+        <attr name="common_item_left_icon_width" format="dimension" />
+        <attr name="common_item_right_icon_width" format="dimension" />
+
+        <attr name="common_item_left_icon_space" format="dimension" />
+        <attr name="common_item_right_icon_space" format="dimension" />
+        <attr name="common_item_left_text_space" format="dimension" />
+        <attr name="common_item_left_tip_space" format="dimension" />
+        <attr name="common_item_right_text_space" format="dimension" />
+        <attr name="common_item_badge_space" format="dimension" />
+
+        <attr name="common_item_divider_enabled" format="boolean" />
+        <attr name="common_item_divider_left" format="dimension" />
+        <attr name="common_item_divider_right" format="dimension" />
+
+        <attr name="common_item_badge_number" format="integer" />
+        <attr name="common_item_badge_size" format="dimension" />
+        <attr name="common_item_badge_text_size" format="dimension" />
+        <!--fontFamily-->
+        <attr name="common_item_left_text_font_family" format="reference" />
+        <attr name="common_item_right_text_font_family" format="reference" />
+        <attr name="fontPath" format="string" />
+        <attr name="leftFontPath" format="string" />
+
+        <!-- right textView's maxWidth setting -->
+        <attr name="common_item_right_text_view_max_width" format="dimension" />
+        <attr name="common_item_right_text_view_lines" format="integer" />
+
+    </declare-styleable>
+
+    <declare-styleable name="ScannerViewFinderView">
+        <attr name="scannerBoundColor" format="color" />
+        <attr name="scannerBoundWidth" format="dimension" />
+        <attr name="scannerBoundCornerColor" format="color" />
+        <attr name="scannerBoundCornerWidth" format="dimension" />
+        <attr name="scannerBoundCornerHeight" format="dimension" />
+        <attr name="scannerLaserResId" format="integer" />
+        <attr name="scannerTipText" format="string" />
+        <attr name="scannerTipTextSize" format="dimension" />
+        <attr name="scannerTipTextColor" format="string" />
+        <attr name="scannerTipTextMargin" format="dimension" />
+        <attr name="tipTextGravityBottom" format="boolean" />
+    </declare-styleable>
+
+
+    <declare-styleable name="XyTabLayout">
+        <attr name="indicatorPadding" format="dimension" />
+        <attr name="xy_tabIndicatorColor" format="color" />
+        <attr name="xy_tabIndicatorHeight" format="dimension" />
+        <attr name="xy_tabIndicatorWidth" format="dimension" />
+        <attr name="xy_tabContentStart" format="dimension" />
+        <attr name="xy_tabBackground" format="reference" />
+        <attr name="xy_tabMode">
+            <enum name="scrollable" value="0" />
+            <enum name="fixed" value="1" />
+        </attr>
+        <attr name="xy_tabGravity">
+            <enum name="fill" value="0" />
+            <enum name="center" value="1" />
+        </attr>
+        <attr name="xy_tabMinWidth" format="dimension" />
+        <attr name="xy_tabMaxWidth" format="dimension" />
+        <attr name="xy_tabTextAppearance" format="reference" />
+        <attr name="xy_tabTextColor" format="color" />
+        <attr name="xy_tabSelectedTextColor" format="color" />
+        <attr name="xy_tabPaddingStart" format="dimension" />
+        <attr name="xy_tabPaddingTop" format="dimension" />
+        <attr name="xy_tabPaddingEnd" format="dimension" />
+        <attr name="xy_tabPaddingBottom" format="dimension" />
+        <attr name="xy_tabPadding" format="dimension" />
+        <attr name="xy_tabSelectedBold" format="boolean" />
+        <attr name="xy_colorChangeable" format="boolean" />
+        <attr name="xy_colorChangeFirst" format="color" />
+        <attr name="xy_colorChangeSecond" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="XTabItem">
+        <attr name="android:text" />
+        <attr name="android:icon" />
+        <attr name="android:layout" />
+    </declare-styleable>
+</resources>

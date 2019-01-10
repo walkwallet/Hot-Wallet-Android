@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="click"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/bg_common"
+            app:title="@string/nav_settings" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_margin"
+                android:orientation="vertical">
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider"
+                    android:background="@color/color_line" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_margin"
+                    android:paddingStart="@dimen/normal_padding"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/setting_security"
+                    android:textColor="@color/color_label"
+                    android:textSize="14sp" />
+
+                <systems.v.wallet.ui.widget.CommonItem
+                    android:id="@+id/ci_device_lock"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/ripple_white"
+                    android:onClick="@{click.onClick}"
+                    app:common_item_divider_enabled="true"
+                    app:common_item_divider_right="0dp"
+                    app:common_item_left_icon="@drawable/ico_setting_lock"
+                    app:common_item_left_text="@string/setting_device_lock"
+                    app:common_item_left_text_text_color="@color/text_strong"
+                    app:common_item_left_text_text_size="16sp"
+                    app:common_item_right_icon="@drawable/ico_arrow_right" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_margin"
+                    android:paddingStart="@dimen/normal_padding"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/setting_wallet"
+                    android:textColor="@color/color_label"
+                    android:textSize="14sp" />
+
+                <systems.v.wallet.ui.widget.CommonItem
+                    android:id="@+id/ci_back_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/ripple_white"
+                    android:onClick="@{click.onClick}"
+                    app:common_item_divider_enabled="true"
+                    app:common_item_divider_right="0dp"
+                    app:common_item_left_icon="@drawable/ico_setting_backup_word"
+                    app:common_item_left_text="@string/setting_recovery_phrase"
+                    app:common_item_left_text_text_color="@color/text_strong"
+                    app:common_item_left_text_text_size="16sp"
+                    app:common_item_right_icon="@drawable/ico_arrow_right"
+                    app:common_item_right_text="@string/setting_back_up"
+                    app:common_item_right_text_text_color="@color/orange"
+                    app:common_item_right_text_text_size="14sp" />
+
+                <systems.v.wallet.ui.widget.CommonItem
+                    android:id="@+id/ci_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/ripple_white"
+                    android:onClick="@{click.onClick}"
+                    app:common_item_divider_enabled="true"
+                    app:common_item_divider_right="0dp"
+                    app:common_item_left_icon="@drawable/ico_setting_address"
+                    app:common_item_left_text="@string/setting_address"
+                    app:common_item_left_text_text_color="@color/text_strong"
+                    app:common_item_left_text_text_size="16sp"
+                    app:common_item_right_icon="@drawable/ico_arrow_right" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_margin"
+                    android:paddingStart="@dimen/normal_padding"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/setting_other"
+                    android:textColor="@color/color_label"
+                    android:textSize="14sp" />
+
+                <systems.v.wallet.ui.widget.CommonItem
+                    android:id="@+id/ci_network"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/ripple_white"
+                    android:onClick="@{click.onClick}"
+                    app:common_item_divider_enabled="true"
+                    app:common_item_divider_right="0dp"
+                    app:common_item_left_icon="@drawable/ico_setting_web"
+                    app:common_item_left_text="@string/setting_network"
+                    app:common_item_left_text_text_color="@color/text_strong"
+                    app:common_item_left_text_text_size="16sp"
+                    app:common_item_right_text_text_color="@color/text_weak"
+                    app:common_item_right_text_text_size="14sp" />
+
+                <systems.v.wallet.ui.widget.CommonItem
+                    android:id="@+id/ci_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/ripple_white"
+                    android:onClick="@{click.onClick}"
+                    app:common_item_divider_enabled="true"
+                    app:common_item_divider_right="0dp"
+                    app:common_item_left_icon="@drawable/ico_setting_language"
+                    app:common_item_left_text="@string/setting_language"
+                    app:common_item_left_text_text_color="@color/text_strong"
+                    app:common_item_left_text_text_size="16sp"
+                    app:common_item_right_icon="@drawable/ico_arrow_right"
+                    app:common_item_right_text_text_color="@color/text_weak"
+                    app:common_item_right_text_text_size="14sp" />
+
+                <systems.v.wallet.ui.widget.CommonItem
+                    android:id="@+id/ci_about_us"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/ripple_white"
+                    android:onClick="@{click.onClick}"
+                    app:common_item_divider_enabled="true"
+                    app:common_item_divider_right="0dp"
+                    app:common_item_left_icon="@drawable/ico_setting_about"
+                    app:common_item_left_text="@string/setting_about_us"
+                    app:common_item_left_text_text_color="@color/text_strong"
+                    app:common_item_left_text_text_size="16sp"
+                    app:common_item_right_icon="@drawable/ico_arrow_right" />
+
+                <systems.v.wallet.ui.widget.CommonItem
+                    android:id="@+id/ci_sign_out"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/ripple_white"
+                    android:onClick="@{click.onClick}"
+                    app:common_item_divider_enabled="true"
+                    app:common_item_divider_right="0dp"
+                    app:common_item_left_icon="@drawable/ico_setting_sign_out"
+                    app:common_item_left_text="@string/setting_sign_out"
+                    app:common_item_left_text_text_color="@color/text_red"
+                    app:common_item_left_text_text_size="16sp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

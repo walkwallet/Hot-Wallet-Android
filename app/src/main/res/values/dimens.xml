@@ -1,0 +1,23 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="normal_padding">16dp</dimen>
+    <dimen name="start_end_padding">20dp</dimen>
+    <dimen name="divider">1dp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="transaction_dialog_height">450dp</dimen>
+
+    <dimen name="common_item_height">48dp</dimen>
+    <dimen name="common_item_padding_h">@dimen/normal_padding</dimen>
+    <dimen name="common_item_left_icon_width">30dp</dimen>
+    <dimen name="common_item_left_icon_space">14dp</dimen>
+    <dimen name="common_item_right_icon_space">12dp</dimen>
+    <dimen name="common_item_text_size_normal">15sp</dimen>
+    <dimen name="common_item_text_size_small">13sp</dimen>
+    <dimen name="common_item_divider_left">@dimen/normal_padding</dimen>
+    <dimen name="common_item_divider_right">@dimen/normal_padding</dimen>
+    <dimen name="common_item_badge_size">20dp</dimen>
+    <dimen name="common_item_badge_text_size">12sp</dimen>
+
+</resources>

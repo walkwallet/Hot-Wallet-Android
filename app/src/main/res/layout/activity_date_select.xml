@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="click"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_default"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="?attr/colorAccent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/ico_back"
+            app:title="@string/date_title"
+            app:titleTextColor="@color/text_white" />
+
+        <systems.v.wallet.ui.widget.CommonItem
+            android:id="@+id/ci_no_filter"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:onClick="@{click.onClick}"
+            app:common_item_divider_enabled="true"
+            app:common_item_left_text="@string/date_no_filter"
+            app:common_item_left_text_text_color="@color/text_strong"
+            app:common_item_left_text_text_size="16sp" />
+
+        <systems.v.wallet.ui.widget.CommonItem
+            android:id="@+id/ci_last_month"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:onClick="@{click.onClick}"
+            app:common_item_divider_enabled="true"
+            app:common_item_left_text="@string/date_past_1_month"
+            app:common_item_left_text_text_color="@color/text_strong"
+            app:common_item_left_text_text_size="16sp" />
+
+        <systems.v.wallet.ui.widget.CommonItem
+            android:id="@+id/ci_this_month"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:onClick="@{click.onClick}"
+            app:common_item_divider_enabled="true"
+            app:common_item_left_text_text_color="@color/text_strong"
+            app:common_item_left_text_text_size="16sp"
+            tools:common_item_left_text="October" />
+
+        <systems.v.wallet.ui.widget.CommonItem
+            android:id="@+id/ci_this_year"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:onClick="@{click.onClick}"
+            app:common_item_divider_enabled="true"
+            app:common_item_left_text_text_color="@color/text_strong"
+            app:common_item_left_text_text_size="16sp"
+            tools:common_item_left_text="2018" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normal_padding"
+            android:layout_marginTop="32dp"
+            android:text="@string/date_select_date_range"
+            android:textColor="@color/text_weak"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/normal_padding"
+            android:layout_marginTop="10dp"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/normal_padding"
+            android:paddingEnd="@dimen/normal_padding">
+
+            <FrameLayout
+                android:id="@+id/ll_time_start"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_white"
+                android:onClick="@{click.onClick}"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_time_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:text="@string/date_default_format"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/divider" />
+            </FrameLayout>
+
+            <View
+                android:layout_width="@dimen/normal_padding"
+                android:layout_height="match_parent"
+                android:background="@color/transparent" />
+
+            <FrameLayout
+                android:id="@+id/ll_time_end"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_white"
+                android:onClick="@{click.onClick}"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_time_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:text="@string/date_default_format"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/divider" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/transparent" />
+
+        <Button
+            android:id="@+id/btn_complete"
+            style="@style/BasicButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="@dimen/normal_padding"
+            android:layout_marginEnd="@dimen/normal_padding"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:onClick="@{click.onClick}"
+            android:text="@string/confirm"
+            android:textColor="@color/text_white" />
+    </LinearLayout>
+</layout>

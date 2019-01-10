@@ -1,0 +1,255 @@
+<resources>
+    <string name="app_name">Walk Wallet</string>
+    <string name="nav_wallet">钱包</string>
+    <string name="nav_settings">设置</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="ok">好的</string>
+    <string name="next">继续</string>
+    <string name="scan">扫描</string>
+    <string name="send">发送</string>
+    <string name="complete">完成</string>
+    <string name="done">完成</string>
+    <string name="unsupported_qrcode">不支持的二维码类型</string>
+    <string name="official_warning">官方提示</string>
+    <string name="got_it">知道了</string>
+
+    <!--other start-->
+    <string name="next_step">下一步</string>
+    <string name="clear">清空</string>
+    <string name="scan_tip">将二维码放入框内，即可自动扫描</string>
+    <string name="welcome_use">欢迎使用WALK WALLET</string>
+    <string name="welcome_tips">请先创建钱包，或导入钱包</string>
+    <string name="password_input">输入密码</string>
+    <string name="password_input_tips">请输入已设置的钱包密码</string>
+    <string name="password_wrong">密码错误</string>
+    <string name="copy_right">2018 V SYSTEMS ALL rights reserved</string>
+    <string name="grant_permissions">请同意全部权限申请</string>
+    <string name="select_network_environment">选择网络环境</string>
+    <string name="network_main_net">正式环境</string>
+    <string name="network_test_net">测试环境</string>
+    <string name="network_main_net_caption">在正式网络环境下，用户可进行VSYS现实资产的安全存储，此环境适用于普通用户日常使用</string>
+    <string name="network_test_net_caption">在测试网络环境下，用户不可进行VSYS真实资产的安全存储，此环境适用于开发者做模拟测试使用，若非专业开发者，建议您使用正式环境</string>
+    <string name="network_switch_to_test_net">切换至开发者测试环境</string>
+    <string name="network_switch_to_main_net">切换至普通用户正式环境</string>
+    <string name="network_switch_warning">测试环境仅提供给开发者做测试，您是否确认使用?</string>
+    <string name="not_office_seed_title">检测到非官方来源的助记词</string>
+    <string name="not_office_seed_tips">这是一个非官方来源的助记词，未知来源的助记词可能使您的资产完全丢失。仍然使用该助记词？</string>
+    <string name="text_continue">继续</string>
+    <string name="network_warning">为钱包选择网络环境，成功创建钱包后，此项将无法修改</string>
+    <string name="password_repeat_error">两次密码输入不一致</string>
+    <string name="at_least_8_word">至少8个字符</string>
+    <string name="log_out_wallet_tips">注销钱包前，请您务必确认是否已记录好助记词，钱包一经注销，没有助记词将无法找回！</string>
+    <string name="continue_input">重新输入</string>
+
+    <string name="fingerprint_title">“Walk Wallet”的触控ID</string>
+    <string name="fingerprint_tips">解锁 Walk Wallet</string>
+    <string name="fingerprint_disable">当前设备不支持指纹验证</string>
+    <string name="fingerprint_no_data">暂无指纹数据</string>
+    <string name="fingerprint_success">验证成功</string>
+    <string name="fingerprint_faild">验证失败</string>
+
+    <string name="official_web">v.systems</string>
+    <!--other end-->
+
+    <!-- start>>>  home list (wallet list /monitor list) -->
+
+    <string name="home_total_assets">总余额</string>
+    <string name="home_add_address">创建地址</string>
+    <string name="home_add_address_tips">您每次可以创建1个地址</string>
+    <string name="home_add_monitor">扫码添加冷钱包地址进行观察</string>
+    <string name="home_add_monitor_tips">您可用一部不联网的手机创建硬件冷钱包</string>
+    <string name="home_add_new">创建新地址</string>
+    <string name="home_add_new_tips">您将创建一个不可删除的新地址。确认要添加吗？</string>
+    <string name="home_add">创建</string>
+    <!--end>>>  home list (wallet list /monitor list) -->
+
+    <!--start>>>  detail  (wallet detail/ monitor detail) -->
+    <string name="detail_wallet_title">钱包</string>
+    <string name="detail_monitor_title">冷钱包</string>
+    <string name="detail_available_balance">可用余额</string>
+    <string name="detail_total_balance">总余额</string>
+    <string name="detail_leased_out">租出</string>
+    <string name="detail_leased_in">租入</string>
+    <string name="detail_send">发送</string>
+    <string name="detail_receive">接收</string>
+    <string name="detail_lease">铸币</string>
+    <string name="detail_records">记录</string>
+    <string name="detail_sent">发送</string>
+    <string name="detail_received">接收</string>
+    <string name="detail_start_leasing">租出</string>
+    <string name="detail_canceled_out_leasing">取消租出</string>
+    <string name="detail_incoming_leasing">租入</string>
+    <string name="detail_canceled_int_leasing">取消租入</string>
+    <string name="detail_address_management">地址管理</string>
+    <string name="detail_copy_address">复制地址</string>
+    <string name="detail_cancel_out_leasing_btn">取消租出</string>
+    <!--end>>>  detail  (wallet detail/ monitor detail) -->
+
+    <!--start>>>  records -->
+    <string name="records_title">交易记录</string>
+    <string name="records_all">全部</string>
+    <!--end>>>  records -->
+
+    <!--start>>>  dateSelect -->
+    <string name="date_title">时间筛选</string>
+    <string name="date_no_filter">不筛选</string>
+    <string name="date_past_1_month">过去一月</string>
+    <string name="date_select_date_range">自定义时间</string>
+    <string name="date_default_format">DD/MM/YY</string>
+    <!--end>>>  dateSelect -->
+
+    <!--start>>>  transaction detail -->
+    <string name="transaction_detail_title">交易详情</string>
+    <string name="transaction_detail_from">发送地址</string>
+    <string name="transaction_detail_to">接收地址</string>
+    <string name="transaction_detail_type">类型</string>
+    <string name="transaction_detail_txid">交易Id</string>
+    <string name="transaction_detail_amount">数量</string>
+    <string name="transaction_detail_fee">手续费</string>
+    <string name="transaction_detail_time">时间</string>
+    <string name="transaction_detail_description">备注</string>
+    <!--end>>>  transaction detail -->
+
+    <!--start>>>  setting -->
+    <string name="setting_security">安全</string>
+    <string name="setting_device_lock">设备锁</string>
+    <string name="setting_wallet">钱包</string>
+    <string name="setting_recovery_phrase">备份助记词</string>
+    <string name="setting_back_up">立即备份</string>
+    <string name="setting_address">地址管理</string>
+    <string name="setting_other">其他</string>
+    <string name="setting_network">网络环境</string>
+    <string name="setting_language">语言</string>
+    <string name="setting_about_us">关于我们</string>
+    <string name="setting_sign_out">注销钱包</string>
+    <string name="setting_official_website">官方网站</string>
+    <string name="setting_version">版本号</string>
+    <string name="setting_fingerprint">指纹</string>
+    <string name="setting_auto_lock">自动锁屏</string>
+    <string name="setting_5_min">5 min</string>
+    <string name="setting_10_min">10 min</string>
+    <string name="setting_wallet_address">钱包地址</string>
+    <string name="setting_monitor_address">监控地址</string>
+    <string name="setting_address_and_available_balance">地址&amp;可用余额</string>
+    <string name="setting_public_key">公钥</string>
+    <string name="setting_private_key">私钥</string>
+    <string name="setting_show_private_key">显示私钥</string>
+    <string name="setting_seed">助记词</string>
+    <string name="setting_show_seed">显示助记词</string>
+    <string name="setting_secret_tips">请输入钱包密码显示</string>
+    <string name="setting_delete">删除</string>
+    <string name="setting_delete_monitor_tips">您是否确定将这个地址从冷钱包监控列表中移除？</string>
+    <string name="setting_lan_cn">简体中文</string>
+    <string name="setting_lan_en">English</string>
+    <string name="setting_logout">注销钱包</string>
+    <!--end>>>  setting -->
+
+    <!-- receive start -->
+    <string name="receive_title">接收</string>
+    <string name="receive_qrcode_title">点击二维码可将其保存至相册</string>
+    <!-- receive end -->
+
+    <!--wallet start-->
+    <string name="wallet_backup">备份钱包</string>
+    <string name="wallet_backup_later">稍后备份</string>
+    <string name="wallet_create">创建钱包</string>
+    <string name="wallet_import">导入钱包</string>
+    <string name="wallet_word_import">助记词导入</string>
+    <!--wallet end-->
+
+    <!--wallet create start-->
+    <string name="wallet_set_password">设置密码</string>
+    <string name="wallet_create_tips">请牢记您的密码！Walk钱包不存储用户密码，无法提供找回功能</string>
+    <string name="wallet_create_password_label">创建钱包密码</string>
+    <string name="wallet_create_password_tips">请输入至少8位字符</string>
+    <string name="wallet_create_comfirm_password_label">确认钱包密码</string>
+    <string name="wallet_create_comfirm_password_tips">请输入</string>
+    <string name="wallet_create_password_weak_label">密码强度太弱</string>
+    <string name="wallet_create_password_weak_tips">为了您的钱包安全，密码强度至少要在“好”以上</string>
+    <string name="wallet_reset_password">返回重设密码</string>
+    <string name="wallet_continue_create">继续完成创建</string>
+    <string name="password_strength_0"> </string>
+    <string name="password_strength_1">弱</string>
+    <string name="password_strength_2">一般</string>
+    <string name="password_strength_3">好</string>
+    <string name="password_strength_4">很好</string>
+    <string name="password_strength_5">完美</string>
+    <string name="wallet_password_create_success_label">创建成功</string>
+    <string name="wallet_password_create_success_tips">钱包创建成功，请您务必保管好密码和助记词</string>
+    <!--wallet create end-->
+
+    <!--seed import start-->
+    <string name="word_import_label">助记词由15个英文单词组成，注意输入时用空格分开</string>
+    <string name="word_import_hint">请输入</string>
+    <string name="word_backup_tips">截图是不安全的，你的图片可能被别的应用使用。请使用笔和纸抄写如下助记词，并妥善保存，我们会在下个屏幕上确认</string>
+    <string name="word_confirm">已按顺序记下助记词</string>
+    <string name="word_backup_success">备份成功</string>
+    <string name="word_backup_success_tips">请妥善保管你的助记词</string>
+    <string name="word_input_in_order">按顺序点击助记词，确认你的助记词备份正确</string>
+    <string name="word_backup_word">备份助记词</string>
+    <!--seed import end-->
+
+    <!-- receive start -->
+    <string name="receive_address_caption">接收地址</string>
+    <string name="receive_set_amount">设置接收数量</string>
+    <string name="receive_copy_address">复制地址</string>
+    <string name="receive_save_image_success">已保存到相册</string>
+    <string name="receive_copy_success">复制成功</string>
+    <string name="receive_image_title">扫描二维码进行转账</string>
+    <!-- receive end -->
+
+    <!-- send start-->
+    <string name="send_payment_title">发送</string>
+    <string name="send_lease_title">铸币</string>
+    <string name="send_amount">数量</string>
+    <string name="send_lease_amount">租赁数量</string>
+    <string name="send_insufficient_balance_error">余额不足</string>
+    <string name="send_available_balance">可用余额: %1$s</string>
+    <string name="send_payment_to">发送给</string>
+    <string name="send_lease_to">租赁到</string>
+    <string name="send_address_input_hint">接收地址</string>
+    <string name="send_lease_address_input_hint">节点地址</string>
+    <string name="send_address_input_error">您只能转账给一个VSYS地址</string>
+    <string name="send_to_self_error">接收地址不能为当前地址</string>
+    <string name="send_max_btn">全部</string>
+    <string name="send_paste_btn">粘贴</string>
+    <string name="send_scan_btn">扫描二维码</string>
+    <string name="send_explain_btn">什么是铸币?</string>
+    <string name="send_supernode_btn">超级节点列表</string>
+    <string name="send_description">备注</string>
+    <string name="send_description_input_hint">选填</string>
+    <string name="send_fee">手续费</string>
+    <string name="send_time">时间</string>
+    <string name="send_fee_tip">手续费 </string>
+    <string name="send_review_title">确认交易</string>
+    <string name="send_review_from">我的地址</string>
+    <string name="send_review_send_to">接收地址</string>
+    <string name="send_review_lease_to">租出地址</string>
+    <string name="send_review_type">类型</string>
+    <string name="send_generate_qr_code_btn">生成二维码</string>
+    <string name="send_scan_qr_code_title">扫描二维码</string>
+    <string name="send_scan_qr_code_tip"><![CDATA[请使用您的<b><font color="#5E78E1">冷钱包</font></b>客户端扫描此二维码。并在您的冷钱包客户端生成二维码后单击下方“继续”按钮。]]></string>
+    <string name="send_payment_success">您已发送 %1$s 到</string>
+    <string name="send_lease_success">您已租出 %1$s 到</string>
+    <string name="send_cancel_lease_success">您已取消租出 %1$s 到</string>
+    <string name="send_success_check_tip">您可以在交易记录里面查看此笔交易详情</string>
+    <!-- send end -->
+
+    <!-- verify password -->
+    <string name="verify_dialog_title">钱包密码</string>
+    <string name="verify_dialog_input_hint">请输入</string>
+
+    <!-- add cold account -->
+    <string name="add_cold_account_title">地址 &#038; 公钥</string>
+    <string name="add_cold_account_scan_tip">您必须同时填写冷钱包的地址和公钥之后，才能成功对其添加监控。</string>
+    <string name="add_cold_account_field_address">冷钱包地址</string>
+    <string name="add_cold_account_field_address_hint">请输入冷钱包的地址</string>
+    <string name="add_cold_account_field_public_key">冷钱包公钥</string>
+    <string name="add_cold_account_address_exist_error">地址已存在</string>
+
+    <!--init start-->
+    <string name="wallet_init_official_warning_dialog_msg">为保证您的个人财产安全，请务必确保您的钱包APP来自VSYS官方网站v.systems下载</string>
+    <string name="first_enter_tips">您可以准备一个几乎不使用和可以完全断网的手机，从v.systems官网下载冷钱包。</string>
+    <!--init end-->
+</resources>

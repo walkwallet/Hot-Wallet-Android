@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.journeyapps.barcodescanner.DecoratedBarcodeView
+            android:id="@+id/barcode_scanner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:zxing_scanner_layout="@layout/layout_barcode_scanner" />
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start|top"
+            android:layout_marginTop="25dp"
+            android:padding="@dimen/normal_padding"
+            android:src="@drawable/ico_close" />
+
+        <ImageView
+            android:id="@+id/iv_torch"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
+            android:layout_gravity="bottom|center"
+            android:gravity="center"
+            android:padding="32dp"
+            android:src="@drawable/ico_torch_off" />
+
+    </FrameLayout>
+</layout>

@@ -1,0 +1,159 @@
+<resources>
+
+    <style name="Platform.AppTheme" parent="Theme.AppCompat.Light.NoActionBar" />
+
+    <style name="Base.AppTheme" parent="Platform.AppTheme">
+        <item name="android:textCursorDrawable">@drawable/ic_edittext_cursor</item>
+        <item name="editTextBackground">@drawable/edit_background</item>
+        <item name="basic_btn_border_radius">@dimen/basic_btn_border_radius</item>
+        <item name="basic_btn_border_color">@color/border</item>
+    </style>
+
+    <style name="Base.AppTheme.Orange" parent="Base.AppTheme" />
+
+    <style name="AppTheme.Orange" parent="Base.AppTheme.Orange">
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryDark">@color/orange</item>
+        <item name="colorAccent">@color/orange</item>
+    </style>
+
+    <style name="Base.AppTheme.White" parent="Base.AppTheme" />
+
+    <style name="AppTheme.White" parent="Base.AppTheme.White">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/orange</item>
+    </style>
+
+    <style name="Base.AppTheme.Blue" parent="Base.AppTheme" />
+
+    <style name="AppTheme.Blue" parent="Base.AppTheme.Blue">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorAccent">@color/blue</item>
+    </style>
+
+    <style name="AppTheme" parent="AppTheme.White" />
+
+    <style name="AppTheme.Translucent" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="AppTheme.Transparent" parent="AppTheme.Translucent">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.Transparent.Orange" parent="AppTheme.Transparent">
+        <item name="colorAccent">@color/orange</item>
+    </style>
+
+    <style name="AppTheme.Transparent.Blue" parent="AppTheme.Transparent">
+        <item name="colorAccent">@color/blue</item>
+    </style>
+
+    <style name="Base.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textCursorDrawable">@drawable/ic_edittext_cursor</item>
+        <item name="editTextBackground">@drawable/edit_background</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="Base.Dialog.Large" parent="Base.Dialog">
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="Dialog.Large.Blue" parent="Base.Dialog.Large">
+        <item name="colorAccent">@color/blue</item>
+    </style>
+
+    <style name="Dialog.Large.Orange" parent="Base.Dialog.Large">
+        <item name="colorAccent">@color/orange</item>
+    </style>
+
+    <style name="ToolbarPopupTheme" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+    </style>
+
+    <style name="LoadingDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowSoftInputMode">adjustPan</item>
+    </style>
+
+    <style name="BottomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+        <!--  <item name="android:windowExitAnimation">@anim/push_bottom_out</item> -->
+    </style>
+
+    <style name="BasicButton.Middle" parent="BasicButton">
+        <item name="basic_btn_border_radius">4dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BasicButton.Bordered.Small" parent="BasicButton.Bordered">
+        <item name="basic_btn_border_radius">12dp</item>
+        <item name="android:layout_height">22dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+
+    <style name="BasicButton.Bordered.Small.Orange" parent="BasicButton.Bordered.Small">
+        <item name="basic_btn_border_color">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="BasicButton.Bordered.Normal" parent="BasicButton.Bordered">
+        <item name="basic_btn_border_radius">16dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+
+    <style name="BasicButton.Bordered.Orange" parent="BasicButton.Bordered">
+        <item name="basic_btn_border_color">?attr/colorAccent</item>
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="basic_btn_border_radius">6dp</item>
+    </style>
+
+    <style name="TextAppearance.Tab" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextAppearance.Tab.BottomNavigation" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Animation.SlideRight" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/activity_open_in_anim_horizontal</item>
+        <item name="android:windowExitAnimation">@anim/activity_close_out_anim_horizontal</item>
+    </style>
+</resources>

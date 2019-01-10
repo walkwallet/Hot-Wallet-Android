@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="click"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_margin"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/bg_common"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/ico_back_black"
+            app:title="@string/setting_device_lock" />
+
+        <FrameLayout
+            android:id="@+id/fl_fingerprint"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="@dimen/normal_padding"
+            android:background="@color/bg_common">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:paddingStart="@dimen/normal_padding"
+                android:text="@string/setting_fingerprint"
+                android:textColor="@color/text_strong"
+                android:textSize="14sp" />
+
+            <Switch
+                android:id="@+id/switch_fingerprint"
+                android:layout_width="48dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="@dimen/normal_padding"
+                android:thumb="@drawable/switch_thumb"
+                android:track="@drawable/switch_track" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="@dimen/normal_padding"
+                android:background="@color/color_line" />
+        </FrameLayout>
+
+        <systems.v.wallet.ui.widget.CommonItem
+            android:id="@+id/ci_auoto_lock"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/bg_common"
+            android:onClick="@{click.onClick}"
+            app:common_item_left_text="@string/setting_auto_lock"
+            app:common_item_left_text_text_color="@color/text_strong"
+            app:common_item_left_text_text_size="14sp"
+            app:common_item_right_icon="@drawable/ico_back_black_reverse"
+            app:common_item_right_text_text_color="@color/text_strong"
+            app:common_item_right_text_text_size="14sp" />
+    </LinearLayout>
+</layout>

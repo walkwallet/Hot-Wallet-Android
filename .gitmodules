@@ -1,0 +1,3 @@
+[submodule "basic"]
+	path = basic
+	url = https://github.com/walkwallet/Wallet-Basic-Android.git

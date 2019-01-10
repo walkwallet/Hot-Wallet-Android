@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/start_end_padding"
+        android:layout_marginEnd="@dimen/start_end_padding"
+        android:layout_marginBottom="@dimen/normal_padding"
+        android:background="@color/bg_default"
+        android:orientation="vertical"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="3dp">
+
+        <FrameLayout
+            android:id="@+id/fl_wallet_monitor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/normal_padding"
+            android:paddingTop="@dimen/start_end_padding"
+            android:paddingEnd="@dimen/normal_padding"
+            android:paddingBottom="24dp"
+            tools:background="@drawable/bg_gradient_monitor"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_index"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:textColor="@color/color_white_5"
+                android:textSize="72sp"
+                tools:text="01" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/text_white"
+                    android:textSize="20sp"
+                    tools:text="3PQeCa*****c257U4" />
+
+                <ImageView
+                    android:id="@+id/iv_qr_code"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ico_qr_code" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="56dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/text_white"
+                    android:textSize="14sp"
+                    tools:text="1036254.77628" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_total_assets"
+                    android:textColor="@color/text_white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

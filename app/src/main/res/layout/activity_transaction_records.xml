@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="click"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_default"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_height"
+                android:background="?attr/colorAccent"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark"
+                app:contentInsetStartWithNavigation="0dp"
+                app:navigationIcon="@drawable/ico_close_white"
+                app:title="@string/records_title"
+                app:titleTextColor="@color/text_white" />
+
+            <ImageView
+                android:id="@+id/iv_date"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="@dimen/start_end_padding"
+                android:onClick="@{click.onClick}"
+                android:src="@drawable/ico_history" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/bg_common">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:background="@color/color_line" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tl_records"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/transparent"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="?attr/colorAccent"
+                app:tabIndicatorHeight="2dp"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="?attr/colorAccent"
+                app:tabTextAppearance="@style/TextAppearance.Tab.BottomNavigation"
+                app:tabTextColor="@color/text_weak" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_margin"
+            android:paddingStart="@dimen/start_end_padding"
+            android:paddingTop="10dp"
+            android:paddingEnd="@dimen/start_end_padding"
+            android:paddingBottom="10dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/ll_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_orange_radius_13"
+                android:gravity="center_vertical|center"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_white"
+                    android:textSize="12sp"
+                    tools:text="OTC 5,2018-NOV 26,2018" />
+
+                <ImageView
+                    android:id="@+id/iv_close_time"
+                    android:layout_width="24dp"
+                    android:layout_height="18dp"
+                    android:onClick="@{click.onClick}"
+                    android:paddingStart="8dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="5dp"
+                    android:src="@drawable/ico_close_white" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_records"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</layout>

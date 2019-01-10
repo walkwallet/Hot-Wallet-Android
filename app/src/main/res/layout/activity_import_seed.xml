@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_common"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/color_root"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_height"
+                app:contentInsetStartWithNavigation="0dp"
+                app:navigationIcon="@drawable/ico_back_black"
+                app:title="@string/wallet_word_import" />
+
+            <ImageView
+                android:id="@+id/iv_scan"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:padding="12dp"
+                android:src="@drawable/ico_scan"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_root"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/start_end_padding"
+                    android:paddingTop="24dp"
+                    android:paddingEnd="@dimen/start_end_padding"
+                    android:paddingBottom="24dp">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_marginEnd="@dimen/normal_padding"
+                        android:src="@drawable/ico_words_big" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/word_import_label"
+                        android:textColor="@color/text_strong"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/et_word"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/start_end_padding"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="@dimen/start_end_padding"
+                    android:background="@drawable/bg_white_with_stroke_radius_6"
+                    android:gravity="start"
+                    android:hint="@string/word_import_hint"
+                    android:minLines="3"
+                    android:paddingStart="12dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/text_strong"
+                    android:textColorHint="@color/text_hint"
+                    android:textCursorDrawable="@drawable/ic_edittext_cursor"
+                    android:textSize="16sp"
+                    android:visibility="visible" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btn_next"
+                    style="@style/BasicButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:gravity="center"
+                    android:text="@string/next_step"
+                    android:textColor="@color/text_white" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

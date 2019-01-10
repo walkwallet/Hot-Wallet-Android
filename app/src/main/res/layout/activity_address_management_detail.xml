@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="click"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_margin"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/bg_common"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/ico_back_black"
+            app:title="@string/detail_address_management"
+            app:titleTextColor="@color/text_strong" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/normal_padding"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/setting_address_and_available_balance"
+                android:textColor="@color/color_label"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:id="@+id/ll_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ripple_white"
+                android:onClick="@{click.onClick}"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/normal_padding"
+                android:paddingTop="14dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="14dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_strong"
+                        android:textSize="15sp"
+                        tools:text="AR5Z9A7815c7HVJt4VdxTsT9vU6JgNTgjZ6" />
+
+                    <TextView
+                        android:id="@+id/tv_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/text_weak"
+                        android:textSize="14sp"
+                        tools:text="133297.83336778 VCoin" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="48dp"
+                    android:src="@drawable/ico_arrow_right" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/normal_padding"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/setting_public_key"
+                android:textColor="@color/color_label" />
+
+            <LinearLayout
+                android:id="@+id/ll_public_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ripple_white"
+                android:onClick="@{click.onClick}"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/normal_padding"
+                android:paddingTop="10dp"
+                android:paddingEnd="@dimen/normal_padding"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/tv_public_key"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/text_strong"
+                    android:textSize="14sp"
+                    tools:text="HVfzNgXowHd3wBJuq7qTL336pvuvv8GrD1oxLdcRFRN2" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="48dp"
+                    android:src="@drawable/ico_arrow_right" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_monitor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_padding"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/setting_private_key"
+                    android:textColor="@color/color_label" />
+
+                <LinearLayout
+                    android:id="@+id/ll_private_key"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ripple_white"
+                    android:onClick="@{click.onClick}"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/normal_padding"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="@dimen/normal_padding"
+                    android:paddingBottom="14dp">
+
+                    <TextView
+                        android:id="@+id/tv_private_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="@string/setting_secret_tips"
+                        android:textColor="@color/text_strong"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="48dp"
+                        android:src="@drawable/ico_arrow_right" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_padding"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/setting_seed"
+                    android:textColor="@color/color_label" />
+
+                <LinearLayout
+                    android:id="@+id/ll_seed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ripple_white"
+                    android:onClick="@{click.onClick}"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/normal_padding"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="@dimen/normal_padding"
+                    android:paddingBottom="14dp">
+
+                    <TextView
+                        android:id="@+id/tv_seed"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/setting_secret_tips"
+                        android:textColor="@color/text_strong"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/common_item_iv_right_icon"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="48dp"
+                        android:src="@drawable/ico_arrow_right" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="@dimen/normal_padding"
+            android:layout_marginEnd="@dimen/normal_padding"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_delete"
+            android:gravity="center"
+            android:onClick="@{click.onClick}"
+            android:text="@string/setting_delete"
+            android:textColor="@color/error"
+            android:textSize="20sp" />
+    </LinearLayout>
+</layout>

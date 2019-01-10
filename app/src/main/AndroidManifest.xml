@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="systems.v.wallet">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.view.SplashActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.view.wallet.WalletInitActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.main.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.detail.DetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity
+            android:name=".ui.view.records.TransactionRecordsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.records.TransactionDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.records.DateSelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.wallet.BackupSuccessActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.wallet.ConfirmSeedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.wallet.GenerateSeedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.wallet.ImportSeedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.wallet.NetworkActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.wallet.SetPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.setting.DeviceLockActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.setting.AboutUsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.view.wallet.TipsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.VerifyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.detail.ReceiveActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.transaction.SendActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.view.transaction.ScannerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Translucent" />
+
+        <activity
+            android:name=".ui.view.setting.AddressManagementActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.setting.AddressManagementDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.view.main.AddColdAccountActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Blue" />
+
+        <activity
+            android:name=".ui.view.transaction.ResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Transparent" />
+    </application>
+
+</manifest>
