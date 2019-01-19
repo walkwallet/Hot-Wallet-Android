@@ -205,6 +205,7 @@
     <string name="send_amount">Amount</string>
     <string name="send_lease_amount">Lease Amount</string>
     <string name="send_insufficient_balance_error">Insufficient balance</string>
+    <string name="send_amount_empty_error">Please enter the amount</string>
     <string name="send_available_balance">Available balance: %1$s</string>
     <string name="send_payment_to">To</string>
     <string name="send_lease_to">To</string>

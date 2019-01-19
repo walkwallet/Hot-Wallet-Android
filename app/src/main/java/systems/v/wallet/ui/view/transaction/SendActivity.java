@@ -83,6 +83,7 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
     }
 
     private void initListener() {
+        UIUtil.setAmountInputFilter(mBinding.etAmount);
         mBinding.etAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -146,18 +147,22 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
             case R.id.btn_scan:
                 ScannerActivity.launch(this);
                 break;
-            case R.id.btn_confirm:
-                long amount = CoinUtil.parse(mBinding.etAmount.getText().toString());
+            case R.id.btn_confirm: {
+                String amount = mBinding.etAmount.getText().toString();
                 String address = mBinding.etAddress.getText().toString();
-                if ((mAccount.getAvailable() - amount) < Transaction.DEFAULT_FEE) {
-                    return;
+                int textId = 0;
+                if (TextUtils.isEmpty(amount)) {
+                    textId = R.string.send_amount_empty_error;
+                } else if ((mAccount.getAvailable() - CoinUtil.parse(amount)) < Transaction.DEFAULT_FEE) {
+                    textId = R.string.send_insufficient_balance_error;
+                } else if (!Wallet.validateAddress(address)) {
+                    textId = R.string.send_address_input_error;
+                } else if (address.equals(mAccount.getAddress())) {
+                    textId = R.string.send_to_self_error;
                 }
-                if (!Wallet.validateAddress(address)) {
-                    return;
-                }
-                if (address.equals(mAccount.getAddress())) {
+                if (textId != 0) {
                     new AlertDialog.Builder(mActivity)
-                            .setMessage(R.string.send_to_self_error)
+                            .setMessage(textId)
                             .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -168,7 +173,8 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                 }
                 generateTransaction();
                 ResultActivity.launch(this, mAccount.getPublicKey(), mTransaction);
-                break;
+            }
+            break;
             case R.id.btn_explain: {
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
@@ -200,10 +206,18 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                     UIUtil.showUnsupportQrCodeDialog(this);
                     return;
                 }
-                String address = op.getString("address");
-                long amount = op.getLong("amount");
-                mBinding.etAddress.setText(address);
-                mBinding.etAmount.setText(CoinUtil.format(amount));
+                if (op.get("address") != null) {
+                    String address = op.getString("address");
+                    mBinding.etAddress.setText(address);
+                }
+                if (op.get("amount") != null) {
+                    long amount = op.getLong("amount");
+                    String text = null;
+                    if (amount != 0) {
+                        text = CoinUtil.format(amount);
+                    }
+                    mBinding.etAmount.setText(text);
+                }
             }
         }
     }
