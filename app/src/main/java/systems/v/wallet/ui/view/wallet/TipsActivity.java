@@ -10,8 +10,10 @@ import android.view.View;
 import java.util.UUID;
 
 import androidx.databinding.DataBindingUtil;
+import systems.v.wallet.BuildConfig;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.FileUtil;
+import systems.v.wallet.basic.wallet.Agent;
 import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.databinding.ActivityTipsBinding;
 import systems.v.wallet.ui.BaseActivity;
@@ -137,7 +139,8 @@ public class TipsActivity extends BaseActivity implements View.OnClickListener {
      */
     private void saveWallet(boolean launch) {
         String network = SPUtils.getString(Constants.NETWORK_ENVIRONMENT);
-        Wallet wallet = new Wallet(mSeed, network);
+        Agent agent = new Agent("Walk Wallet Hot", BuildConfig.VERSION_NAME, network);
+        Wallet wallet = new Wallet(mSeed, network, agent);
         wallet.setPassword(mPassword);
         wallet.setSalt(UUID.randomUUID().toString());
         wallet.append(1);
