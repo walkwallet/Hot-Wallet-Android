@@ -180,7 +180,7 @@
     <!--wallet create end-->
 
     <!--seed import start-->
-    <string name="word_import_label">Mnemonic words consist of 15 words, please pay attention to the input space separated</string>
+    <string name="word_import_label">Mnemonic words consist of 15 words. Please pay attention to the input space separated. Do not add space or line breaks at the end.</string>
     <string name="word_import_hint">Please input</string>
     <string name="word_backup_tips">Screenshots are not safe and your images may be used by other applications. Please use pen and paper to copy the following mnemonic words and save them properly. We will confirm on the next screen</string>
     <string name="word_confirm">I have saved them orderly</string>

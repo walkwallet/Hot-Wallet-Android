@@ -180,7 +180,7 @@
     <!--wallet create end-->
 
     <!--seed import start-->
-    <string name="word_import_label">助记词由15个英文单词组成，注意输入时用空格分开</string>
+    <string name="word_import_label">助记词由15个英文单词组成，注意输入时用空格分开，末尾不能有空格或换行</string>
     <string name="word_import_hint">请输入</string>
     <string name="word_backup_tips">截图是不安全的，你的图片可能被别的应用使用。请使用笔和纸抄写如下助记词，并妥善保存，我们会在下个屏幕上确认</string>
     <string name="word_confirm">已按顺序记下助记词</string>
