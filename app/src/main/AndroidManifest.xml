@@ -118,7 +118,6 @@
 
         <activity
             android:name=".ui.view.transaction.ResultActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transparent" />
     </application>
 
