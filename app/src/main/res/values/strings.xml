@@ -39,6 +39,7 @@
     <string name="network_warning">Select Testnet or Mainnet for your wallet.This will be disable after you creat your wallet</string>
     <string name="password_repeat_error">Passwords do not match</string>
     <string name="at_least_8_word">Password should contain at least 8 characters</string>
+    <string name="log_out_wallet_title">Write out the wallet</string>
     <string name="log_out_wallet_tips">Before you cancel your wallet, please make sure that you have recorded your mnemonic words. Once you cancel your wallet, you cannot find it without mnemonic words.</string>
     <string name="continue_input">Continue input</string>
 

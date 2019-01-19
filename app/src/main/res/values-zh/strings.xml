@@ -39,6 +39,7 @@
     <string name="network_warning">为钱包选择网络环境，成功创建钱包后，此项将无法修改</string>
     <string name="password_repeat_error">两次密码输入不一致</string>
     <string name="at_least_8_word">至少8个字符</string>
+    <string name="log_out_wallet_title">注销钱包</string>
     <string name="log_out_wallet_tips">注销钱包前，请您务必确认是否已记录好助记词，钱包一经注销，没有助记词将无法找回！</string>
     <string name="continue_input">重新输入</string>
 

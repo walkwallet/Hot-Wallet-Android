@@ -210,7 +210,7 @@ public class VerifyActivity extends BaseActivity {
         }, 50);
     }
 
-    private void showLogoutTips() {
+    private void showPasswordErrorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity, R.style.BasicAlertDialog_Light);
         builder.setTitle(R.string.password_wrong)
                 .setIcon(R.drawable.basic_ico_alert)
@@ -224,14 +224,27 @@ public class VerifyActivity extends BaseActivity {
                 .setNegativeButton(R.string.setting_logout, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        showLogoutWarningDialog();
+                    }
+                })
+                .confirm();
+    }
+
+    private void showLogoutWarningDialog() {
+        new AlertDialog.Builder(mActivity)
+                .setIcon(R.drawable.basic_ico_alert)
+                .setTitle(R.string.log_out_wallet_title)
+                .setMessage(R.string.log_out_wallet_tips)
+                .setPositiveButton(R.string.setting_logout, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         SPUtils.clear();
                         FileUtil.deleteWallet(mActivity);
                         mApp.setWallet(null);
                         WalletInitActivity.launch(mActivity);
-                        App.getInstance().finishAllActivities(WalletInitActivity.class);
+                        mApp.finishAllActivities();
                     }
-                })
-                .autoDismiss().confirm();
+                }).confirm();
     }
 
     private class LoadBackupTask extends AsyncTask<String, Void, Wallet> {
@@ -264,7 +277,7 @@ public class VerifyActivity extends BaseActivity {
                 MainActivity.launch(mActivity, false);
                 mApp.finishAllActivities();
             } else {
-                showLogoutTips();
+                showPasswordErrorDialog();
             }
         }
     }

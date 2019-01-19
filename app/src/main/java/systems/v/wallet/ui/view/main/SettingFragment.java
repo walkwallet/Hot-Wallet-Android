@@ -93,7 +93,8 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
             case R.id.ci_sign_out:
                 new AlertDialog.Builder(mActivity)
                         .setIcon(R.drawable.basic_ico_alert)
-                        .setTitle(R.string.log_out_wallet_tips)
+                        .setTitle(R.string.log_out_wallet_title)
+                        .setMessage(R.string.log_out_wallet_tips)
                         .setPositiveButton(R.string.setting_logout, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
