@@ -22,6 +22,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
+import systems.v.wallet.basic.utils.JsonUtil;
 import systems.v.wallet.basic.utils.TxUtil;
 import systems.v.wallet.basic.wallet.Operation;
 import systems.v.wallet.basic.wallet.Transaction;
@@ -200,7 +201,13 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
             String qrContents = result.getContents();
             if (!TextUtils.isEmpty(qrContents)) {
                 // scan receive address
-                Operation op = Operation.parse(qrContents);
+                Operation op = null;
+                if (JsonUtil.isJsonString(qrContents)) {
+                    op = Operation.parse(qrContents);
+                } else if (Wallet.validateAddress(qrContents)) {
+                    op = new Operation(Operation.ACCOUNT);
+                    op.set("address", qrContents);
+                }
                 if (op == null || !op.validate(Operation.ACCOUNT)) {
                     Log.e(TAG, "scan result is not an account opc");
                     UIUtil.showUnsupportQrCodeDialog(this);
