@@ -39,6 +39,7 @@
     <string name="network_warning">Select Testnet or Mainnet for your wallet.This will be disable after you creat your wallet</string>
     <string name="password_repeat_error">Passwords do not match</string>
     <string name="at_least_8_word">Password should contain at least 8 characters</string>
+    <string name="log_out_wallet_title">Write out the wallet</string>
     <string name="log_out_wallet_tips">Before you cancel your wallet, please make sure that you have recorded your mnemonic words. Once you cancel your wallet, you cannot find it without mnemonic words.</string>
     <string name="continue_input">Continue input</string>
 
@@ -180,7 +181,7 @@
     <!--wallet create end-->
 
     <!--seed import start-->
-    <string name="word_import_label">Mnemonic words consist of 15 words, please pay attention to the input space separated</string>
+    <string name="word_import_label">Mnemonic words consist of 15 words. Please pay attention to the input space separated. Do not add space or line breaks at the end.</string>
     <string name="word_import_hint">Please input</string>
     <string name="word_backup_tips">Screenshots are not safe and your images may be used by other applications. Please use pen and paper to copy the following mnemonic words and save them properly. We will confirm on the next screen</string>
     <string name="word_confirm">I have saved them orderly</string>
@@ -205,6 +206,7 @@
     <string name="send_amount">Amount</string>
     <string name="send_lease_amount">Lease Amount</string>
     <string name="send_insufficient_balance_error">Insufficient balance</string>
+    <string name="send_amount_empty_error">Please enter the amount</string>
     <string name="send_available_balance">Available balance: %1$s</string>
     <string name="send_payment_to">To</string>
     <string name="send_lease_to">To</string>

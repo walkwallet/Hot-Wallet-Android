@@ -17,7 +17,7 @@ public interface ITestNetNodeAPI {
     @GET("addresses/balance/details/{address}")
     Observable<RespBean> balance(@Path("address") String address);
 
-    @POST("vee/broadcast/payment")
+    @POST("vsys/broadcast/payment")
     Observable<RespBean> payment(@Body Map<String, Object> payment);
 
     @POST("leasing/broadcast/lease")

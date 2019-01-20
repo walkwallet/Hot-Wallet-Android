@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.KeyboardUtil;
 import systems.v.wallet.databinding.FragmentAmountInputBinding;
+import systems.v.wallet.utils.UIUtil;
 
 public class AmountInputFragment extends TransactionDialogFragment {
 
@@ -54,7 +55,7 @@ public class AmountInputFragment extends TransactionDialogFragment {
                 }
             }
         });
-
+        UIUtil.setAmountInputFilter(mBinding.etAmount);
         return mBinding.getRoot();
     }
 

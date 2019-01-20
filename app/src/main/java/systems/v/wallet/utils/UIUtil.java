@@ -10,10 +10,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -157,6 +160,26 @@ public class UIUtil {
             ToastUtil.showToast(R.string.receive_save_image_success);
 
         }
+    }
+
+    public static void setAmountInputFilter(EditText editText) {
+        editText.setFilters(new InputFilter[]{new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                StringBuilder builder = new StringBuilder(dest);
+                if (dstart != dend) {
+                    builder.delete(dstart, dend);
+                }
+                if (start != end) {
+                    builder.insert(dstart, source, start, end);
+                }
+                String result = builder.toString();
+                if (CoinUtil.validate(result)) {
+                    return null;
+                }
+                return "";
+            }
+        }});
     }
 
     public static void copyToClipboard(Context context, String text) {

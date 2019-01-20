@@ -39,6 +39,7 @@
     <string name="network_warning">为钱包选择网络环境，成功创建钱包后，此项将无法修改</string>
     <string name="password_repeat_error">两次密码输入不一致</string>
     <string name="at_least_8_word">至少8个字符</string>
+    <string name="log_out_wallet_title">注销钱包</string>
     <string name="log_out_wallet_tips">注销钱包前，请您务必确认是否已记录好助记词，钱包一经注销，没有助记词将无法找回！</string>
     <string name="continue_input">重新输入</string>
 
@@ -180,7 +181,7 @@
     <!--wallet create end-->
 
     <!--seed import start-->
-    <string name="word_import_label">助记词由15个英文单词组成，注意输入时用空格分开</string>
+    <string name="word_import_label">助记词由15个英文单词组成，注意输入时用空格分开，末尾不能有空格或换行</string>
     <string name="word_import_hint">请输入</string>
     <string name="word_backup_tips">截图是不安全的，你的图片可能被别的应用使用。请使用笔和纸抄写如下助记词，并妥善保存，我们会在下个屏幕上确认</string>
     <string name="word_confirm">已按顺序记下助记词</string>
@@ -205,6 +206,7 @@
     <string name="send_amount">数量</string>
     <string name="send_lease_amount">租赁数量</string>
     <string name="send_insufficient_balance_error">余额不足</string>
+    <string name="send_amount_empty_error">请输入数量</string>
     <string name="send_available_balance">可用余额: %1$s</string>
     <string name="send_payment_to">发送给</string>
     <string name="send_lease_to">租赁到</string>
