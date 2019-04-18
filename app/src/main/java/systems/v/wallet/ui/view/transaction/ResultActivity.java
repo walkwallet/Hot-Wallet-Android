@@ -208,6 +208,9 @@ public class ResultActivity extends BaseThemedActivity {
             case Transaction.CANCEL_LEASE:
                 observable = api.cancelLease(mTransaction.toRequestBody());
                 break;
+            case Transaction.ContractRegister:
+                observable = api.registerContract(mTransaction.toRequestBody());
+                break;
         }
         if (observable == null) {
             return;

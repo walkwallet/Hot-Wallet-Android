@@ -45,17 +45,23 @@ public class WalletAdapter extends BaseAdapter<Account> {
         Account item = mData.get(position);
         binding.tvAddress.setText(UIUtil.getMutatedAddress(item.getAddress()));
         binding.tvBalance.setText(CoinUtil.formatWithUnit(item.getRegular()));
-        String index;
-        if (position + 1 < 10) {
-            index = "0" + String.valueOf(position + 1);
-        } else {
-            index = String.valueOf(position + 1);
-        }
-        binding.tvIndex.setText(index);
+//        String index;
+//        if (position + 1 < 10) {
+//            index = "0" + String.valueOf(position + 1);
+//        } else {
+//            index = String.valueOf(position + 1);
+//        }
+        binding.tvIndex.setText(item.getAlias());
+        binding.tvIndex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO Modify Alias
+            }
+        });
         binding.ivQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //TODO Show ARCode
             }
         });
         if (mType == TabWalletFragment.TYPE_WALLET) {

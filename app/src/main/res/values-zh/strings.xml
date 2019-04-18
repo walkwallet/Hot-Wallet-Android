@@ -66,7 +66,7 @@
     <!--end>>>  home list (wallet list /monitor list) -->
 
     <!--start>>>  detail  (wallet detail/ monitor detail) -->
-    <string name="detail_wallet_title">钱包</string>
+    <string name="detail_wallet_title">热钱包</string>
     <string name="detail_monitor_title">冷钱包</string>
     <string name="detail_available_balance">可用余额</string>
     <string name="detail_total_balance">总余额</string>

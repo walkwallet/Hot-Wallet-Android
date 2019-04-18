@@ -66,7 +66,7 @@
     <!--end>>>  home list (wallet list /monitor list) -->
 
     <!--start>>>  detail  (wallet detail/ monitor detail) -->
-    <string name="detail_wallet_title">Wallet</string>
+    <string name="detail_wallet_title">Hot Wallet</string>
     <string name="detail_monitor_title">Cold Wallet</string>
     <string name="detail_available_balance">Available Balance</string>
     <string name="detail_total_balance">Total Balance</string>
@@ -76,6 +76,7 @@
     <string name="detail_receive">Receive</string>
     <string name="detail_lease">Minting</string>
     <string name="detail_records">Records</string>
+    <string name="detail_register">Register</string>
     <string name="detail_sent">Sent</string>
     <string name="detail_received">Received</string>
     <string name="detail_start_leasing">Start Leasing</string>
@@ -254,4 +255,8 @@
     <string name="wallet_init_official_warning_dialog_msg">To ensure the security of your personal property, please make sure that your wallet APP is downloaded from v.systems, the official website of VSYS</string>
     <string name="first_enter_tips">You can download a cold wallet from the v.stems website with a phone that you barely use and can completely disconnect from the Internet</string>
     <!--init end-->
+
+    <!--register start-->
+    <string name="register_title">Register Contract</string>
+    <!--register end-->
 </resources>

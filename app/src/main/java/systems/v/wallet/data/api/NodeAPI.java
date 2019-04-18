@@ -1,5 +1,7 @@
 package systems.v.wallet.data.api;
 
+import android.util.Log;
+
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -54,4 +56,42 @@ public class NodeAPI implements ITestNetNodeAPI, IMainNetNodeAPI {
         }
         return mMainNodeAPI.cancelLease(cancel);
     }
+
+    @Override
+    public Observable<RespBean> registerContract(Map<String, Object> register) {
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.registerContract(register);
+        }
+        return null;
+    }
+
+    @Override
+    public Observable<RespBean> executeContract(Map<String, Object> execute) {
+        return null;
+    }
+
+    @Override
+    public Observable<RespBean> tokenInfo(String tokenId) {
+        return null;
+    }
+
+    @Override
+    public Observable<RespBean> tokenBalance(String address, String tokenId) {
+//        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.tokenBalance(address, tokenId);
+//        }
+//        return null;
+    }
+
+    @Override
+    public Observable<RespBean> contractGeneralContent(String contractId) {
+        return null;
+    }
+
+    @Override
+    public Observable<RespBean> contractVariableState(String contractId) {
+        return null;
+    }
+
+
 }

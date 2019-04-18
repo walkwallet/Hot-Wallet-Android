@@ -29,6 +29,7 @@ import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.bean.AccountBean;
 import systems.v.wallet.data.bean.RespBean;
+import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.databinding.FooterAddWalletBinding;
 import systems.v.wallet.databinding.FragmentTabWalletBinding;
 import systems.v.wallet.ui.BaseFragment;

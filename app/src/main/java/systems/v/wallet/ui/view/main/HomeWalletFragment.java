@@ -87,6 +87,7 @@ public class HomeWalletFragment extends BaseFragment {
         if (mBinding != null) {
             if (mBinding.tlWallet.getSelectedTabPosition() == 0) {
                 mFragments.get(0).getData();
+
             } else {
                 mFragments.get(1).getData();
             }

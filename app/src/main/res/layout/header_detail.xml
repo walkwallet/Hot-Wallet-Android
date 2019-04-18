@@ -245,6 +245,31 @@
                     android:textColor="@color/text_weak"
                     android:textSize="12sp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_white"
+                android:gravity="center"
+                android:onClick="@{click.onClick}"
+                android:orientation="vertical"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginBottom="6dp"
+                    android:src="@drawable/ico_records" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_register"
+                    android:textColor="@color/text_weak"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </layout>
