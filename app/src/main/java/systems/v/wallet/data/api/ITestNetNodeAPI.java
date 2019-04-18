@@ -32,16 +32,20 @@ public interface ITestNetNodeAPI {
     @POST("contract/broadcast/execute")
     Observable<RespBean> executeContract(@Body Map<String, Object> execute);
 
-    @POST("contract/tokenInfo/{tokenId}")
+    @GET("contract/tokenInfo/{tokenId}")
     Observable<RespBean> tokenInfo(@Path("tokenId") String tokenId);
 
     @GET("contract/balance/{address}/{tokenId}")
     Observable<RespBean> tokenBalance(@Path("address") String address, @Path("tokenId") String tokenId);
 
-    @POST("contract/content/{contractId}")
-    Observable<RespBean> contractGeneralContent(@Path("contractId") String contractId);
+//    @POST("contract/content/{contractId}")
+//    Observable<RespBean> contractContent(@Path("contractId") String contractId);
 
-    @POST("contract/info/{contractId}")
-    Observable<RespBean> contractVariableState(@Path("contractId") String contractId);
+    @GET("contract/info/{contractId}")
+    Observable<RespBean> contractInfo(@Path("contractId") String contractId);
+
+    @POST("contract/broadcast/execute")
+    Observable<RespBean> contractExecute(@Body Map<String, Object> payment);
+
 
 }

@@ -36,7 +36,7 @@ public class RegisterActivity extends BaseThemedActivity {
     }
 
     private void getTokenBalance() {
-        Disposable d = RetrofitHelper.getInstance().getNodeAPI().tokenBalance("ATv4EtAQhrXCBSVWvTTm6v96narWgBxrc6u", "2GaWFxW4Tc13a6gyZVYDbNTAspFgzzTHWvvqXLr3H")
+        Disposable d = RetrofitHelper.getInstance().getNodeAPI().tokenInfo( "2GaWFxW4Tc13a6gyZVYDbNTAspFgzzTHWvvqXLr3H")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<RespBean>() {
@@ -44,25 +44,6 @@ public class RegisterActivity extends BaseThemedActivity {
                     public void accept(RespBean respBean) throws Exception {
                         Log.d(TAG, JSON.toJSONString(respBean));
                         TokenBean tokenBean = JSON.parseObject(respBean.getData(), TokenBean.class);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.v("derror", throwable.getMessage());
-                    }
-                });
-    }
-
-    private void getBalance() {
-        Disposable d = RetrofitHelper.getInstance().getNodeAPI().balance("ATv4EtAQhrXCBSVWvTTm6v96narWgBxrc6u")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<RespBean>() {
-                    @Override
-                    public void accept(RespBean respBean) throws Exception {
-                        Log.d(TAG, JSON.toJSONString(respBean));
-                        AccountBean tokenBean = JSON.parseObject(respBean.getData(), AccountBean.class);
-                        Log.v("dBalance", Long.toString(tokenBean.getAvailable()));
                     }
                 }, new Consumer<Throwable>() {
                     @Override

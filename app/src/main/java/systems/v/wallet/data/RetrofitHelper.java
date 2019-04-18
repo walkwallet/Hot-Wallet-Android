@@ -22,7 +22,7 @@ public class RetrofitHelper {
     }
 
     public static void setNetwork(String network) {
-        mInstance = new RetrofitHelper(true);
+        mInstance = new RetrofitHelper(Wallet.TEST_NET.equals(network));
     }
 
     private NodeAPI mNodeAPI = null;
@@ -39,7 +39,7 @@ public class RetrofitHelper {
         builder.retryOnConnectionFailure(true);
         OkHttpClient client = builder.build();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(isTest ? Constants.TEST_NET_API_SERVER2 : Constants.MAIN_NET_API_SERVER)
+                .baseUrl(isTest ? Constants.TEST_NET_API_SERVER : Constants.MAIN_NET_API_SERVER)
                 .client(client)
                 .addConverterFactory(JsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

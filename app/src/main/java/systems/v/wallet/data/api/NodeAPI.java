@@ -72,26 +72,31 @@ public class NodeAPI implements ITestNetNodeAPI, IMainNetNodeAPI {
 
     @Override
     public Observable<RespBean> tokenInfo(String tokenId) {
-        return null;
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.tokenInfo(tokenId);
+        }
+        return mMainNodeAPI.tokenInfo(tokenId);
     }
 
     @Override
     public Observable<RespBean> tokenBalance(String address, String tokenId) {
-//        if (mTestNodeAPI != null) {
+        if (mTestNodeAPI != null) {
             return mTestNodeAPI.tokenBalance(address, tokenId);
-//        }
-//        return null;
+        }
+        return mMainNodeAPI.tokenBalance(address, tokenId);
+    }
+
+
+    @Override
+    public Observable<RespBean> contractInfo(String contractId) {
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.contractInfo(contractId);
+        }
+        return mMainNodeAPI.contractInfo(contractId);
     }
 
     @Override
-    public Observable<RespBean> contractGeneralContent(String contractId) {
+    public Observable<RespBean> contractExecute(Map<String, Object> payment) {
         return null;
     }
-
-    @Override
-    public Observable<RespBean> contractVariableState(String contractId) {
-        return null;
-    }
-
-
 }
