@@ -12,9 +12,11 @@ import android.view.View;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -78,6 +80,21 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (menu != null) {
+            if (menu.getClass() == MenuBuilder.class) {
+                try {
+                    Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                } catch (Exception e) {
+                }
+            }
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if (!mIsFirst && mAccount != null) {
@@ -98,6 +115,9 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
             case R.id.nav_copy_address:
                 UIUtil.copyToClipboard(this, mAccount.getAddress());
                 break;
+            case R.id.nav_create_token:
+                CreateTokenActivity.launch(this, mAccount.getPublicKey());
+                break;
         }
         return true;
     }
@@ -116,9 +136,6 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                 break;
             case R.id.ll_records:
                 TransactionRecordsActivity.launch(mActivity, mAccount.getPublicKey());
-                break;
-            case R.id.ll_register:
-                CreateTokenActivity.launch(this, mAccount.getPublicKey());
                 break;
         }
     }

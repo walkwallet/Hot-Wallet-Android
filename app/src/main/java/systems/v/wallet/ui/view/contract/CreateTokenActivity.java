@@ -71,6 +71,7 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
         mBinding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                unityPower = i;
                 mBinding.setUnity(i);
             }
 
@@ -161,7 +162,8 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
                     return;
                 }
                 generateTransaction();
-                ResultActivity.launch(this, mAccount.getPublicKey(), mTransaction);
+                Log.v("daniel", JSON.toJSONString(mTransaction));
+//                ResultActivity.launch(this, mAccount.getPublicKey(), mTransaction);
                 break;
         }
     }

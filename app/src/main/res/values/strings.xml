@@ -85,6 +85,7 @@
     <string name="detail_canceled_int_leasing">Canceled Incoming Leasing</string>
     <string name="detail_address_management">Address Management</string>
     <string name="detail_copy_address">Copy the Address</string>
+    <string name="detail_create_token">Create Token </string>
     <string name="detail_cancel_out_leasing_btn">Cancel Out Leasing</string>
     <!--end>>>  detail  (wallet detail/ monitor detail) -->
 
