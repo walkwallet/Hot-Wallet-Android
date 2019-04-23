@@ -62,12 +62,15 @@ public class NodeAPI implements ITestNetNodeAPI, IMainNetNodeAPI {
         if (mTestNodeAPI != null) {
             return mTestNodeAPI.registerContract(register);
         }
-        return null;
+        return mMainNodeAPI.registerContract(register);
     }
 
     @Override
     public Observable<RespBean> executeContract(Map<String, Object> execute) {
-        return null;
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.executeContract(execute);
+        }
+        return mMainNodeAPI.executeContract(execute);
     }
 
     @Override
@@ -95,8 +98,4 @@ public class NodeAPI implements ITestNetNodeAPI, IMainNetNodeAPI {
         return mMainNodeAPI.contractInfo(contractId);
     }
 
-    @Override
-    public Observable<RespBean> contractExecute(Map<String, Object> payment) {
-        return null;
-    }
 }

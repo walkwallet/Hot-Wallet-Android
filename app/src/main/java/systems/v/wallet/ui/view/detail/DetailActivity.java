@@ -24,7 +24,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
-import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.bean.AccountBean;
@@ -34,7 +33,7 @@ import systems.v.wallet.databinding.ActivityWalletDetailBinding;
 import systems.v.wallet.databinding.HeaderDetailBinding;
 import systems.v.wallet.entity.RecordEntity;
 import systems.v.wallet.ui.BaseThemedActivity;
-import systems.v.wallet.ui.view.contract.RegisterActivity;
+import systems.v.wallet.ui.view.contract.CreateTokenActivity;
 import systems.v.wallet.ui.view.detail.adapter.RecordAdapter;
 import systems.v.wallet.ui.view.records.TransactionDetailActivity;
 import systems.v.wallet.ui.view.records.TransactionRecordsActivity;
@@ -119,7 +118,7 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                 TransactionRecordsActivity.launch(mActivity, mAccount.getPublicKey());
                 break;
             case R.id.ll_register:
-                RegisterActivity.launch(this, mAccount.getPublicKey());
+                CreateTokenActivity.launch(this, mAccount.getPublicKey());
                 break;
         }
     }

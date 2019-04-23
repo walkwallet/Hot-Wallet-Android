@@ -114,7 +114,7 @@
         <activity
             android:name=".ui.view.transaction.ResultActivity"
             android:theme="@style/AppTheme.Transparent" />
-        <activity android:name=".ui.view.contract.RegisterActivity"></activity>
+        <activity android:name=".ui.view.contract.CreateTokenActivity"></activity>
     </application>
 
 </manifest>

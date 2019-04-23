@@ -92,6 +92,12 @@ public class ResultActivity extends BaseThemedActivity {
             case Transaction.CANCEL_LEASE:
                 textId = R.string.send_cancel_lease_success;
                 break;
+            case Transaction.ContractRegister:
+                textId = R.string.create_token_success;
+                break;
+            case Transaction.ContractExecute:
+                textId = R.string.create_token_success;
+                break;
         }
         if (textId != 0) {
             mBinding.tvInfo.setText(getString(textId,
@@ -210,6 +216,9 @@ public class ResultActivity extends BaseThemedActivity {
                 break;
             case Transaction.ContractRegister:
                 observable = api.registerContract(mTransaction.toRequestBody());
+                break;
+            case Transaction.ContractExecute:
+                observable = api.executeContract(mTransaction.toRequestBody());
                 break;
         }
         if (observable == null) {

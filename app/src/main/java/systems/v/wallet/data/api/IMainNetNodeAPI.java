@@ -43,8 +43,4 @@ public interface IMainNetNodeAPI {
 
     @GET("contract/info/{contractId}")
     Observable<RespBean> contractInfo(@Path("contractId") String contractId);
-
-    @POST("contract/broadcast/execute")
-    Observable<RespBean> contractExecute(@Body Map<String, Object> payment);
-
 }

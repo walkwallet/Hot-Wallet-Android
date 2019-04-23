@@ -257,6 +257,19 @@
     <!--init end-->
 
     <!--register start-->
-    <string name="register_title">Register Contract</string>
+    <string name="create_token_title">Create Token</string>
+    <string name="create_token_total_title">TOTAL TOKEN</string>
+    <string name="create_token_description_title">DESCRIPTION</string>
+    <string name="create_token_description_hint">Input description</string>
+    <string name="create_token_description_note">You cannot change the description later</string>
+    <string name="create_token_unity_title">Unity:</string>
+    <string name="create_token_contract_main">Support split/merge token</string>
+    <string name="create_token_contract_secondary">(Attention: cannot change after create)</string>
+    <string name="create_token_transaction_fee_title">Transaction Fee:</string>
+    <string name="create_token_available_titlte">Available balance:</string>
+    <string name="create_token">Transaction Fee:</string>
+    <string name="create_token_unitybase">10 ^ </string>
+    <string name="create_token_success">Successful To Created Token </string>
+
     <!--register end-->
 </resources>
