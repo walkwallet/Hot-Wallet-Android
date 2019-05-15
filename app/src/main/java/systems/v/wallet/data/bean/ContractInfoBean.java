@@ -1,6 +1,6 @@
 package systems.v.wallet.data.bean;
 
-public class TokenInfoBean {
+public class ContractInfoBean {
     private String data;
     private String type;
     private String name;

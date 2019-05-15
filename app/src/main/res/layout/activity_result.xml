@@ -29,6 +29,7 @@
                 android:padding="@dimen/activity_horizontal_margin">
 
                 <ImageView
+                    android:id="@+id/iv_icon_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ico_success" />
@@ -52,6 +53,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/tv_tip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"

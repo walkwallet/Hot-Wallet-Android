@@ -13,7 +13,9 @@ public class RecordEntity extends RecordBean {
     public static final int TYPE_START_IN_LEASING = 5;
     public static final int TYPE_CANCELED_IN_LEASING = 6;
     public static final int TYPE_MINTING = 7;
-    public static final int TYPE_NONE = 8;
+    public static final int TYPE_REGISTER_CONTRACT = 8;
+    public static final int TYPE_EXECUTE_CONTRACT = 9;
+    public static final int TYPE_NONE = -1;
 
     private String address;
     private int recordType;
@@ -59,7 +61,11 @@ public class RecordEntity extends RecordBean {
             }
         } else if (type == Transaction.MINTING) {
             recordType = TYPE_MINTING;
-        } else {
+        } else if (type == Transaction.ContractRegister){
+            recordType = TYPE_REGISTER_CONTRACT;
+        } else if (type == Transaction.ContractExecute){
+            recordType = TYPE_EXECUTE_CONTRACT;
+        } else{
             recordType = TYPE_NONE;
         }
         this.address = address;

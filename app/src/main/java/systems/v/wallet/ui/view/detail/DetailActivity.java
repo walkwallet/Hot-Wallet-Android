@@ -36,6 +36,7 @@ import systems.v.wallet.databinding.HeaderDetailBinding;
 import systems.v.wallet.entity.RecordEntity;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.contract.CreateTokenActivity;
+import systems.v.wallet.ui.view.contract.TokenListActivity;
 import systems.v.wallet.ui.view.detail.adapter.RecordAdapter;
 import systems.v.wallet.ui.view.records.TransactionDetailActivity;
 import systems.v.wallet.ui.view.records.TransactionRecordsActivity;
@@ -115,8 +116,8 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
             case R.id.nav_copy_address:
                 UIUtil.copyToClipboard(this, mAccount.getAddress());
                 break;
-            case R.id.nav_create_token:
-                CreateTokenActivity.launch(this, mAccount.getPublicKey());
+            case R.id.nav_records:
+                TransactionRecordsActivity.launch(mActivity, mAccount.getPublicKey());
                 break;
         }
         return true;
@@ -134,8 +135,8 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
             case R.id.ll_lease:
                 SendActivity.launchLease(this, mAccount.getPublicKey());
                 break;
-            case R.id.ll_records:
-                TransactionRecordsActivity.launch(mActivity, mAccount.getPublicKey());
+            case R.id.ll_token:
+                TokenListActivity.launch(this, mAccount.getPublicKey());
                 break;
         }
     }
@@ -228,14 +229,12 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
     }
 
     private void getBalance(String address) {
-        Log.v("getbalance", address);
         Disposable d = RetrofitHelper.getInstance().getNodeAPI().balance(address)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<RespBean>() {
                     @Override
                     public void accept(RespBean respBean) throws Exception {
-                        Log.v("zhi", JSON.toJSONString(respBean));
                         Log.d(TAG, JSON.toJSONString(respBean));
                         AccountBean accountBean = JSON.parseObject(respBean.getData(), AccountBean.class);
                         mAccount.updateBalance(accountBean);

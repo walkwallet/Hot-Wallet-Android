@@ -1,4 +1,4 @@
-package systems.v.wallet.ui.view.transaction;
+package systems.v.wallet.ui.view.contract;
 
 import android.app.Activity;
 import android.content.ClipData;
@@ -14,72 +14,75 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import org.w3c.dom.Text;
+
+import java.math.BigDecimal;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import systems.v.wallet.R;
+import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.utils.JsonUtil;
 import systems.v.wallet.basic.utils.TxUtil;
 import systems.v.wallet.basic.wallet.Operation;
+import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.basic.wallet.Wallet;
+import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.databinding.ActivitySendBinding;
+import systems.v.wallet.databinding.ActivitySendTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
+import systems.v.wallet.ui.view.transaction.ResultActivity;
+import systems.v.wallet.ui.view.transaction.ScannerActivity;
+import systems.v.wallet.ui.view.transaction.SendActivity;
+import systems.v.wallet.utils.ContractUtil;
 import systems.v.wallet.utils.UIUtil;
+import vsys.Contract;
+import vsys.Vsys;
 
-public class SendActivity extends BaseThemedActivity implements View.OnClickListener {
+public class SendTokenActivity extends BaseThemedActivity implements View.OnClickListener {
 
-    public static void launchPayment(Activity from, String publicKey) {
-        launch(from, publicKey, Transaction.PAYMENT);
-    }
-
-    public static void launchLease(Activity from, String publicKey) {
-        launch(from, publicKey, Transaction.LEASE);
-    }
-
-    public static void launch(Activity from, String publicKey, int type) {
-        Intent intent = new Intent(from, SendActivity.class);
+    public static void launch(Activity from, String publicKey, Token token) {
+        Intent intent = new Intent(from, SendTokenActivity.class);
         intent.putExtra("publicKey", publicKey);
-        intent.putExtra("type", type);
+        intent.putExtra("token", JSON.toJSONString(token));
+        intent.putExtra("type", Transaction.ContractExecute);
         from.startActivity(intent);
     }
 
-    private static final String TAG = "SendActivity";
+    private static final String TAG = "SendTokenActivity";
 
-    private ActivitySendBinding mBinding;
+    private ActivitySendTokenBinding mBinding;
     private Transaction mTransaction;
+    private Token mToken;
     private int mType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_send);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_send_token);
+
         mType = getIntent().getIntExtra("type", Transaction.PAYMENT);
+        mToken = JSON.parseObject(getIntent().getStringExtra("token"), Token.class);
+        // set balance and fee
+        String balance = CoinUtil.format(mToken.getBalance(), mToken.getUnity());
+        String fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_TOKEN_TX_FEE);
+
         setAppBar(mBinding.toolbar);
         mBinding.setClick(this);
 
-        // set balance and fee
-        String balance = CoinUtil.formatWithUnit(mAccount.getAvailable());
-        mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, balance));
-        String fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_FEE);
         mBinding.tvFee.setText(fee);
+        mBinding.toolbar.setTitle(R.string.send_token_title);
+        mBinding.tvSendToLabel.setText(R.string.send_payment_to);
+        mBinding.etAddress.setHint(R.string.send_address_input_hint);
+        mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, balance));
 
-        if (mType == Transaction.LEASE) {
-            mBinding.toolbar.setTitle(R.string.send_lease_title);
-            mBinding.llAttachment.setVisibility(View.GONE);
-            mBinding.tvAmountLabel.setText(R.string.send_lease_amount);
-            mBinding.tvSendToLabel.setText(R.string.send_lease_to);
-            mBinding.etAddress.setHint(R.string.send_lease_address_input_hint);
-        } else {
-            mBinding.toolbar.setTitle(R.string.send_payment_title);
-            mBinding.flLeaseTips.setVisibility(View.GONE);
-            mBinding.tvSendToLabel.setText(R.string.send_payment_to);
-            mBinding.etAddress.setHint(R.string.send_address_input_hint);
-        }
         initListener();
     }
 
@@ -93,8 +96,10 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                long value = CoinUtil.parse(s.toString());
-                if (TextUtils.isEmpty(s) || (mAccount.getAvailable() - value) >= Transaction.DEFAULT_FEE) {
+                long value = CoinUtil.parse(mBinding.etAmount.getText().toString(), mToken.getUnity());
+                if(TextUtils.isEmpty(s)){
+                    mBinding.tvBalanceError.setVisibility(View.GONE);
+                }else if((mToken.getBalance() >= value) && mAccount.getAvailable() >= Transaction.DEFAULT_TOKEN_TX_FEE) {
                     mBinding.tvBalanceError.setVisibility(View.GONE);
                 } else {
                     mBinding.tvBalanceError.setVisibility(View.VISIBLE);
@@ -132,7 +137,7 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_max: {
-                mBinding.etAmount.setText(CoinUtil.format(mAccount.getAvailable() - Transaction.DEFAULT_FEE));
+                mBinding.etAmount.setText(CoinUtil.format(mAccount.getAvailable() - Transaction.DEFAULT_CREATE_TOKEN_FEE));
             }
             break;
             case R.id.btn_paste: {
@@ -152,9 +157,11 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                 String amount = mBinding.etAmount.getText().toString();
                 String address = mBinding.etAddress.getText().toString();
                 int textId = 0;
+
                 if (TextUtils.isEmpty(amount)) {
                     textId = R.string.send_amount_empty_error;
-                } else if ((mAccount.getAvailable() - CoinUtil.parse(amount)) < Transaction.DEFAULT_FEE) {
+                } else if ((mToken.getBalance() < CoinUtil.parse(mBinding.etAmount.getText().toString(), mToken.getUnity())) ||
+                        mAccount.getAvailable() < Transaction.DEFAULT_TOKEN_TX_FEE) {
                     textId = R.string.send_insufficient_balance_error;
                 } else if (!Wallet.validateAddress(address)) {
                     textId = R.string.send_address_input_error;
@@ -173,21 +180,8 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                     return;
                 }
                 generateTransaction();
+
                 ResultActivity.launch(this, mAccount.getPublicKey(), mTransaction);
-            }
-            break;
-            case R.id.btn_explain: {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://vsysrate.com/wiki/vsys-coin-leasing.html"));
-                mActivity.startActivity(intent);
-            }
-            break;
-            case R.id.btn_supernode_list: {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://vsysrate.com"));
-                mActivity.startActivity(intent);
             }
             break;
         }
@@ -225,18 +219,29 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                     }
                     mBinding.etAmount.setText(text);
                 }
-
             }
         }
     }
 
     private void generateTransaction() {
+        Contract c = new Contract();
+        c.setContractId(Vsys.tokenId2ContractId(mToken.getTokenId()));
+        c.setUnity(mToken.getUnity());
+        c.setAmount(CoinUtil.parse(mBinding.etAmount.getText().toString(), mToken.getUnity()));
+        c.setRecipient(mBinding.etAddress.getText().toString());
         mTransaction = new Transaction();
+        mTransaction.setActionCode(Vsys.ActionSend);
+        mTransaction.setContractObj(c);
+        mTransaction.setContractId(c.getContractId());
+        mTransaction.setFee(Transaction.DEFAULT_TOKEN_TX_FEE);
         mTransaction.setTransactionType(mType);
+        mTransaction.setAddress(mAccount.getAddress());
+        mTransaction.setFunction(Base58.encode(c.buildSendData()));
+        mTransaction.setFunctionId(ContractUtil.getFuncIdxByFuncName(mToken.getFuncs(), Vsys.ActionSend));
+        mTransaction.setFunctionTextual(ContractUtil.getFunctionTextual(Vsys.ActionSend, c.getRecipient(), c.getAmount()));
+        mTransaction.setFunctionExplain(ContractUtil.getFunctionExplain(Vsys.ActionSend, mBinding.etAmount.getText().toString(), c.getRecipient()));
         mTransaction.setSenderPublicKey(mAccount.getPublicKey());
-        mTransaction.setAmount(CoinUtil.parse(mBinding.etAmount.getText().toString()));
-        mTransaction.setRecipient(mBinding.etAddress.getText().toString());
-        mTransaction.setAttachment(mBinding.etAttachment.getText().toString());
         mTransaction.setTimestamp(System.currentTimeMillis());
+        mTransaction.setAttachment(mBinding.etAttachment.getText().toString());
     }
 }

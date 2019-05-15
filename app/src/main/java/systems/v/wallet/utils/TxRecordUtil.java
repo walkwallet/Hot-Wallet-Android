@@ -29,6 +29,12 @@ public class TxRecordUtil {
             case RecordEntity.TYPE_CANCELED_OUT_LEASING:
                 textId = R.string.detail_canceled_out_leasing;
                 break;
+            case RecordEntity.TYPE_REGISTER_CONTRACT:
+                textId = R.string.detail_create_contract;
+                break;
+            case RecordEntity.TYPE_EXECUTE_CONTRACT:
+                textId = R.string.detail_execute_contract;
+                break;
         }
         if (textId != 0) {
             return context.getString(textId);

@@ -30,6 +30,8 @@ public class RecordFragment extends BaseFragment {
     public static final int TYPE_SEND = 2;
     public static final int TYPE_RECEIVE = 3;
     public static final int TYPE_LEASE = 4;
+    public static final int TYPE_CREATE_CONTRACT = 5;
+    public static final int TYPE_EXECUTE_CONTRACT = 6;
 
     public static RecordFragment newInstance(String publicKey, int type) {
         Bundle bundle = new Bundle();

@@ -89,6 +89,13 @@ public class NodeAPI implements ITestNetNodeAPI, IMainNetNodeAPI {
         return mMainNodeAPI.tokenBalance(address, tokenId);
     }
 
+    @Override
+    public Observable<RespBean> contractContent(String contractId) {
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.contractContent(contractId);
+        }
+        return mMainNodeAPI.contractContent(contractId);
+    }
 
     @Override
     public Observable<RespBean> contractInfo(String contractId) {

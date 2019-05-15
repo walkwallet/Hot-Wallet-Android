@@ -6,8 +6,8 @@ android {
         applicationId "systems.v.wallet"
         minSdkVersion versions.min_sdk
         targetSdkVersion versions.target_sdk
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -32,7 +32,6 @@ dependencies {
     implementation deps.constraintlayout
     implementation deps.vectordrawable
     implementation deps.multidex
-    implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation deps.junit
     androidTestImplementation deps.atsl.runner
@@ -49,4 +48,6 @@ dependencies {
     implementation deps.flexbox
     implementation deps.autofittextview
     implementation project(':basic')
+    implementation deps.picasso
+    implementation deps.picasso_transform
 }

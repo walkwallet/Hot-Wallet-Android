@@ -17,7 +17,9 @@ import android.widget.SeekBar;
 
 import com.alibaba.fastjson.JSON;
 
-import java.util.Locale;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.databinding.DataBindingUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -29,15 +31,28 @@ import systems.v.wallet.basic.AlertDialog;
 import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.utils.TxUtil;
+import systems.v.wallet.basic.wallet.Account;
+import systems.v.wallet.basic.wallet.ContractFunc;
+import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.data.RetrofitHelper;
+import systems.v.wallet.data.api.NodeAPI;
+import systems.v.wallet.data.bean.ContractContentBean;
 import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.databinding.ActivityCreateTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
+import systems.v.wallet.utils.Constants;
+import systems.v.wallet.utils.ContractUtil;
+import systems.v.wallet.utils.SPUtils;
+import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
+import systems.v.wallet.utils.bus.AppBus;
+import systems.v.wallet.utils.bus.AppEvent;
+import systems.v.wallet.utils.bus.AppEventType;
+import systems.v.wallet.utils.bus.annotation.Subscribe;
 import vsys.Contract;
 import vsys.Vsys;
 
@@ -66,8 +81,8 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
 
     private void initView(){
         setAppBar(mBinding.toolbar);
-        mBinding.setClick(this);
         mBinding.setUnity(unityPower);
+        mBinding.setClick(this);
         mBinding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -109,37 +124,17 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
         mBinding.tvFee.setText(fee);
     }
 
-    private void getTokenBalance() {
-        Disposable d = RetrofitHelper.getInstance().getNodeAPI().tokenInfo( "2GaWFxW4Tc13a6gyZVYDbNTAspFgzzTHWvvqXLr3H")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<RespBean>() {
-                    @Override
-                    public void accept(RespBean respBean) throws Exception {
-                        Log.d(TAG, JSON.toJSONString(respBean));
-                        TokenBean tokenBean = JSON.parseObject(respBean.getData(), TokenBean.class);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.v("derror", throwable.getMessage());
-                    }
-                });
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_unity_plus:
                 if (unityPower < 16){
-                    ++unityPower;
-                    mBinding.setUnity( unityPower );
+                    mBinding.setUnity( ++unityPower );
                 }
                 break;
             case R.id.btn_unity_minus:
                 if (unityPower > 0){
-                    --unityPower;
-                    mBinding.setUnity( unityPower );
+                    mBinding.setUnity( --unityPower );
                 }
                 break;
             case R.id.btn_confirm:
@@ -147,7 +142,7 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
                 int textId = 0;
                 if (TextUtils.isEmpty(amount)) {
                     textId = R.string.send_amount_empty_error;
-                } else if ((mAccount.getAvailable() - CoinUtil.parse(amount)) < Transaction.DEFAULT_FEE) {
+                } else if (mAccount.getAvailable() < Transaction.DEFAULT_CREATE_TOKEN_FEE) {
                     textId = R.string.send_insufficient_balance_error;
                 }
                 if (textId != 0) {
@@ -162,22 +157,28 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
                     return;
                 }
                 generateTransaction();
-                Log.v("daniel", JSON.toJSONString(mTransaction));
-//                ResultActivity.launch(this, mAccount.getPublicKey(), mTransaction);
-                break;
-        }
+
+                ResultActivity.launch(this, mAccount.getPublicKey(), mTransaction);
+                break;        }
     }
 
     private void generateTransaction() {
         Contract c = new Contract();
-        c.setMax(CoinUtil.parse(mBinding.etTotal.getText().toString()));
-        c.setUnity(10 ^ unityPower);
-        c.setTokenDescription(mBinding.etDescription.getText().toString());
+        c.setUnity((long)Math.pow(10, unityPower));
+        c.setMax(CoinUtil.parse(mBinding.etTotal.getText().toString(), c.getUnity()));
+        c.setTokenDescription(mBinding.etTokenDescription.getText().toString());
         c.setContract(isSplit ? Base58.decode(Vsys.ConstContractSplit): Base58.decode(Vsys.ConstContractDefault));
         mTransaction = new Transaction();
-        mTransaction.setContract(c);
+        mTransaction.setFee(Transaction.DEFAULT_CREATE_TOKEN_FEE);
+        mTransaction.setAddress(mAccount.getAddress());
+        mTransaction.setContractObj(c);
+        mTransaction.setContract(Base58.encode(c.getContract()));
+        mTransaction.setContractInit(Base58.encode(c.buildRegisterData()));
+        mTransaction.setContractInitTextual(ContractUtil.getFunctionTextual(Vsys.ActionInit, c.getMax(), c.getUnity(), c.getTokenDescription()));
+        mTransaction.setContractInitExplain(ContractUtil.getFunctionExplain(Vsys.ActionInit, isSplit ? ContractUtil.SplitContractText : ContractUtil.NotSplitContractText, mBinding.etTotal.getText().toString()));
         mTransaction.setTransactionType(Transaction.ContractRegister);
         mTransaction.setSenderPublicKey(mAccount.getPublicKey());
         mTransaction.setTimestamp(System.currentTimeMillis());
+        mTransaction.setAttachment(mBinding.etContractDescription.getText().toString());
     }
 }

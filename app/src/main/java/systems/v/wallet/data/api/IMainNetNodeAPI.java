@@ -38,8 +38,8 @@ public interface IMainNetNodeAPI {
     @GET("contract/balance/{address}/{tokenId}")
     Observable<RespBean> tokenBalance(@Path("address") String address, @Path("tokenId") String tokenId);
 
-//    @POST("contract/content/{contractId}")
-//    Observable<RespBean> contractContent(@Path("contractId") String contractId);
+    @GET("contract/content/{contractId}")
+    Observable<RespBean> contractContent(@Path("contractId") String contractId);
 
     @GET("contract/info/{contractId}")
     Observable<RespBean> contractInfo(@Path("contractId") String contractId);

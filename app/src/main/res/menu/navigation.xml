@@ -11,8 +11,8 @@
         android:title="@string/detail_copy_address"
         android:icon="@drawable/ico_copy_address"/>
     <item
-        android:id="@+id/nav_create_token"
-        android:title="@string/detail_create_token"
-        android:icon="@drawable/ico_create_token"/>
+        android:id="@+id/nav_records"
+        android:title="@string/detail_records"
+        android:icon="@drawable/ico_records"/>
 
 </menu>

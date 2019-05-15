@@ -225,7 +225,7 @@
     <string name="send_time">时间</string>
     <string name="send_fee_tip">手续费 </string>
     <string name="send_review_title">确认交易</string>
-    <string name="send_review_from">我的地址</string>
+    <string name="send_review_my_address">我的地址</string>
     <string name="send_review_send_to">接收地址</string>
     <string name="send_review_lease_to">租出地址</string>
     <string name="send_review_type">类型</string>

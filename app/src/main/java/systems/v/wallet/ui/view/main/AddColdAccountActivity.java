@@ -21,6 +21,7 @@ import systems.v.wallet.databinding.ActivityAddColdAccountBinding;
 import systems.v.wallet.ui.BaseActivity;
 import systems.v.wallet.ui.view.transaction.ScannerActivity;
 import systems.v.wallet.utils.UIUtil;
+import vsys.Account;
 
 public class AddColdAccountActivity extends BaseActivity {
 

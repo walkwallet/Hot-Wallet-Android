@@ -3,37 +3,67 @@ package systems.v.wallet.ui.view.transaction;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.text.Format;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
+import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
+import systems.v.wallet.basic.utils.FileUtil;
 import systems.v.wallet.basic.utils.JsonUtil;
+import systems.v.wallet.basic.utils.TxUtil;
+import systems.v.wallet.basic.wallet.Account;
+import systems.v.wallet.basic.wallet.ContractFunc;
 import systems.v.wallet.basic.wallet.Operation;
+import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.basic.wallet.Transaction;
+import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.NodeAPI;
+import systems.v.wallet.data.bean.ContractContentBean;
+import systems.v.wallet.data.bean.RegisterBean;
 import systems.v.wallet.data.bean.RespBean;
+import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.databinding.ActivityResultBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
+import systems.v.wallet.ui.view.main.MainActivity;
+import systems.v.wallet.utils.Constants;
+import systems.v.wallet.utils.SPUtils;
+import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
+import systems.v.wallet.utils.bus.AppBus;
+import systems.v.wallet.utils.bus.AppEvent;
+import systems.v.wallet.utils.bus.AppEventType;
+import vsys.Func;
+import vsys.Textual;
+import vsys.Vsys;
 
 public class ResultActivity extends BaseThemedActivity {
 
@@ -80,30 +110,48 @@ public class ResultActivity extends BaseThemedActivity {
                 mApp.popActivity(2);
             }
         });
-        int textId = 0;
         int type = mTransaction.getTransactionType();
         switch (type) {
             case Transaction.PAYMENT:
-                textId = R.string.send_payment_success;
+                mBinding.tvInfo.setText(getString(R.string.send_payment_success, CoinUtil.formatWithUnit(mTransaction.getAmount())));
+                mBinding.tvAddress.setText(mTransaction.getRecipient());
                 break;
             case Transaction.LEASE:
-                textId = R.string.send_lease_success;
+                mBinding.tvInfo.setText(getString(R.string.send_lease_success, CoinUtil.formatWithUnit(mTransaction.getAmount())));
+                mBinding.tvAddress.setText(mTransaction.getRecipient());
                 break;
             case Transaction.CANCEL_LEASE:
-                textId = R.string.send_cancel_lease_success;
+                mBinding.tvInfo.setText(getString(R.string.send_cancel_lease_success, CoinUtil.formatWithUnit(mTransaction.getAmount())));
+                mBinding.tvAddress.setText(mTransaction.getRecipient());
                 break;
             case Transaction.ContractRegister:
-                textId = R.string.create_token_success;
+                mBinding.tvInfo.setText(R.string.create_token_success);
+                mBinding.tvAddress.setText(mTransaction.getRecipient());
+                mBinding.tvTip.setText(R.string.create_token_success_tip);
+                AppBus.getInstance().post(new AppEvent(AppEventType.TOKEN_ADD));
                 break;
             case Transaction.ContractExecute:
-                textId = R.string.create_token_success;
+                switch (mTransaction.getActionCode()){
+                    case Vsys.ActionIssue:
+                        mBinding.tvInfo.setText(R.string.issue_token_success);
+                        mBinding.tvAddress.setText(CoinUtil.format(mTransaction.getContractObj().getAmount(), mTransaction.getContractObj().getUnity()));
+                        mBinding.tvTip.setText("");
+                        break;
+                    case Vsys.ActionSend:
+                        mBinding.tvInfo.setText(getString(R.string.send_payment_success, CoinUtil.format( mTransaction.getAmount())));
+                        mBinding.tvAddress.setText(mTransaction.getContractObj().getRecipient());
+                        mBinding.tvTip.setText("");
+                        break;
+                    case Vsys.ActionDestroy:
+                        mBinding.ivIconResult.setImageResource(R.drawable.ico_burn_big);
+                        mBinding.tvInfo.setText(getString(R.string.destroy_token_amount));
+                        mBinding.tvAddress.setText(CoinUtil.format(mTransaction.getContractObj().getAmount(), mTransaction.getContractObj().getUnity()));
+                        mBinding.tvTip.setText("");
+                        break;
+                }
+
                 break;
         }
-        if (textId != 0) {
-            mBinding.tvInfo.setText(getString(textId,
-                    CoinUtil.formatWithUnit(mTransaction.getAmount())));
-        }
-        mBinding.tvAddress.setText(mTransaction.getRecipient());
     }
 
     @Override
@@ -202,7 +250,7 @@ public class ResultActivity extends BaseThemedActivity {
 
     private void send() {
         Observable<RespBean> observable = null;
-        NodeAPI api = RetrofitHelper.getInstance().getNodeAPI();
+        final NodeAPI api = RetrofitHelper.getInstance().getNodeAPI();
         int type = mTransaction.getTransactionType();
         switch (type) {
             case Transaction.PAYMENT:
@@ -215,7 +263,20 @@ public class ResultActivity extends BaseThemedActivity {
                 observable = api.cancelLease(mTransaction.toRequestBody());
                 break;
             case Transaction.ContractRegister:
-                observable = api.registerContract(mTransaction.toRequestBody());
+                observable = api.registerContract(mTransaction.toRequestBody())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io())
+                        .concatMap(new Function<RespBean, Observable<RespBean>>() {
+                            @Override
+                            public Observable<RespBean> apply(RespBean resp){
+                                if(resp.getCode() == 0){
+                                    RegisterBean registerTx = JSON.parseObject(resp.getData(), RegisterBean.class);
+                                    RespBean addRes = addWatchedToken(registerTx);
+                                    return Observable.just(addRes);
+                                }
+                                return Observable.just(resp);
+                            }
+                        });
                 break;
             case Transaction.ContractExecute:
                 observable = api.executeContract(mTransaction.toRequestBody());
@@ -232,13 +293,49 @@ public class ResultActivity extends BaseThemedActivity {
                     public void accept(RespBean resp) throws Exception {
                         if (resp.getCode() == 0) {
                             setContent();
+                        }else{
+                            ToastUtil.showToast(resp.getMsg());
                         }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-
+                        ToastUtil.showToast(String.format("Failed, please retry!(error:%s)", throwable.getMessage()));
                     }
                 });
+    }
+
+    public RespBean addWatchedToken(RegisterBean registerTx) {
+        RespBean resp = new RespBean();
+        final String tokenId = Vsys.contractId2TokenId(registerTx.getContractId(), 0);
+        final String texturalDescriptors = registerTx.getContract().getTextual().getDescriptors();
+        if (tokenId == null || tokenId.isEmpty()) {
+            resp.setCode(-1);
+            resp.setMsg("error when add Token");
+            return resp;
+        }
+        final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
+        List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+        if (tokens == null) {
+            tokens = new ArrayList<>();
+        }
+        for (Token t : tokens) {
+            if (t.equals(t.getTokenId())) {
+                resp.setCode(-1);
+                resp.setMsg("token existed");
+            }
+        }
+        Token newToken = new Token();
+        newToken.setTokenId(tokenId);
+        newToken.setUnity(mTransaction.getContractObj().getUnity());
+        newToken.setMax(mTransaction.getContractObj().getMax());
+        newToken.setDescription(mTransaction.getContractObj().getTokenDescription());
+        List<ContractFunc> funcs = new ArrayList<>(JSON.parseArray(Vsys.decodeContractTextrue(texturalDescriptors), ContractFunc.class));
+        newToken.setFuncs(funcs.toArray(new ContractFunc[funcs.size()]));
+        tokens.add(newToken);
+        SPUtils.setString(key, JSON.toJSONString(tokens));
+        resp.setCode(0);
+        resp.setData("{}");
+        return resp;
     }
 }

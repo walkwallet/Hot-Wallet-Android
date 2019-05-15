@@ -13,10 +13,13 @@ import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
+import com.alibaba.fastjson.JSON;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,22 +36,24 @@ import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.utils.TxUtil;
 import systems.v.wallet.basic.wallet.Account;
+import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.basic.wallet.Transaction;
-import systems.v.wallet.databinding.ItemTransactionInfoBinding;
-import systems.v.wallet.databinding.ItemTransactionInfoVerticalBinding;
+import systems.v.wallet.databinding.ItemInfoHorizontalBinding;
+import systems.v.wallet.databinding.ItemInfoVerticalBinding;
+import vsys.Vsys;
 
 public class UIUtil {
 
-    public static ItemTransactionInfoBinding addItem(LayoutInflater inflater, ViewGroup container, @StringRes int resId, String text) {
-        ItemTransactionInfoBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_transaction_info, null, false);
+    public static ItemInfoHorizontalBinding addItem(LayoutInflater inflater, ViewGroup container, @StringRes int resId, String text) {
+        ItemInfoHorizontalBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_info_horizontal, null, false);
         binding.tvTitle.setText(resId);
         binding.tvText.setText(text);
         container.addView(binding.getRoot());
         return binding;
     }
 
-    public static ItemTransactionInfoVerticalBinding addItemVertical(LayoutInflater inflater, ViewGroup container, @StringRes int resId, String text) {
-        ItemTransactionInfoVerticalBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_transaction_info_vertical, null, false);
+    public static ItemInfoVerticalBinding addItemVertical(LayoutInflater inflater, ViewGroup container, @StringRes int resId, String text) {
+        ItemInfoVerticalBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_info_vertical, null, false);
         binding.tvTitle.setText(resId);
         binding.tvText.setText(text);
         container.addView(binding.getRoot());
@@ -59,46 +64,130 @@ public class UIUtil {
         int type = tx.getTransactionType();
         final Account sender = App.getInstance().getWallet().getAccount(tx.getSenderPublicKey());
 
-        ItemTransactionInfoVerticalBinding bindingFrom =
-                addItemVertical(inflater, container, R.string.send_review_from, sender.getAddress());
-        bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtil.copyToClipboard(container.getContext(), sender.getAddress());
-            }
-        });
+        if (type == Transaction.PAYMENT){
+            ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.send_review_my_address, sender.getAddress());
+            bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UIUtil.copyToClipboard(container.getContext(), sender.getAddress());
+                }
+            });
+            ItemInfoVerticalBinding bindingTo = addItemVertical(inflater, container, R.string.send_review_send_to, tx.getRecipient());
+            bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UIUtil.copyToClipboard(container.getContext(), tx.getRecipient());
+                }
+            });
 
-        int titleId = type == Transaction.PAYMENT
-                ? R.string.send_review_send_to : R.string.send_review_lease_to;
-        ItemTransactionInfoVerticalBinding bindingTo =
-                addItemVertical(inflater, container, titleId, tx.getRecipient());
-        bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtil.copyToClipboard(container.getContext(), tx.getRecipient());
-            }
-        });
+            addItemVertical(inflater, container, R.string.send_review_type, TxUtil.getTypeText(inflater.getContext(), tx.getTransactionType()));
+            addItemVertical(inflater, container, R.string.send_amount, CoinUtil.formatWithUnit(tx.getAmount()));
+            addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
+            addItemVertical(inflater, container, R.string.send_description, tx.getAttachment());
+        }else if(type == Transaction.LEASE){
+            ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.send_review_lease_to, sender.getAddress());
+            bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UIUtil.copyToClipboard(container.getContext(), sender.getAddress());
+                }
+            });
+            ItemInfoVerticalBinding bindingTo = addItemVertical(inflater, container, R.string.send_review_lease_to, tx.getRecipient());
+            bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UIUtil.copyToClipboard(container.getContext(), tx.getRecipient());
+                }
+            });
+            addItemVertical(inflater, container, R.string.send_review_type, TxUtil.getTypeText(inflater.getContext(), tx.getTransactionType()));
+            addItemVertical(inflater, container, R.string.send_amount, CoinUtil.formatWithUnit(tx.getAmount()));
+            addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
+        }else if(type == Transaction.CANCEL_LEASE){
+            ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.send_review_lease_to, sender.getAddress());
+            bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UIUtil.copyToClipboard(container.getContext(), sender.getAddress());
+                }
+            });
+            addItemVertical(inflater, container, R.string.send_review_type, TxUtil.getTypeText(inflater.getContext(), tx.getTransactionType()));
+            addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
 
-        addItemVertical(inflater, container, R.string.send_review_type,
-                TxUtil.getTypeText(inflater.getContext(), tx.getTransactionType()));
-        if (type == Transaction.PAYMENT || type == Transaction.LEASE) {
-            addItemVertical(inflater, container, R.string.send_amount,
-                    CoinUtil.formatWithUnit(tx.getAmount()));
-        }
-        addItemVertical(inflater, container, R.string.send_fee,
-                CoinUtil.formatWithUnit(tx.getFee()));
-
-        if (type == Transaction.CANCEL_LEASE) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
             String time = dateFormat.format(new Timestamp(tx.getTimestamp()));
-            addItemVertical(inflater, container, R.string.send_time,
-                    String.format("%s (%s)", time, TimeZone.getDefault().getDisplayName()));
-        }
+            addItemVertical(inflater, container, R.string.send_time, String.format("%s (%s)", time, TimeZone.getDefault().getDisplayName()));
+        }else if(type == Transaction.ContractRegister){
+            addItemVertical(inflater, container, R.string.create_review_token_total_tokens, CoinUtil.format(tx.getContractObj().getMax(), tx.getContractObj().getUnity()));
+            addItemVertical(inflater, container, R.string.send_review_type, TxUtil.getTypeText(inflater.getContext(), tx.getTransactionType()));
+            ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.send_review_from, sender.getAddress());
+            bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UIUtil.copyToClipboard(container.getContext(), sender.getAddress());
+                }
+            });
+            addItemVertical(inflater, container, R.string.send_description, tx.getContractObj().getTokenDescription());
+            addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
+        }else if(type == Transaction.ContractExecute){
+            String action = tx.getActionCode();
 
-        if (type == Transaction.PAYMENT && !TextUtils.isEmpty(tx.getAttachment())) {
-            addItemVertical(inflater, container, R.string.send_description,
-                    TxUtil.decodeAttachment(tx.getAttachment()));
+            if (action.equals(Vsys.ActionIssue)){
+                addItemVertical(inflater, container, R.string.issue_token_review_amount, CoinUtil.format(tx.getContractObj().getAmount(), tx.getContractObj().getUnity()));
+                addItemVertical(inflater, container, R.string.send_review_type, action);
+                ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.send_review_from, sender.getAddress());
+                bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIUtil.copyToClipboard(container.getContext(), sender.getAddress());
+                    }
+                });
+                addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
+            }else if(action.equals(Vsys.ActionDestroy)){
+                addItemVertical(inflater, container, R.string.destroy_token_review_amount, CoinUtil.format(tx.getContractObj().getAmount(), tx.getContractObj().getUnity()));
+                addItemVertical(inflater, container, R.string.send_review_type, action);
+                ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.send_review_from, sender.getAddress());
+                bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIUtil.copyToClipboard(container.getContext(), sender.getAddress());
+                    }
+                });
+                addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
+            }else if(action.equals(Vsys.ActionSend)){
+                ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.send_review_from, sender.getAddress());
+                bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIUtil.copyToClipboard(container.getContext(), sender.getAddress());
+                    }
+                });
+                ItemInfoVerticalBinding bindingTo = addItemVertical(inflater, container, R.string.send_review_send_to, tx.getContractObj().getRecipient());
+                bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIUtil.copyToClipboard(container.getContext(), tx.getContractObj().getRecipient());
+                    }
+                });
+                addItemVertical(inflater, container, R.string.send_review_type, action);
+                addItemVertical(inflater, container, R.string.send_token_review_amount, CoinUtil.format(tx.getContractObj().getAmount(), tx.getContractObj().getUnity()));
+                addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
+                addItemVertical(inflater, container, R.string.send_description, tx.getAttachment());
+            }
         }
+    }
+
+    public static void addTokenDetail(LayoutInflater inflater, final ViewGroup container, final Token token){
+        ItemInfoVerticalBinding bindingTokeId = addItemVertical(inflater, container, R.string.token_info_token_id, token.getTokenId());
+        bindingTokeId.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.copyToClipboard(container.getContext(), token.getTokenId());
+            }
+        });
+        addItemVertical(inflater, container, R.string.token_info_issuer, token.getIssuer());
+        addItemVertical(inflater, container, R.string.token_info_total_token, CoinUtil.format(token.getMax(), token.getUnity()));
+        addItemVertical(inflater, container, R.string.token_info_issued_tokens, CoinUtil.format(token.getIssuedAmount(), token.getUnity()));
+        addItemVertical(inflater, container, R.string.token_info_description, token.getDescription());
     }
 
     public static void showUnsupportQrCodeDialog(final Activity activity) {

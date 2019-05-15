@@ -114,7 +114,13 @@
         <activity
             android:name=".ui.view.transaction.ResultActivity"
             android:theme="@style/AppTheme.Transparent" />
-        <activity android:name=".ui.view.contract.CreateTokenActivity"></activity>
+        <activity android:name=".ui.view.contract.CreateTokenActivity" />
+        <activity android:name=".ui.view.contract.DestroyTokenActivity" />
+        <activity android:name=".ui.view.contract.TokenListActivity" />
+        <activity android:name=".ui.view.contract.AddTokenActivity" />
+        <activity android:name=".ui.view.contract.IssueActivity" />
+        <activity android:name=".ui.view.contract.TokenInfoActivity" />
+        <activity android:name=".ui.view.contract.SendTokenActivity"></activity>
     </application>
 
 </manifest>

@@ -21,7 +21,7 @@ import systems.v.wallet.basic.utils.TxUtil;
 import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.databinding.ActivityTransactionDetailBinding;
-import systems.v.wallet.databinding.ItemTransactionInfoVerticalBinding;
+import systems.v.wallet.databinding.ItemInfoVerticalBinding;
 import systems.v.wallet.entity.RecordEntity;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
@@ -65,7 +65,7 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
             String senderPublicKey = mRecord.getProofs().get(0).getPublicKey();
             senderAddress = Wallet.getAddress(mWallet.getNetwork(), senderPublicKey);
         }
-        ItemTransactionInfoVerticalBinding bindingFrom = UIUtil.addItemVertical(inflater, container,
+        ItemInfoVerticalBinding bindingFrom = UIUtil.addItemVertical(inflater, container,
                 R.string.transaction_detail_from, senderAddress);
         bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +73,7 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
                 UIUtil.copyToClipboard(mActivity, senderAddress);
             }
         });
-        ItemTransactionInfoVerticalBinding bindingTo = UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_to,
+        ItemInfoVerticalBinding bindingTo = UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_to,
                 mRecord.getRecipient());
         bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override

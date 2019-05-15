@@ -66,6 +66,16 @@ public class RecordAdapter extends BaseAdapter<RecordEntity> {
                 textId = R.string.detail_canceled_out_leasing;
                 amount = CoinUtil.format(item.getAmount());
                 break;
+            case RecordEntity.TYPE_REGISTER_CONTRACT:
+                drawableId = R.drawable.ico_record_contract_register;
+                textId = R.string.detail_create_contract;
+                amount = "-" + CoinUtil.format(item.getFee());
+                break;
+            case RecordEntity.TYPE_EXECUTE_CONTRACT:
+                drawableId = R.drawable.ico_record_contract_execute;
+                textId = R.string.detail_execute_contract;
+                amount = "-" + CoinUtil.format(item.getFee());
+                break;
         }
         binding.ivRecordType.setImageResource(drawableId);
         binding.tvRecordType.setText(textId);

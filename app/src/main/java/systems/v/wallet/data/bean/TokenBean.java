@@ -1,19 +1,11 @@
 package systems.v.wallet.data.bean;
 
 public class TokenBean {
-    private String address;
     private String tokenId;
-    private long balance;
-    private String contractId;
-    private TokenInfoBean[] info;
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    private long max;
+    private long total;
+    private long unity;
+    private String description;
 
     public String getTokenId() {
         return tokenId;
@@ -23,29 +15,35 @@ public class TokenBean {
         this.tokenId = tokenId;
     }
 
-    public long getBalance() {
-        return balance;
+    public long getMax() {
+        return max;
     }
 
-    public void setBalance(long balance) {
-        this.balance = balance;
+    public void setMax(long max) {
+        this.max = max;
     }
 
-
-
-    public TokenInfoBean[] getInfo() {
-        return info;
+    public long getTotal() {
+        return total;
     }
 
-    public void setInfo(TokenInfoBean[] info) {
-        this.info = info;
+    public void setTotal(long total) {
+        this.total = total;
     }
 
-    public String getContractId() {
-        return contractId;
+    public long getUnity() {
+        return unity;
     }
 
-    public void setContractId(String contractId) {
-        this.contractId = contractId;
+    public void setUnity(long unity) {
+        this.unity = unity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

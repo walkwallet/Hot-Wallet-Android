@@ -87,13 +87,29 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/create_token_description_title"
+                    android:text="@string/create_token_contract_description_title"
                     android:textSize="15sp"
                     android:textColor="@color/secondary_text"
                     />
 
                 <EditText
-                    android:id="@+id/et_description"
+                    android:id="@+id/et_contract_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/create_token_description_hint"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_token_token_description_title"
+                    android:textSize="15sp"
+                    android:textColor="@color/secondary_text"
+                    android:layout_marginTop="12dp"
+                    />
+
+                <EditText
+                    android:id="@+id/et_token_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/create_token_description_hint"
@@ -128,9 +144,12 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="@color/secondary_text"
                             android:text="@string/create_token_unity_title"/>
                         <TextView
                             android:id="@+id/tv_unity"
+                            android:layout_marginStart="6dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@{@string/create_token_unitybase+unity}"
@@ -164,19 +183,17 @@
 
                         <SeekBar
                             android:id="@+id/seekBar"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="16dp"
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="4dp"
-                            android:maxHeight="10dp"
-                            android:minHeight="10dp"
                             android:progressDrawable="@drawable/line_seekbar"
                             android:thumb="@null"
                             android:thumbOffset="0dp"
                             android:padding="0dp"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="17dp"
-                            android:layout_marginRight="12dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
                             android:max="16"
                             android:progress="@{unity}"
                             />
@@ -234,6 +251,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/create_token_contract_secondary"
+                            android:textColor="@color/text_weak"
                             android:textSize="13sp"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -250,11 +268,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/create_token_transaction_fee_title"
+                        android:textColor="@color/text_weak"
                         android:textSize="13sp"/>
                     <TextView
                         android:id="@+id/tv_fee"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
                         android:textColor="@color/secondary_text"
                         android:textSize="13sp"/>
                 </LinearLayout>
@@ -270,11 +290,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/create_token_available_titlte"
+                        android:textColor="@color/text_weak"
                         android:textSize="13sp"/>
                     <TextView
                         android:id="@+id/tv_available_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
                         android:textColor="@color/secondary_text"
                         android:textSize="13sp"/>
                 </LinearLayout>
