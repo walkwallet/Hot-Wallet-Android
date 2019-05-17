@@ -13,13 +13,10 @@ import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
-import com.alibaba.fastjson.JSON;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -116,7 +113,7 @@ public class UIUtil {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
             String time = dateFormat.format(new Timestamp(tx.getTimestamp()));
             addItemVertical(inflater, container, R.string.send_time, String.format("%s (%s)", time, TimeZone.getDefault().getDisplayName()));
-        }else if(type == Transaction.ContractRegister){
+        }else if(type == Transaction.CONTRACT_REGISTER){
             addItemVertical(inflater, container, R.string.create_review_token_total_tokens, CoinUtil.format(tx.getContractObj().getMax(), tx.getContractObj().getUnity()));
             addItemVertical(inflater, container, R.string.send_review_type, TxUtil.getTypeText(inflater.getContext(), tx.getTransactionType()));
             ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.send_review_from, sender.getAddress());
@@ -128,7 +125,7 @@ public class UIUtil {
             });
             addItemVertical(inflater, container, R.string.send_description, tx.getContractObj().getTokenDescription());
             addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
-        }else if(type == Transaction.ContractExecute){
+        }else if(type == Transaction.CONTRACT_EXECUTE){
             String action = tx.getActionCode();
 
             if (action.equals(Vsys.ActionIssue)){

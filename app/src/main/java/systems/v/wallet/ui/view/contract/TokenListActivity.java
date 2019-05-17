@@ -140,7 +140,6 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
     }
 
     private void initData(){
-//        getVsysBalance(mAccount.getAddress());
         mBinding.tvBalance.setText(CoinUtil.formatWithUnit(mAccount.getAvailable()));
         getTokenList();
 
@@ -172,7 +171,6 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                         @Override
                         public void accept(RespBean resp) throws Exception {
                             if(resp.getCode() == 0){
-                                Log.d("TokenBalance", JSON.toJSONString(resp));
                                 TokenBalanceBean balance = JSON.parseObject(resp.getData(), TokenBalanceBean.class);
                                 for (int j = 0; j < mData.size(); j++) {
                                     if (mData.get(j).getTokenId().equals(balance.getTokenId())) {
@@ -194,29 +192,32 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                     });
             //Official Token Icon & Name
             Disposable pd = Observable.fromIterable(mData)
-                    .flatMap(new Function<Token, Observable<TokenInfoBean>>() {
+                    .flatMap(new Function<Token, Observable<systems.v.wallet.data.bean.publicApi.RespBean>>() {
                         @Override
-                        public Observable<TokenInfoBean> apply(Token token){
+                        public Observable<systems.v.wallet.data.bean.publicApi.RespBean> apply(Token token){
                             Map<String, Object> params = new HashMap<>();
-                            params.put("Id", token.getTokenId());
-                            params.put("Action", "detail");
-                            return publicApi.apiToken(params);
+                            params.put("TokenId", token.getTokenId());
+                            return publicApi.getTokenDetail(params);
                         }
                     })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<TokenInfoBean>() {
+                    .subscribe(new Consumer<systems.v.wallet.data.bean.publicApi.RespBean>() {
                         @Override
-                        public void accept(TokenInfoBean tokenInfo) throws Exception {
-                            for (int j = 0; j < mData.size(); j++) {
-                                if (mData.get(j).getTokenId().equals(tokenInfo.getTokenId())) {
-                                    mData.get(j).setName(tokenInfo.getName());
-                                    mData.get(j).setIcon(tokenInfo.getIconUrl());
+                        public void accept(systems.v.wallet.data.bean.publicApi.RespBean resp) throws Exception {
+                            if(resp.getCode() == 0){
+                                TokenInfoBean t = JSON.parseObject((String)resp.getData(), TokenInfoBean.class);
+                                for (int j = 0; j < mData.size(); j++) {
+                                    if (mData.get(j).getTokenId().equals(t.getId())) {
+                                        mData.get(j).setIcon(Constants.PUBLIC_API_SERVER_RES + t.getIconUrl());
+                                        mData.get(j).setName(t.getName());
+                                    }
+                                }
+                                if (mAdapter != null) {
+                                    mAdapter.notifyDataSetChanged();
                                 }
                             }
-                            if (mAdapter != null) {
-                                mAdapter.notifyDataSetChanged();
-                            }
+
                         }
                     }, new Consumer<Throwable>() {
                         @Override

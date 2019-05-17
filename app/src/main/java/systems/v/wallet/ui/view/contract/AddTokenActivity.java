@@ -125,7 +125,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                             newToken.setTokenId(token.getTokenId());
                             newToken.setUnity(token.getUnity());
                             newToken.setMax(token.getMax());
-                            newToken.setDescription(TxUtil.decodeAttachment(token.getDescription()));
+                            newToken.setDescription(TxUtil.decodeAttachment(token.getDescription()).substring(2));
                             return nodeApi.contractContent(Vsys.tokenId2ContractId(tokenId));
                         }else{
                             return Observable.create(new ObservableOnSubscribe<RespBean>() {
@@ -184,7 +184,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                             ToastUtil.showToast(R.string.add_token_success);
                             finish();
                         } else{
-                            ToastUtil.showToast("accetp result msg" + result);
+                            ToastUtil.showToast("Accept result msg" + result);
                         }
                     }
                 }, new Consumer<Throwable>() {

@@ -6,7 +6,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,10 +17,6 @@ import com.alibaba.fastjson.JSON;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.w3c.dom.Text;
-
-import java.math.BigDecimal;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
@@ -29,18 +24,14 @@ import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.utils.JsonUtil;
-import systems.v.wallet.basic.utils.TxUtil;
 import systems.v.wallet.basic.wallet.Operation;
 import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.basic.wallet.Wallet;
-import systems.v.wallet.data.bean.TokenBean;
-import systems.v.wallet.databinding.ActivitySendBinding;
 import systems.v.wallet.databinding.ActivitySendTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
 import systems.v.wallet.ui.view.transaction.ScannerActivity;
-import systems.v.wallet.ui.view.transaction.SendActivity;
 import systems.v.wallet.utils.ContractUtil;
 import systems.v.wallet.utils.UIUtil;
 import vsys.Contract;
@@ -52,7 +43,7 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
         Intent intent = new Intent(from, SendTokenActivity.class);
         intent.putExtra("publicKey", publicKey);
         intent.putExtra("token", JSON.toJSONString(token));
-        intent.putExtra("type", Transaction.ContractExecute);
+        intent.putExtra("type", Transaction.CONTRACT_EXECUTE);
         from.startActivity(intent);
     }
 

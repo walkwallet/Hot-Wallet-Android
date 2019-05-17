@@ -3,57 +3,41 @@ package systems.v.wallet.ui.view.transaction;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
-import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
-import systems.v.wallet.basic.utils.FileUtil;
 import systems.v.wallet.basic.utils.JsonUtil;
-import systems.v.wallet.basic.utils.TxUtil;
-import systems.v.wallet.basic.wallet.Account;
 import systems.v.wallet.basic.wallet.ContractFunc;
 import systems.v.wallet.basic.wallet.Operation;
 import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.basic.wallet.Transaction;
-import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.NodeAPI;
-import systems.v.wallet.data.bean.ContractContentBean;
 import systems.v.wallet.data.bean.RegisterBean;
 import systems.v.wallet.data.bean.RespBean;
-import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.databinding.ActivityResultBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
-import systems.v.wallet.ui.view.main.MainActivity;
 import systems.v.wallet.utils.Constants;
 import systems.v.wallet.utils.SPUtils;
 import systems.v.wallet.utils.ToastUtil;
@@ -61,8 +45,6 @@ import systems.v.wallet.utils.UIUtil;
 import systems.v.wallet.utils.bus.AppBus;
 import systems.v.wallet.utils.bus.AppEvent;
 import systems.v.wallet.utils.bus.AppEventType;
-import vsys.Func;
-import vsys.Textual;
 import vsys.Vsys;
 
 public class ResultActivity extends BaseThemedActivity {
@@ -124,13 +106,13 @@ public class ResultActivity extends BaseThemedActivity {
                 mBinding.tvInfo.setText(getString(R.string.send_cancel_lease_success, CoinUtil.formatWithUnit(mTransaction.getAmount())));
                 mBinding.tvAddress.setText(mTransaction.getRecipient());
                 break;
-            case Transaction.ContractRegister:
+            case Transaction.CONTRACT_REGISTER:
                 mBinding.tvInfo.setText(R.string.create_token_success);
                 mBinding.tvAddress.setText(mTransaction.getRecipient());
                 mBinding.tvTip.setText(R.string.create_token_success_tip);
                 AppBus.getInstance().post(new AppEvent(AppEventType.TOKEN_ADD));
                 break;
-            case Transaction.ContractExecute:
+            case Transaction.CONTRACT_EXECUTE:
                 switch (mTransaction.getActionCode()){
                     case Vsys.ActionIssue:
                         mBinding.tvInfo.setText(R.string.issue_token_success);
@@ -262,7 +244,7 @@ public class ResultActivity extends BaseThemedActivity {
             case Transaction.CANCEL_LEASE:
                 observable = api.cancelLease(mTransaction.toRequestBody());
                 break;
-            case Transaction.ContractRegister:
+            case Transaction.CONTRACT_REGISTER:
                 observable = api.registerContract(mTransaction.toRequestBody())
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
@@ -278,7 +260,7 @@ public class ResultActivity extends BaseThemedActivity {
                             }
                         });
                 break;
-            case Transaction.ContractExecute:
+            case Transaction.CONTRACT_EXECUTE:
                 observable = api.executeContract(mTransaction.toRequestBody());
                 break;
         }

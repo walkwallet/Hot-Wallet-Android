@@ -16,5 +16,6 @@ public class Constants {
     public static final int LAN_EN_US = 2;
     public static final String FIRST_ENTER = "first_enter";
 
-    public static final String PUBLIC_API_SERVER = "http://10.0.0.8:20006";//TODO
+    public static final String PUBLIC_API_SERVER = "http://explorer.tonode.com/";//TODO
+    public static final String PUBLIC_API_SERVER_RES = "http://explorer.tonode.com";//TODO
 }

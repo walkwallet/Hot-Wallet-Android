@@ -5,29 +5,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
-import systems.v.wallet.basic.utils.JsonUtil;
-import systems.v.wallet.basic.wallet.Operation;
 import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.basic.wallet.Transaction;
-import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.databinding.ActivityDestroyTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
 import systems.v.wallet.utils.ContractUtil;
-import systems.v.wallet.utils.UIUtil;
 import vsys.Contract;
 import vsys.Vsys;
 
@@ -37,7 +29,7 @@ public class DestroyTokenActivity extends BaseThemedActivity implements View.OnC
         Intent intent = new Intent(from, DestroyTokenActivity.class);
         intent.putExtra("publicKey", publicKey);
         intent.putExtra("token", JSON.toJSONString(token));
-        intent.putExtra("type", Transaction.ContractExecute);
+        intent.putExtra("type", Transaction.CONTRACT_EXECUTE);
         from.startActivity(intent);
     }
 
@@ -78,7 +70,7 @@ public class DestroyTokenActivity extends BaseThemedActivity implements View.OnC
 
                 if (TextUtils.isEmpty(amount)) {
                     textId = R.string.send_amount_empty_error;
-                } else if ((mAccount.getAvailable() - CoinUtil.parse(amount)) < Transaction.DEFAULT_CREATE_TOKEN_FEE) {
+                } else if (mAccount.getAvailable() < Transaction.DEFAULT_TOKEN_TX_FEE) {
                     textId = R.string.send_insufficient_balance_error;
                 }
                 if (textId != 0) {

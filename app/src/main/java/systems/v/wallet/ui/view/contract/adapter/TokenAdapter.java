@@ -45,11 +45,16 @@ public class TokenAdapter extends BaseAdapter<Token> {
         }
 
         String balanceStr = CoinUtil.format(item.getBalance(), item.getUnity());
-        Log.d("dbalance", balanceStr);
         binding.tvTokenBalance.setText( balanceStr);
 
-        Picasso.get().load(R.drawable.ico_token)
-                .transform(new CropCircleTransformation())
-                .into(binding.ivTokenIcon);
+        if(item.getIcon() != null && !item.getIcon().isEmpty()){
+            Picasso.get().load(item.getIcon())
+                    .transform(new CropCircleTransformation())
+                    .into(binding.ivTokenIcon);
+        }else{
+            Picasso.get().load(R.drawable.ico_token)
+                    .transform(new CropCircleTransformation())
+                    .into(binding.ivTokenIcon);
+        }
     }
 }

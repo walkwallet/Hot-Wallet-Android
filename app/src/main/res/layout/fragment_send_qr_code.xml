@@ -61,13 +61,34 @@
                 android:layout_weight="1"
                 android:scaleType="centerInside" />
 
-
-            <Button
-                android:id="@+id/btn_next"
-                style="@style/BasicButton"
+            <TextView
+                android:id="@+id/tv_page"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/next" />
+                android:textColor="@color/text_strong"
+                android:layout_marginBottom="16dp"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <Button
+                    android:id="@+id/btn_back"
+                    style="@style/BasicButton.Bordered.Normal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/back" />
+                <Button
+                    android:id="@+id/btn_next"
+                    style="@style/BasicButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/next" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </layout>

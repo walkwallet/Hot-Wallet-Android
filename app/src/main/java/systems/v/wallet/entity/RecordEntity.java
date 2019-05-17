@@ -61,9 +61,9 @@ public class RecordEntity extends RecordBean {
             }
         } else if (type == Transaction.MINTING) {
             recordType = TYPE_MINTING;
-        } else if (type == Transaction.ContractRegister){
+        } else if (type == Transaction.CONTRACT_REGISTER){
             recordType = TYPE_REGISTER_CONTRACT;
-        } else if (type == Transaction.ContractExecute){
+        } else if (type == Transaction.CONTRACT_EXECUTE){
             recordType = TYPE_EXECUTE_CONTRACT;
         } else{
             recordType = TYPE_NONE;

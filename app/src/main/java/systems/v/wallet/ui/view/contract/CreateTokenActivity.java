@@ -4,55 +4,26 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.SuperscriptSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 
-import com.alibaba.fastjson.JSON;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.databinding.DataBindingUtil;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.AlertDialog;
 import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
-import systems.v.wallet.basic.utils.TxUtil;
-import systems.v.wallet.basic.wallet.Account;
-import systems.v.wallet.basic.wallet.ContractFunc;
-import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.basic.wallet.Transaction;
-import systems.v.wallet.basic.wallet.Wallet;
-import systems.v.wallet.data.RetrofitHelper;
-import systems.v.wallet.data.api.NodeAPI;
-import systems.v.wallet.data.bean.ContractContentBean;
-import systems.v.wallet.data.bean.RespBean;
-import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.databinding.ActivityCreateTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
-import systems.v.wallet.utils.Constants;
 import systems.v.wallet.utils.ContractUtil;
-import systems.v.wallet.utils.SPUtils;
-import systems.v.wallet.utils.ToastUtil;
-import systems.v.wallet.utils.UIUtil;
-import systems.v.wallet.utils.bus.AppBus;
-import systems.v.wallet.utils.bus.AppEvent;
-import systems.v.wallet.utils.bus.AppEventType;
-import systems.v.wallet.utils.bus.annotation.Subscribe;
 import vsys.Contract;
 import vsys.Vsys;
 
@@ -176,9 +147,9 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
         mTransaction.setContractInit(Base58.encode(c.buildRegisterData()));
         mTransaction.setContractInitTextual(ContractUtil.getFunctionTextual(Vsys.ActionInit, c.getMax(), c.getUnity(), c.getTokenDescription()));
         mTransaction.setContractInitExplain(ContractUtil.getFunctionExplain(Vsys.ActionInit, isSplit ? ContractUtil.SplitContractText : ContractUtil.NotSplitContractText, mBinding.etTotal.getText().toString()));
-        mTransaction.setTransactionType(Transaction.ContractRegister);
+        mTransaction.setTransactionType(Transaction.CONTRACT_REGISTER);
         mTransaction.setSenderPublicKey(mAccount.getPublicKey());
         mTransaction.setTimestamp(System.currentTimeMillis());
-        mTransaction.setAttachment(mBinding.etContractDescription.getText().toString());
+        mTransaction.setDescription(mBinding.etContractDescription.getText().toString());
     }
 }

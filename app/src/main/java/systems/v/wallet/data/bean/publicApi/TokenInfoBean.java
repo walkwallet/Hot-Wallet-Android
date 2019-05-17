@@ -1,23 +1,21 @@
 package systems.v.wallet.data.bean.publicApi;
 
 public class TokenInfoBean {
-    private String id;
+    private String Id;
     private String IconUrl;
     private String Name;
     private String Symbol;
     private String Describe;
     private long TotalSupply;
     private String CreatorAddress;
-    private String TokenId;
     private int    Index;
 
-
     public String getId() {
-        return id;
+        return Id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.Id = id;
     }
 
     public String getIconUrl() {
@@ -66,14 +64,6 @@ public class TokenInfoBean {
 
     public void setCreatorAddress(String creatorAddress) {
         CreatorAddress = creatorAddress;
-    }
-
-    public String getTokenId() {
-        return TokenId;
-    }
-
-    public void setTokenId(String tokenId) {
-        TokenId = tokenId;
     }
 
     public int getIndex() {

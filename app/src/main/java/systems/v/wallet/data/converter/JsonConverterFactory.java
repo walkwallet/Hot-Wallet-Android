@@ -7,6 +7,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
+import systems.v.wallet.data.bean.publicApi.RespBean;
 
 public class JsonConverterFactory extends Converter.Factory {
 
@@ -25,6 +26,10 @@ public class JsonConverterFactory extends Converter.Factory {
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
                                                             Retrofit retrofit) {
-        return new JsonResponseBodyConverter();
+        if(type == RespBean.class) {
+            return new JsonResponseBodyConverter2();
+        }else{
+            return new JsonResponseBodyConverter();
+        }
     }
 }

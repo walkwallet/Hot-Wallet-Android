@@ -29,7 +29,7 @@ public class IssueActivity extends BaseThemedActivity implements View.OnClickLis
         Intent intent = new Intent(from, IssueActivity.class);
         intent.putExtra("publicKey", publicKey);
         intent.putExtra("token", JSON.toJSONString(token));
-        intent.putExtra("type", Transaction.ContractExecute);
+        intent.putExtra("type", Transaction.CONTRACT_EXECUTE);
         from.startActivity(intent);
     }
 
@@ -69,7 +69,7 @@ public class IssueActivity extends BaseThemedActivity implements View.OnClickLis
                 int textId = 0;
                 if (TextUtils.isEmpty(amount)) {
                     textId = R.string.send_amount_empty_error;
-                } else if ((mAccount.getAvailable() - CoinUtil.parse(amount)) < Transaction.DEFAULT_FEE) {
+                } else if (mAccount.getAvailable() < Transaction.DEFAULT_TOKEN_TX_FEE) {
                     textId = R.string.send_insufficient_balance_error;
                 }
                 if (textId != 0) {
@@ -107,5 +107,6 @@ public class IssueActivity extends BaseThemedActivity implements View.OnClickLis
         mTransaction.setFunctionExplain(ContractUtil.getFunctionExplain(Vsys.ActionIssue, mBinding.etAmount.getText().toString()));
         mTransaction.setSenderPublicKey(mAccount.getPublicKey());
         mTransaction.setTimestamp(System.currentTimeMillis());
+        mTransaction.setAttachment("");
     }
 }
