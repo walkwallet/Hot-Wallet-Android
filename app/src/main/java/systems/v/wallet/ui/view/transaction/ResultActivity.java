@@ -12,8 +12,10 @@ import com.alibaba.fastjson.JSON;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -25,7 +27,9 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
 import systems.v.wallet.R;
+import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.utils.JsonUtil;
 import systems.v.wallet.basic.wallet.ContractFunc;
@@ -108,27 +112,29 @@ public class ResultActivity extends BaseThemedActivity {
                 break;
             case Transaction.CONTRACT_REGISTER:
                 mBinding.tvInfo.setText(R.string.create_token_success);
-                mBinding.tvAddress.setText(mTransaction.getRecipient());
+                mBinding.tvAddress.setText(Vsys.contractId2TokenId(mTransaction.getContractId(), 0));
                 mBinding.tvTip.setText(R.string.create_token_success_tip);
                 AppBus.getInstance().post(new AppEvent(AppEventType.TOKEN_ADD));
                 break;
             case Transaction.CONTRACT_EXECUTE:
                 switch (mTransaction.getActionCode()){
                     case Vsys.ActionIssue:
-                        mBinding.tvInfo.setText(R.string.issue_token_success);
+                        mBinding.tvInfo.setText("");
                         mBinding.tvAddress.setText(CoinUtil.format(mTransaction.getContractObj().getAmount(), mTransaction.getContractObj().getUnity()));
-                        mBinding.tvTip.setText("");
+                        mBinding.tvTip.setText(R.string.issue_token_success);
+                        mBinding.tvTip.setTextColor(getResources().getColor(R.color.text_strong));
                         break;
                     case Vsys.ActionSend:
-                        mBinding.tvInfo.setText(getString(R.string.send_payment_success, CoinUtil.format( mTransaction.getAmount())));
+                        mBinding.tvInfo.setText(getString(R.string.send_payment_success, Long.toString(mTransaction.getContractObj().getAmount())));
                         mBinding.tvAddress.setText(mTransaction.getContractObj().getRecipient());
                         mBinding.tvTip.setText("");
                         break;
                     case Vsys.ActionDestroy:
                         mBinding.ivIconResult.setImageResource(R.drawable.ico_burn_big);
-                        mBinding.tvInfo.setText(getString(R.string.destroy_token_amount));
+                        mBinding.tvInfo.setText("");
                         mBinding.tvAddress.setText(CoinUtil.format(mTransaction.getContractObj().getAmount(), mTransaction.getContractObj().getUnity()));
-                        mBinding.tvTip.setText("");
+                        mBinding.tvTip.setText(getString(R.string.destroy_token_amount));
+                        mBinding.tvTip.setTextColor(getResources().getColor(R.color.text_strong));
                         break;
                 }
 
@@ -245,12 +251,15 @@ public class ResultActivity extends BaseThemedActivity {
                 observable = api.cancelLease(mTransaction.toRequestBody());
                 break;
             case Transaction.CONTRACT_REGISTER:
-                observable = api.registerContract(mTransaction.toRequestBody())
+                Map<String, Object> m = mTransaction.toRequestBody();
+                Log.d("register tx call api", JSON.toJSONString(mTransaction));
+                observable = api.registerContract(m)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
                         .concatMap(new Function<RespBean, Observable<RespBean>>() {
                             @Override
                             public Observable<RespBean> apply(RespBean resp){
+                                Log.d("register resp", JSON.toJSONString(resp));
                                 if(resp.getCode() == 0){
                                     RegisterBean registerTx = JSON.parseObject(resp.getData(), RegisterBean.class);
                                     RespBean addRes = addWatchedToken(registerTx);
@@ -282,6 +291,16 @@ public class ResultActivity extends BaseThemedActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        if (throwable instanceof HttpException) {
+                            try {
+                                HttpException he = (HttpException) throwable;
+                                String body = he.response().errorBody().string();
+                                Log.d("HTTP error resp body", body);
+                                Log.d("code", Integer.toString(he.code()));
+                            } catch (IOException e) {
+
+                            }
+                        }
                         ToastUtil.showToast(String.format("Failed, please retry!(error:%s)", throwable.getMessage()));
                     }
                 });
@@ -309,6 +328,7 @@ public class ResultActivity extends BaseThemedActivity {
         }
         Token newToken = new Token();
         newToken.setTokenId(tokenId);
+        newToken.setContractId(registerTx.getContractId());
         newToken.setUnity(mTransaction.getContractObj().getUnity());
         newToken.setMax(mTransaction.getContractObj().getMax());
         newToken.setDescription(mTransaction.getContractObj().getTokenDescription());
@@ -318,6 +338,7 @@ public class ResultActivity extends BaseThemedActivity {
         SPUtils.setString(key, JSON.toJSONString(tokens));
         resp.setCode(0);
         resp.setData("{}");
+        mTransaction.setContractId(registerTx.getContractId());
         return resp;
     }
 }

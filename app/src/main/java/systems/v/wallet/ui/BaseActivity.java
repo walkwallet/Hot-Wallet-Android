@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.alibaba.fastjson.JSON;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,11 +31,13 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import okhttp3.internal.http.HttpCodec;
 import retrofit2.HttpException;
 import systems.v.wallet.App;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.FileUtil;
 import systems.v.wallet.basic.wallet.Wallet;
+import systems.v.wallet.data.bean.publicApi.RespBean;
 import systems.v.wallet.ui.view.SplashActivity;
 import systems.v.wallet.ui.view.VerifyActivity;
 import systems.v.wallet.ui.widget.LoadingDialog;
@@ -241,14 +245,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         hide();
-                        if (throwable instanceof HttpException) {
-                            try {
-                                String msg = ((HttpException) throwable).response().errorBody().string();
-                                Log.d("HTTP error", msg);
-                            } catch (IOException e) {
-
-                            }
-                        }
                     }
                 }).doOnDispose(new Action() {
                     @Override

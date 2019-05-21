@@ -52,6 +52,7 @@ public class TokenInfoActivity extends BaseThemedActivity {
 
     private void initView(){
         setAppBar(mBinding.toolbar);
+        Log.d("ttt", JSON.toJSONString(mToken));
         UIUtil.addTokenDetail(getLayoutInflater(), mBinding.llContainer, mToken);
     }
 
@@ -77,7 +78,8 @@ public class TokenInfoActivity extends BaseThemedActivity {
                         for (ContractInfoBean info: token.getInfo()){
                             if (info.getName().equals("issuer")){
                                 mToken.setIssuer(info.getData());
-                                break;
+                            }else if(info.getName().equals("maker")){
+                                mToken.setMaker(info.getData());
                             }
                         }
                         initView();

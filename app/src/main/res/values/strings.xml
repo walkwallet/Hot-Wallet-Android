@@ -305,11 +305,14 @@
     <!--token operation start-->
     <string name="token_info_title">Token Info</string>
     <string name="token_info_token_id">Token ID</string>
+    <string name="token_info_contract_id">Contract ID</string>
     <string name="token_info_issuer">Issuer</string>
     <string name="token_info_register_time">Register Time</string>
-    <string name="token_info_total_token">Total Tokens</string>
-    <string name="token_info_issued_tokens">Issued Tokens</string>
-    <string name="token_info_description">Description</string>
+    <string name="token_info_unity">Unity</string>
+    <string name="token_info_maker">Maker</string>
+    <string name="token_info_total_token">Max Supply</string>
+    <string name="token_info_issued_tokens">Current Supply</string>
+    <string name="token_info_description">Token Description</string>
 
     <string name="issue_token_title">Issue Token</string>
     <string name="issue_token_amount">ISSUE AMOUNT</string>

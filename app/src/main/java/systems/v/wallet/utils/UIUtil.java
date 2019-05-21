@@ -13,10 +13,13 @@ import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
+import com.alibaba.fastjson.JSON;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -181,8 +184,11 @@ public class UIUtil {
                 UIUtil.copyToClipboard(container.getContext(), token.getTokenId());
             }
         });
+        addItemVertical(inflater, container, R.string.token_info_contract_id, Vsys.tokenId2ContractId(token.getTokenId()));
         addItemVertical(inflater, container, R.string.token_info_issuer, token.getIssuer());
+        addItemVertical(inflater, container, R.string.token_info_maker, token.getMaker());
         addItemVertical(inflater, container, R.string.token_info_total_token, CoinUtil.format(token.getMax(), token.getUnity()));
+        addItemVertical(inflater, container, R.string.token_info_unity, Long.toString(token.getUnity()));
         addItemVertical(inflater, container, R.string.token_info_issued_tokens, CoinUtil.format(token.getIssuedAmount(), token.getUnity()));
         addItemVertical(inflater, container, R.string.token_info_description, token.getDescription());
     }

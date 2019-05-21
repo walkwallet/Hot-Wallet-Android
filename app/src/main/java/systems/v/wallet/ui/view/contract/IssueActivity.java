@@ -57,7 +57,7 @@ public class IssueActivity extends BaseThemedActivity implements View.OnClickLis
 
         String balance = CoinUtil.formatWithUnit(mAccount.getAvailable());
         mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, balance));
-        String fee = CoinUtil.formatWithUnit(3 * Transaction.DEFAULT_CREATE_TOKEN_FEE);
+        String fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_TOKEN_TX_FEE);
         mBinding.tvFee.setText(fee);
     }
 

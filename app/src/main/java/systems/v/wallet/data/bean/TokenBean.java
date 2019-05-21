@@ -2,6 +2,7 @@ package systems.v.wallet.data.bean;
 
 public class TokenBean {
     private String tokenId;
+    private String contractId;
     private long max;
     private long total;
     private long unity;
@@ -13,6 +14,14 @@ public class TokenBean {
 
     public void setTokenId(String tokenId) {
         this.tokenId = tokenId;
+    }
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
     }
 
     public long getMax() {

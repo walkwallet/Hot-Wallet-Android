@@ -38,14 +38,14 @@ public class QrCodeFragment extends TransactionDialogFragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_send_qr_code, container, false);
         String tx = getArguments().getString("tx");
 
-        if(tx != null && tx.length() > QRCodeUtil.pageSize){
-            Log.d(TAG, "page code");
+        if(tx != null && tx.length() > QRCodeUtil.PageSize){
+            Log.d( "page code", tx);
             pageMessages = QRCodeUtil.formatPageMessages(tx);
             current = 1;
             binding.tvPage.setVisibility(View.VISIBLE);
             binding.btnBack.setVisibility(View.VISIBLE);
         }else{
-            Log.d(TAG, "single code");
+            Log.d("single code", tx);
             binding.ivQrCode.setImageBitmap(QRCodeUtil.generateQRCode(tx, 800));
             binding.tvPage.setVisibility(View.GONE);
             binding.btnBack.setVisibility(View.GONE);

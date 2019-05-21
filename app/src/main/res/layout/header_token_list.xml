@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="click"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:orientation="vertical"
+            >
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_radius_8"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                >
+                <TextView
+                    android:id="@+id/tv_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:textColor="@color/text_strong"
+                    android:textSize="24sp"
+                    />
+                <TextView
+                    android:id="@+id/tv_balance_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/token_list_available"
+                    android:layout_marginBottom="32dp"
+                    android:layout_alignStart="@id/tv_balance"
+                    android:layout_below="@id/tv_balance"
+                    android:textColor="@color/text_weak"
+                    android:textSize="12sp"
+                    />
+                <View
+                    android:id="@+id/line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/tv_balance_tip"
+                    android:background="@color/divider"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/line1"
+                    android:orientation="horizontal"
+                    >
+                    <LinearLayout
+                        android:id="@+id/ll_add_token"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="56dp"
+                        android:gravity="center"
+                        android:onClick="@{click}">
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ico_add_token"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:textColor="@color/color_orange_strong"
+                            android:text="@string/token_list_add_token"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/divider"/>
+
+                    <LinearLayout
+                        android:id="@+id/ll_create_token"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="56dp"
+                        android:gravity="center"
+                        android:onClick="@{click}">
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ico_create_token"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:textColor="@color/text_green2"
+                            android:text="@string/token_list_create_token"/>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/token_list_list_title"
+                android:textColor="@color/text_weak"
+                android:textSize="14sp"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

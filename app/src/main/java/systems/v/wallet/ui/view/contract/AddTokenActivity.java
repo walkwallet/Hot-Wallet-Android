@@ -120,9 +120,10 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                 .concatMap(new Function<RespBean, Observable<RespBean>>() {// request token info
                     @Override
                     public Observable<RespBean> apply(final RespBean respBean) throws Exception {
-                        if(respBean != null && respBean.getCode() == 0 ) {
+                        if(respBean != null) {
                             final TokenBean token = JSON.parseObject(respBean.getData(), TokenBean.class);
                             newToken.setTokenId(token.getTokenId());
+                            newToken.setContractId(token.getContractId());
                             newToken.setUnity(token.getUnity());
                             newToken.setMax(token.getMax());
                             newToken.setDescription(TxUtil.decodeAttachment(token.getDescription()).substring(2));

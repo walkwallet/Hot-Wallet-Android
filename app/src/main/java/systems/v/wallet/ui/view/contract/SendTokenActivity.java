@@ -171,7 +171,7 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
                     return;
                 }
                 generateTransaction();
-
+//                mTransaction.sign(mAccount);
                 ResultActivity.launch(this, mAccount.getPublicKey(), mTransaction);
             }
             break;

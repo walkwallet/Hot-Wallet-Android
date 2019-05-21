@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
+import systems.v.wallet.basic.utils.TxUtil;
 import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.databinding.ItemTokenBinding;
 import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
 import systems.v.wallet.utils.DisplayUtil;
+import systems.v.wallet.utils.UIUtil;
 
 public class TokenAdapter extends BaseAdapter<Token> {
 
@@ -39,7 +41,7 @@ public class TokenAdapter extends BaseAdapter<Token> {
 
         Token item = mData.get(position);
         if (item.getName() == null || item.getName().isEmpty()){
-            binding.tvTokenName.setText(item.getTokenId());
+            binding.tvTokenName.setText(UIUtil.getMutatedAddress(item.getTokenId()));
         }else{
             binding.tvTokenName.setText(item.getName());
         }

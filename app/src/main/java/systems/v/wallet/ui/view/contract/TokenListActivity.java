@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
@@ -31,9 +32,12 @@ import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.bean.TokenBalanceBean;
 import systems.v.wallet.data.bean.publicApi.TokenInfoBean;
 import systems.v.wallet.databinding.ActivityTokenListBinding;
+import systems.v.wallet.databinding.HeaderDetailBinding;
+import systems.v.wallet.databinding.HeaderTokenListBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.contract.adapter.TokenAdapter;
 import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
+import systems.v.wallet.ui.widget.wrapper.HeaderAndFooterWrapper;
 import systems.v.wallet.utils.Constants;
 import systems.v.wallet.utils.SPUtils;
 import systems.v.wallet.utils.bus.AppEvent;
@@ -49,7 +53,8 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
     private final String TAG = TokenListActivity.class.getSimpleName();
 
     private ActivityTokenListBinding mBinding;
-    private TokenAdapter mAdapter;
+    private HeaderTokenListBinding mHeaderBinding;
+    private HeaderAndFooterWrapper mAdapter;
     private List<Token> mData = new ArrayList<>();
 
     @Override
@@ -75,8 +80,9 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
     private void initView(){
         setAppBar(mBinding.toolbar);
         mBinding.setClick(this);
-        mAdapter = new TokenAdapter(mData, mActivity);
-        mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
+
+        TokenAdapter tokenAdapter = new TokenAdapter(mData, mActivity);
+        tokenAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(View view, final int position) {
                 Log.d("token list", JSON.toJSONString(mData.get(position)));
@@ -118,9 +124,7 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                                 tokens.remove(i);
                                 SPUtils.setString(key, JSON.toJSONString(tokens));
                                 mData.remove(position);
-                                if (mAdapter != null){
-                                    mAdapter.notifyDataSetChanged();
-                                }
+                                handleDataChange();
                                 break;
                             }
                         }
@@ -134,15 +138,19 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                         .show(TokenListActivity.this.getSupportFragmentManager(),"");
             }
         });
+
+        mAdapter = new HeaderAndFooterWrapper(tokenAdapter);
         mBinding.rvToken.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.rvToken.setAdapter(mAdapter);
+        mHeaderBinding = DataBindingUtil.inflate(LayoutInflater.from(mActivity), R.layout.header_token_list, mBinding.rvToken, false);
+        mHeaderBinding.setClick(this);
+        mAdapter.addHeaderView(mHeaderBinding.getRoot());
 
     }
 
     private void initData(){
-        mBinding.tvBalance.setText(CoinUtil.formatWithUnit(mAccount.getAvailable()));
+        setHeaderData();
         getTokenList();
-
     }
 
     private void getTokenList(){
@@ -178,9 +186,7 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                                         mData.get(j).setUnity(balance.getUnity());
                                     }
                                 }
-                                if (mAdapter != null) {
-                                    mAdapter.notifyDataSetChanged();
-                                }
+                                handleDataChange();
                             }
                         }
                     }, new Consumer<Throwable>() {
@@ -213,9 +219,7 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                                         mData.get(j).setName(t.getName());
                                     }
                                 }
-                                if (mAdapter != null) {
-                                    mAdapter.notifyDataSetChanged();
-                                }
+                                handleDataChange();
                             }
 
                         }
@@ -227,7 +231,11 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                         }
                     });
         }
-        if (mAdapter != null) {
+        handleDataChange();
+    }
+
+    private void handleDataChange() {
+        if(mAdapter != null){
             mAdapter.notifyDataSetChanged();
         }
     }
@@ -238,6 +246,12 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
             case TOKEN_ADD:
                 getTokenList();
                 break;
+        }
+    }
+
+    private void setHeaderData() {
+        if (mAccount != null) {
+            mHeaderBinding.tvBalance.setText(CoinUtil.formatWithUnit(mAccount.getAvailable()));
         }
     }
 }

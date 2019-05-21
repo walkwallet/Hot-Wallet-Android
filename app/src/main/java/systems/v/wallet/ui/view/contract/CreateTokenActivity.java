@@ -9,6 +9,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.SuperscriptSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
@@ -145,7 +146,7 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
         mTransaction.setContractObj(c);
         mTransaction.setContract(Base58.encode(c.getContract()));
         mTransaction.setContractInit(Base58.encode(c.buildRegisterData()));
-        mTransaction.setContractInitTextual(ContractUtil.getFunctionTextual(Vsys.ActionInit, c.getMax(), c.getUnity(), c.getTokenDescription()));
+        mTransaction.setContractInitTextual(ContractUtil.getFunctionTextual(Vsys.ActionInit,Integer.parseInt(mBinding.etTotal.getText().toString()), c.getUnity(), c.getTokenDescription()));
         mTransaction.setContractInitExplain(ContractUtil.getFunctionExplain(Vsys.ActionInit, isSplit ? ContractUtil.SplitContractText : ContractUtil.NotSplitContractText, mBinding.etTotal.getText().toString()));
         mTransaction.setTransactionType(Transaction.CONTRACT_REGISTER);
         mTransaction.setSenderPublicKey(mAccount.getPublicKey());
