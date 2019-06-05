@@ -36,6 +36,7 @@ import systems.v.wallet.basic.wallet.ContractFunc;
 import systems.v.wallet.basic.wallet.Operation;
 import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.basic.wallet.Transaction;
+import systems.v.wallet.data.BaseErrorConsumer;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.NodeAPI;
 import systems.v.wallet.data.bean.RegisterBean;
@@ -125,7 +126,7 @@ public class ResultActivity extends BaseThemedActivity {
                         mBinding.tvTip.setTextColor(getResources().getColor(R.color.text_strong));
                         break;
                     case Vsys.ActionSend:
-                        mBinding.tvInfo.setText(getString(R.string.send_payment_success, Long.toString(mTransaction.getContractObj().getAmount())));
+                        mBinding.tvInfo.setText(getString(R.string.send_payment_success, CoinUtil.format(mTransaction.getContractObj().getAmount(), mTransaction.getContractObj().getUnity())));
                         mBinding.tvAddress.setText(mTransaction.getContractObj().getRecipient());
                         mBinding.tvTip.setText("");
                         break;
@@ -288,22 +289,12 @@ public class ResultActivity extends BaseThemedActivity {
                             ToastUtil.showToast(resp.getMsg());
                         }
                     }
-                }, new Consumer<Throwable>() {
+                }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if (throwable instanceof HttpException) {
-                            try {
-                                HttpException he = (HttpException) throwable;
-                                String body = he.response().errorBody().string();
-                                Log.d("HTTP error resp body", body);
-                                Log.d("code", Integer.toString(he.code()));
-                            } catch (IOException e) {
-
-                            }
-                        }
-                        ToastUtil.showToast(String.format("Failed, please retry!(error:%s)", throwable.getMessage()));
+                    public void onError(int code, String msg) {
+                        ToastUtil.showToast(String.format("Failed, please retry!(error:%s)", msg));
                     }
-                });
+                }));
     }
 
     public RespBean addWatchedToken(RegisterBean registerTx) {
@@ -332,6 +323,7 @@ public class ResultActivity extends BaseThemedActivity {
         newToken.setUnity(mTransaction.getContractObj().getUnity());
         newToken.setMax(mTransaction.getContractObj().getMax());
         newToken.setDescription(mTransaction.getContractObj().getTokenDescription());
+        newToken.setIssuer(mAccount.getAddress());
         List<ContractFunc> funcs = new ArrayList<>(JSON.parseArray(Vsys.decodeContractTextrue(texturalDescriptors), ContractFunc.class));
         newToken.setFuncs(funcs.toArray(new ContractFunc[funcs.size()]));
         tokens.add(newToken);

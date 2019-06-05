@@ -9,6 +9,10 @@ import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 
+import org.w3c.dom.Text;
+
+import java.math.BigDecimal;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import systems.v.wallet.R;
@@ -20,6 +24,7 @@ import systems.v.wallet.databinding.ActivityDestroyTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
 import systems.v.wallet.utils.ContractUtil;
+import systems.v.wallet.utils.UIUtil;
 import vsys.Contract;
 import vsys.Vsys;
 
@@ -47,19 +52,21 @@ public class DestroyTokenActivity extends BaseThemedActivity implements View.OnC
 
         mType = getIntent().getIntExtra("type", Transaction.PAYMENT);
         mToken = JSON.parseObject(getIntent().getStringExtra("token"), Token.class);
-        // set balance and fee
+
+        initView();
+    }
+
+    private void initView(){
         String balance = CoinUtil.format(mToken.getBalance(), mToken.getUnity());
         String fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_TOKEN_TX_FEE);
-
         setAppBar(mBinding.toolbar);
         mBinding.setClick(this);
 
+        UIUtil.setAmountInputFilterWithScale(mBinding.etAmount, mToken.getUnity());
         mBinding.tvFee.setText(fee);
         mBinding.toolbar.setTitle(R.string.send_token_title);
         mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, balance));
-
     }
-
 
     @Override
     public void onClick(View v) {
@@ -70,7 +77,12 @@ public class DestroyTokenActivity extends BaseThemedActivity implements View.OnC
 
                 if (TextUtils.isEmpty(amount)) {
                     textId = R.string.send_amount_empty_error;
+                } else if(!CoinUtil.validate(amount, mToken.getUnity())){
+                    textId = R.string.invalid_precision;
                 } else if (mAccount.getAvailable() < Transaction.DEFAULT_TOKEN_TX_FEE) {
+                    textId = R.string.send_insufficient_balance_error;
+                } else if( new BigDecimal(amount).multiply(BigDecimal.valueOf(mToken.getUnity())).
+                        compareTo(BigDecimal.valueOf(mToken.getBalance())) > 0){
                     textId = R.string.send_insufficient_balance_error;
                 }
                 if (textId != 0) {

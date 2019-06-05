@@ -112,6 +112,7 @@
     <string name="transaction_detail_txid">交易Id</string>
     <string name="transaction_detail_amount">数量</string>
     <string name="transaction_detail_fee">手续费</string>
+    <string name="transaction_detail_status">状态</string>
     <string name="transaction_detail_time">时间</string>
     <string name="transaction_detail_description">备注</string>
     <!--end>>>  transaction detail -->
@@ -269,13 +270,13 @@
     <string name="create_token_description_hint">请输入代币描述</string>
     <string name="create_token_description_note">之后无法更改</string>
     <string name="create_token_unity_title">单位:</string>
-    <string name="create_token_contract_main">支持Split/merge操作</string>
+    <string name="create_token_contract_main">支持Split/Reverse-split操作</string>
     <string name="create_token_contract_secondary">(注意: 创建后无法更改)</string>
     <string name="create_token_transaction_fee_title">手续费 </string>
     <string name="create_token_available_titlte">可用余额</string>
     <string name="create_token_success">您已成功创建合约, 代币 ID 为:</string>
     <string name="create_token_success_tip">您可以在代币列表中查看</string>
-
+    <string name="create_token_exceed_max">位数过多，请减少</string>
     <string name="create_review_token_total_tokens">代币总量</string>
     <string name="create_review_token_description">描述</string>
     <!--register end-->
@@ -316,8 +317,9 @@
     <string name="issue_token_title">发行代币</string>
     <string name="issue_token_amount">发行代币</string>
     <string name="issue_token_success">发行数额</string>
-
+    <string name="issue_larger_than_max">发行数额超过最大可发行量.</string>
     <string name="issue_token_review_amount">发行数额</string>
+    <string name="issue_available_balance">可发行量: %1$s</string>
 
     <string name="add_token_input_hint">输入代币 ID</string>
     <string name="add_token_add">添加</string>
@@ -330,6 +332,8 @@
     <string name="send_token_title">发送代币</string>
 
     <string name="send_token_review_amount">数额</string>
+
+    <string name="invalid_precision">数额精度超出上限.</string>
     <!--token operation end-->
 
 

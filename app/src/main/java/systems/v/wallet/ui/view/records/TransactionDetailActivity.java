@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
 
+import org.w3c.dom.Text;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -73,14 +75,16 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
                 UIUtil.copyToClipboard(mActivity, senderAddress);
             }
         });
-        ItemInfoVerticalBinding bindingTo = UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_to,
-                mRecord.getRecipient());
-        bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtil.copyToClipboard(mActivity, mRecord.getRecipient());
-            }
-        });
+        if(mRecord.getRecipient() != null && TextUtils.isEmpty(mRecord.getRecipient())){
+            ItemInfoVerticalBinding bindingTo = UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_to,
+                    mRecord.getRecipient());
+            bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UIUtil.copyToClipboard(mActivity, mRecord.getRecipient());
+                }
+            });
+        }
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_txid,
                 mRecord.getId());
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_type,
@@ -89,6 +93,8 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
                 CoinUtil.formatWithUnit(mRecord.getAmount()));
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_fee,
                 CoinUtil.formatWithUnit(mRecord.getFee()));
+        UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_status,
+                mRecord.getStatus());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
         String time = dateFormat.format(new Timestamp(mRecord.getTimestamp()));
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_time,

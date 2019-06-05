@@ -20,6 +20,8 @@ public class RecordEntity extends RecordBean {
     private String address;
     private int recordType;
 
+    public static final String SUCCESS_TX = "Success";
+
     public RecordEntity() {
     }
 
@@ -33,6 +35,7 @@ public class RecordEntity extends RecordBean {
         setRecipient(bean.getRecipient());
         setAmount(bean.getAmount());
         setAttachment(bean.getAttachment());
+        setStatus(bean.getStatus());
     }
 
     public String getAddress() {

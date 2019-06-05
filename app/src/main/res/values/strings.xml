@@ -112,6 +112,7 @@
     <string name="transaction_detail_txid">TxId</string>
     <string name="transaction_detail_amount">Amount</string>
     <string name="transaction_detail_fee">Fee</string>
+    <string name="transaction_detail_status">Status</string>
     <string name="transaction_detail_time">Time</string>
     <string name="transaction_detail_description">Description</string>
     <!--end>>>  transaction detail -->
@@ -269,7 +270,7 @@
     <string name="create_token_description_hint">Input description</string>
     <string name="create_token_description_note">You cannot change the description later</string>
     <string name="create_token_unity_title">Unity:</string>
-    <string name="create_token_contract_main">Support split/merge token</string>
+    <string name="create_token_contract_main">Support Split/Reverse-split</string>
     <string name="create_token_contract_secondary">(Attention: cannot change after create)</string>
     <string name="create_token_transaction_fee_title">Transaction Fee:</string>
     <string name="create_token_available_titlte">Available balance:</string>
@@ -277,7 +278,7 @@
     <string name="create_token_unitybase">10 ^ </string>
     <string name="create_token_success">You have create a new token, token ID is:</string>
     <string name="create_token_success_tip">You can check in your token watch list</string>
-    
+    <string name="create_token_exceed_max">Too many significant digits for amount. Please reduce unity.</string>
     <string name="create_review_token_total_tokens">Total Tokens</string>
     <string name="create_review_token_description">Description</string>
     <!--register end-->
@@ -292,7 +293,7 @@
     <string name="token_list_send">Send Token</string>
     <string name="token_list_info">Get Token Info</string>
     <string name="token_list_issue">Issue Token</string>
-    <string name="token_list_destroy">destroy Token</string>
+    <string name="token_list_destroy">Destroy Token</string>
     <string name="token_list_remove">Remove Token</string>
 
     <!--token list end-->
@@ -317,8 +318,9 @@
     <string name="issue_token_title">Issue Token</string>
     <string name="issue_token_amount">ISSUE AMOUNT</string>
     <string name="issue_token_success">Issue amount</string>
-
+    <string name="issue_larger_than_max">The issued token can not larger than max supply.</string>
     <string name="issue_token_review_amount">Issue Amount</string>
+    <string name="issue_available_balance">Issue available: %1$s</string>
 
     <string name="add_token_input_hint">Input the token ID</string>
     <string name="add_token_add">Add</string>
@@ -331,7 +333,8 @@
     <string name="send_token_title">Send Token</string>
 
     <string name="send_token_review_amount">Amount</string>
-    <!--token operation end-->
 
+    <string name="invalid_precision">The number of digits after the decimal point may be larger than the token precision.</string>
+    <!--token operation end-->
 
 </resources>

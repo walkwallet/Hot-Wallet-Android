@@ -7,6 +7,9 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.databinding.DataBindingUtil;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -26,6 +29,8 @@ import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.databinding.ActivityTokenInfoBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
+import systems.v.wallet.utils.Constants;
+import systems.v.wallet.utils.SPUtils;
 import systems.v.wallet.utils.UIUtil;
 import vsys.Vsys;
 
@@ -52,12 +57,12 @@ public class TokenInfoActivity extends BaseThemedActivity {
 
     private void initView(){
         setAppBar(mBinding.toolbar);
-        Log.d("ttt", JSON.toJSONString(mToken));
         UIUtil.addTokenDetail(getLayoutInflater(), mBinding.llContainer, mToken);
     }
 
     private void initData(){
         final NodeAPI nodeApi = RetrofitHelper.getInstance().getNodeAPI();
+        final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
         Disposable d = nodeApi.tokenInfo(mToken.getTokenId())
                 .compose(this.<RespBean>bindLoading())
                 .flatMap(new Function<RespBean, Observable<RespBean>>() {
@@ -81,6 +86,16 @@ public class TokenInfoActivity extends BaseThemedActivity {
                             }else if(info.getName().equals("maker")){
                                 mToken.setMaker(info.getData());
                             }
+                        }
+                        List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+                        if (tokens != null) {
+                            for (int i=0;i < tokens.size();i++){
+                                if(tokens.get(i).getTokenId().equals(mToken.getTokenId())){
+                                    tokens.set(i, mToken);
+                                }
+                            }
+
+                            SPUtils.setString(key, JSON.toJSONString(tokens));
                         }
                         initView();
                     }

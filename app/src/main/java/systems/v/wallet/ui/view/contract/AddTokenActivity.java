@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import go.error;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -33,14 +35,19 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.TxUtil;
 import systems.v.wallet.basic.wallet.ContractFunc;
 import systems.v.wallet.basic.wallet.Token;
+import systems.v.wallet.data.BaseErrorConsumer;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.NodeAPI;
+import systems.v.wallet.data.bean.ContractBean;
 import systems.v.wallet.data.bean.ContractContentBean;
+import systems.v.wallet.data.bean.ContractInfoBean;
+import systems.v.wallet.data.bean.ErrorBean;
 import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.databinding.ActivityAddTokenBinding;
@@ -89,7 +96,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                     mBinding.etTokenId.setText(text);
                 }
             }
-            break;
+                break;
             case R.id.btn_scan:
                 ScannerActivity.launch(this);
                 break;
@@ -105,7 +112,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
         final List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
         if(tokens != null){
             for (Token t : tokens) {
-                if (t.equals(t.getTokenId())) {
+                if (tokenId.equals(t.getTokenId())) {
                     ToastUtil.showToast(R.string.add_token_added_token);
                     return;
                 }
@@ -113,13 +120,14 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
         }
         final NodeAPI nodeApi = RetrofitHelper.getInstance().getNodeAPI();
         final Token newToken = new Token();
-        Disposable d = nodeApi.tokenInfo(tokenId)
+        Disposable d = nodeApi.tokenInfo(tokenId)// request token info
                 .compose(this.<RespBean>bindLoading())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .concatMap(new Function<RespBean, Observable<RespBean>>() {// request token info
+                .concatMap(new Function<RespBean, Observable<RespBean>>() {// request contract info
                     @Override
                     public Observable<RespBean> apply(final RespBean respBean) throws Exception {
+
                         if(respBean != null) {
                             final TokenBean token = JSON.parseObject(respBean.getData(), TokenBean.class);
                             newToken.setTokenId(token.getTokenId());
@@ -127,6 +135,31 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                             newToken.setUnity(token.getUnity());
                             newToken.setMax(token.getMax());
                             newToken.setDescription(TxUtil.decodeAttachment(token.getDescription()).substring(2));
+                            return nodeApi.contractInfo(Vsys.tokenId2ContractId(tokenId));
+                        }else{
+                            return Observable.create(new ObservableOnSubscribe<RespBean>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<RespBean> emitter) throws Exception {
+                                    emitter.onError(new Throwable(respBean.getMsg()));
+                                }
+                            });
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(new Function<RespBean, Observable<RespBean>>() {// contract content
+                    @Override
+                    public Observable<RespBean> apply(final RespBean respBean) throws Exception {
+                        if(respBean != null) {
+                            ContractBean contractBean = JSON.parseObject(respBean.getData(), ContractBean.class);
+                            for (ContractInfoBean info: contractBean.getInfo()){
+                                if (info.getName().equals("issuer")){
+                                    newToken.setIssuer(info.getData());
+                                }else if(info.getName().equals("maker")){
+                                    newToken.setMaker(info.getData());
+                                }
+                            }
                             return nodeApi.contractContent(Vsys.tokenId2ContractId(tokenId));
                         }else{
                             return Observable.create(new ObservableOnSubscribe<RespBean>() {
@@ -148,8 +181,6 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                                 @Override
                                 public void subscribe(ObservableEmitter<String> emitter) throws Exception {
                                     if (respBean.getCode() == 0) {
-                                        Log.d(TAG, JSON.toJSONString(respBean));
-                                        mBinding.tvTokenError.setVisibility(View.GONE);
                                         List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
                                         if (tokens == null) {
                                             tokens = new ArrayList<>();
@@ -180,6 +211,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String result) throws Exception {
+                        mBinding.tvTokenError.setVisibility(View.GONE);
                         if (result.isEmpty()){
                             AppBus.getInstance().post(new AppEvent(AppEventType.TOKEN_ADD));
                             ToastUtil.showToast(R.string.add_token_success);
@@ -188,14 +220,13 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                             ToastUtil.showToast("Accept result msg" + result);
                         }
                     }
-                }, new Consumer<Throwable>() {
+                }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.e(TAG, throwable.getMessage());
+                    public void onError(int code, String msg) {
                         mBinding.tvTokenError.setVisibility(View.VISIBLE);
-                        mBinding.tvTokenError.setText(throwable.getMessage());
+                        mBinding.tvTokenError.setText(msg);
                     }
-                });
+                }));
     }
 
     @Override

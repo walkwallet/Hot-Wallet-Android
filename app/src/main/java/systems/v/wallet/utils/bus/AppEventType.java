@@ -13,4 +13,6 @@ public enum AppEventType {
     TOKEN_ADD,
     //
     TOKEN_CREATE_SUCCESS,
+    // modify Alias;
+    MODIFY_ALIAS;
 }

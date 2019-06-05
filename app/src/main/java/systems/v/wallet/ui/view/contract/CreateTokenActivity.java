@@ -15,6 +15,8 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 
 
+import java.math.BigDecimal;
+
 import androidx.databinding.DataBindingUtil;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.AlertDialog;
@@ -37,7 +39,8 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
     }
 
     private Transaction mTransaction;
-    private int unityPower = 0;
+    private final int DEFAULT_UNITY_POWER = 8;
+    private int unityPower = DEFAULT_UNITY_POWER;
     private boolean isSplit = false;
 
     private final String TAG = CreateTokenActivity.class.getSimpleName();
@@ -111,11 +114,15 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
                 break;
             case R.id.btn_confirm:
                 String amount = mBinding.etTotal.getText().toString();
+                BigDecimal maxValue = BigDecimal.valueOf(2).pow(63).subtract(BigDecimal.valueOf(1));
+                BigDecimal decimal  = CoinUtil.parseBigDecimal(amount, (long)Math.pow(10, unityPower));
                 int textId = 0;
                 if (TextUtils.isEmpty(amount)) {
                     textId = R.string.send_amount_empty_error;
                 } else if (mAccount.getAvailable() < Transaction.DEFAULT_CREATE_TOKEN_FEE) {
                     textId = R.string.send_insufficient_balance_error;
+                } else if (decimal == null) {
+                    textId = R.string.create_token_exceed_max;
                 }
                 if (textId != 0) {
                     new AlertDialog.Builder(mActivity)
@@ -136,6 +143,7 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
 
     private void generateTransaction() {
         Contract c = new Contract();
+
         c.setUnity((long)Math.pow(10, unityPower));
         c.setMax(CoinUtil.parse(mBinding.etTotal.getText().toString(), c.getUnity()));
         c.setTokenDescription(mBinding.etTokenDescription.getText().toString());
@@ -146,7 +154,7 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
         mTransaction.setContractObj(c);
         mTransaction.setContract(Base58.encode(c.getContract()));
         mTransaction.setContractInit(Base58.encode(c.buildRegisterData()));
-        mTransaction.setContractInitTextual(ContractUtil.getFunctionTextual(Vsys.ActionInit,Integer.parseInt(mBinding.etTotal.getText().toString()), c.getUnity(), c.getTokenDescription()));
+        mTransaction.setContractInitTextual(ContractUtil.getFunctionTextual(Vsys.ActionInit, c.getMax(), c.getUnity(), c.getTokenDescription()));
         mTransaction.setContractInitExplain(ContractUtil.getFunctionExplain(Vsys.ActionInit, isSplit ? ContractUtil.SplitContractText : ContractUtil.NotSplitContractText, mBinding.etTotal.getText().toString()));
         mTransaction.setTransactionType(Transaction.CONTRACT_REGISTER);
         mTransaction.setSenderPublicKey(mAccount.getPublicKey());

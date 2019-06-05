@@ -16,23 +16,11 @@ class JsonResponseBodyConverter implements Converter<ResponseBody, RespBean> {
     @Override
     public RespBean convert(ResponseBody responseBody) throws IOException {
         String responseString = responseBody.string();
-        try {
-            ErrorBean error = JSON.parseObject(responseString, ErrorBean.class);
-            RespBean resp = new RespBean();
-            if (error != null) {
-                resp.setCode(error.getError());
-                resp.setMsg(error.getMessage());
-                resp.setData(responseString);
-            } else {
-                resp.setCode(0);
-                resp.setData(responseString);
-            }
-            return resp;
-        } catch (Exception e) {
-            RespBean resp = new RespBean(0, "", responseString);
-            return resp;
-        } finally {
-            responseBody.close();
-        }
+        RespBean resp = new RespBean();
+        resp.setCode(0);
+        resp.setMsg("");
+        resp.setData(responseString);
+        responseBody.close();
+        return resp;
     }
 }

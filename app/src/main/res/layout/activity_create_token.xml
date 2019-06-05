@@ -61,16 +61,6 @@
                         android:layout_marginStart="6dp"
                         />
 
-                    <Button
-                        android:id="@+id/btn_max"
-                        style="@style/BasicButton.Bordered.Small.Orange"
-                        android:layout_width="wrap_content"
-                        android:layout_marginTop="1dp"
-                        android:layout_marginBottom="1dp"
-                        android:onClick="@{click}"
-                        android:layout_alignParentEnd="true"
-                        android:text="@string/send_max_btn"
-                        android:theme="@style/BasicButton.Bordered.Small.Orange" />
 
                 </RelativeLayout>
 
@@ -169,7 +159,7 @@
                                 android:id="@+id/btn_unity_minus"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
-                                android:src="@drawable/ico_minus"
+                                android:src="@drawable/ic_minus"
                                 android:onClick="@{click}"
                                 />
                             <TextView
@@ -181,22 +171,37 @@
                                 />
                         </LinearLayout>
 
-                        <SeekBar
-                            android:id="@+id/seekBar"
+                        <RelativeLayout
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="16dp"
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="4dp"
-                            android:progressDrawable="@drawable/line_seekbar"
-                            android:thumb="@null"
-                            android:thumbOffset="0dp"
-                            android:padding="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
-                            android:max="16"
-                            android:progress="@{unity}"
-                            />
+                            >
+                            <SeekBar
+                                android:id="@+id/seekBar"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:progressDrawable="@drawable/line_seekbar"
+                                android:thumb="@null"
+                                android:thumbOffset="0dp"
+                                android:padding="0dp"
+                                android:max="16"
+                                android:progress="@{unity}"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{``+unity}"
+                                android:layout_alignTop="@id/seekBar"
+                                android:layout_alignBottom="@id/seekBar"
+                                android:layout_marginStart="22dp"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                />
+                        </RelativeLayout>
 
 
                         <LinearLayout
@@ -207,7 +212,7 @@
                                 android:id="@+id/btn_unity_plus"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
-                                android:src="@drawable/ico_plus"
+                                android:src="@drawable/ic_add"
                                 android:onClick="@{click}"/>
                             <TextView
                                 android:id="@+id/tv_unity_max"

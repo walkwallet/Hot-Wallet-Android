@@ -25,6 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.wallet.Token;
+import systems.v.wallet.data.BaseErrorConsumer;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.NodeAPI;
 import systems.v.wallet.data.api.PublicApi;
@@ -85,7 +86,6 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
         tokenAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(View view, final int position) {
-                Log.d("token list", JSON.toJSONString(mData.get(position)));
                 List<TokenOperationFragment.Operation> mOperation = new ArrayList<>();
                 mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_send, new TokenOperationFragment.Operation.OperationListener() {
                     @Override
@@ -99,18 +99,20 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                         TokenInfoActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
                     }
                 }));
-                mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_issue, new TokenOperationFragment.Operation.OperationListener() {
-                    @Override
-                    public void onOperation(TokenOperationFragment dialog) {
-                        IssueActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
-                    }
-                }));
-                mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_destroy, new TokenOperationFragment.Operation.OperationListener() {
-                    @Override
-                    public void onOperation(TokenOperationFragment dialog) {
-                        DestroyTokenActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
-                    }
-                }));
+                if(mData.get(position).getIssuer().equals(mAccount.getAddress())) {
+                    mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_issue, new TokenOperationFragment.Operation.OperationListener() {
+                        @Override
+                        public void onOperation(TokenOperationFragment dialog) {
+                            IssueActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
+                        }
+                    }));
+                    mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_destroy, new TokenOperationFragment.Operation.OperationListener() {
+                        @Override
+                        public void onOperation(TokenOperationFragment dialog) {
+                            DestroyTokenActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
+                        }
+                    }));
+                }
                 mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_remove, new TokenOperationFragment.Operation.OperationListener() {
                     @Override
                     public void onOperation(TokenOperationFragment dialog) {
@@ -154,7 +156,8 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
     }
 
     private void getTokenList(){
-        List<Token> tokens = JSON.parseArray(SPUtils.getString(Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey())), Token.class);
+        final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
+        List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
         if (tokens == null){
             return ;
         }
@@ -186,16 +189,17 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                                         mData.get(j).setUnity(balance.getUnity());
                                     }
                                 }
+
+                                SPUtils.setString(key, JSON.toJSONString(mData));
                                 handleDataChange();
                             }
                         }
-                    }, new Consumer<Throwable>() {
+                    }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
                         @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            Log.e(TAG, throwable.getMessage());
-
+                        public void onError(int code, String msg) {
+                            Log.e(TAG, msg);
                         }
-                    });
+                    }));
             //Official Token Icon & Name
             Disposable pd = Observable.fromIterable(mData)
                     .flatMap(new Function<Token, Observable<systems.v.wallet.data.bean.publicApi.RespBean>>() {
@@ -219,17 +223,18 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                                         mData.get(j).setName(t.getName());
                                     }
                                 }
+
+//                                SPUtils.setString(key, JSON.toJSONString(mData));
                                 handleDataChange();
                             }
 
                         }
-                    }, new Consumer<Throwable>() {
+                    }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
                         @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            Log.e(TAG, throwable.getMessage());
-
+                        public void onError(int code, String msg) {
+                            Log.e(TAG, msg);
                         }
-                    });
+                    }));
         }
         handleDataChange();
     }

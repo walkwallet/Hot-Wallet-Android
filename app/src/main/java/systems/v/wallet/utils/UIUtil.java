@@ -274,6 +274,26 @@ public class UIUtil {
         }});
     }
 
+    public static void setAmountInputFilterWithScale(EditText editText, final long unity){
+        editText.setFilters(new InputFilter[]{new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                StringBuilder builder = new StringBuilder(dest);
+                if (dstart != dend) {
+                    builder.delete(dstart, dend);
+                }
+                if (start != end) {
+                    builder.insert(dstart, source, start, end);
+                }
+                String result = builder.toString();
+                if (CoinUtil.validate(result, unity)) {
+                    return null;
+                }
+                return "";
+            }
+        }});
+    }
+
     public static void copyToClipboard(Context context, String text) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText("vsys", text);

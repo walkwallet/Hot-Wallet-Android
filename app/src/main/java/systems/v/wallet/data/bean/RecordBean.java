@@ -13,6 +13,7 @@ public class RecordBean {
     private String recipient;
     private long amount;
     private String attachment;
+    private String status;
 
     public RecordBean() {
     }
@@ -90,5 +91,13 @@ public class RecordBean {
 
     public void setAttachment(String attachment) {
         this.attachment = attachment;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -17,6 +17,10 @@ import com.alibaba.fastjson.JSON;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.math.BigDecimal;
+import java.text.Format;
+import java.util.Locale;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
@@ -61,24 +65,24 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
 
         mType = getIntent().getIntExtra("type", Transaction.PAYMENT);
         mToken = JSON.parseObject(getIntent().getStringExtra("token"), Token.class);
-        // set balance and fee
-        String balance = CoinUtil.format(mToken.getBalance(), mToken.getUnity());
-        String fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_TOKEN_TX_FEE);
 
-        setAppBar(mBinding.toolbar);
-        mBinding.setClick(this);
-
-        mBinding.tvFee.setText(fee);
-        mBinding.toolbar.setTitle(R.string.send_token_title);
-        mBinding.tvSendToLabel.setText(R.string.send_payment_to);
-        mBinding.etAddress.setHint(R.string.send_address_input_hint);
-        mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, balance));
-
+        initView();
         initListener();
     }
 
+    private void initView(){
+        setAppBar(mBinding.toolbar);
+        mBinding.setClick(this);
+
+        mBinding.tvFee.setText(CoinUtil.formatWithUnit(Transaction.DEFAULT_TOKEN_TX_FEE));
+        mBinding.toolbar.setTitle(R.string.send_token_title);
+        mBinding.tvSendToLabel.setText(R.string.send_payment_to);
+        mBinding.etAddress.setHint(R.string.send_address_input_hint);
+        mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, CoinUtil.format(mToken.getBalance(), mToken.getUnity())));
+    }
+
     private void initListener() {
-        UIUtil.setAmountInputFilter(mBinding.etAmount);
+        UIUtil.setAmountInputFilterWithScale(mBinding.etAmount, mToken.getUnity());
         mBinding.etAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -128,7 +132,7 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_max: {
-                mBinding.etAmount.setText(CoinUtil.format(mAccount.getAvailable() - Transaction.DEFAULT_CREATE_TOKEN_FEE));
+                mBinding.etAmount.setText(CoinUtil.format(mToken.getBalance(), mToken.getUnity()));
             }
             break;
             case R.id.btn_paste: {
@@ -151,8 +155,12 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
 
                 if (TextUtils.isEmpty(amount)) {
                     textId = R.string.send_amount_empty_error;
-                } else if ((mToken.getBalance() < CoinUtil.parse(mBinding.etAmount.getText().toString(), mToken.getUnity())) ||
-                        mAccount.getAvailable() < Transaction.DEFAULT_TOKEN_TX_FEE) {
+                } else if(!CoinUtil.validate(amount, mToken.getUnity())){
+                    textId = R.string.invalid_precision;
+                } else if(mAccount.getAvailable() < Transaction.DEFAULT_TOKEN_TX_FEE) {
+                    textId = R.string.send_insufficient_balance_error;
+                } else if(new BigDecimal(amount).multiply(BigDecimal.valueOf(mToken.getUnity())).
+                        compareTo(BigDecimal.valueOf(mToken.getBalance())) > 0){
                     textId = R.string.send_insufficient_balance_error;
                 } else if (!Wallet.validateAddress(address)) {
                     textId = R.string.send_address_input_error;
