@@ -1,0 +1,257 @@
+<resources>
+    <string name="app_name">워크 월렛</string>
+    <string name="nav_wallet">지갑</string>
+    <string name="nav_settings">설정</string>
+    <string name="confirm">확인</string>
+    <string name="cancel">취소</string>
+    <string name="ok">확인</string>
+    <string name="next">계속</string>
+    <string name="scan">스캔</string>
+    <string name="send">전송</string>
+    <string name="complete">완료</string>
+    <string name="done">완료</string>
+    <string name="unsupported_qrcode">지원되지 않는 QR 코드 형식</string>
+    <string name="official_warning">공식 힌트</string>
+    <string name="got_it">내용을 이해했습니다.</string>
+
+    <!--other start-->
+    <string name="scan_tip">QR 코드를 프레임 내부에 정렬해 스캔</string>
+    <string name="next_step">다음</string>
+    <string name="clear">완료</string>
+    <string name="welcome_use">워크 월렛에 오신 것을 환영합니다.</string>
+    <string name="welcome_tips">지갑을 생성하거나 불러오십시오.</string>
+    <string name="password_input">비밀번호 입력</string>
+    <string name="password_input_tips">지갑 비밀번호를 입력하십시오.</string>
+    <string name="password_wrong">비밀번호 오류</string>
+    <string name="copy_right">모든 저작권은 V SYSTEMS에 있습니다.</string>
+    <string name="grant_permissions">모든 권한을 부여하십시오.</string>
+    <string name="select_network_environment">네트워크 선택</string>
+    <string name="network_main_net">메인넷</string>
+    <string name="network_test_net">테스트넷</string>
+    <string name="network_main_net_caption">정식 네트워크 환경에서 사용자는 VSYS 자산을 안전하게 보관할 수 있습니다. 이 환경은 일반 사용자들의 일상에 더 적합합니다.</string>
+    <string name="network_test_net_caption">테스트 네트워크 환경에서 사용자는 VSYS 자산을 안전하게 보관하실 수 없습니다. 이 환경은 개발자가 시뮬레이션 테스트를 하기에 적합합니다. 만약 전문 개발자가 아니라면 정식 서비스 사용을 권장합니다.</string>
+    <string name="network_switch_to_test_net">개발자 테스트 환경으로 전환</string>
+    <string name="network_switch_to_main_net">정식 서비스 환경으로 전환</string>
+    <string name="network_switch_warning">테스트 환경은 오직 개발자의 테스트를 위해서만 이용가능합니다. 그래도 사용하시겠습니까?</string>
+    <string name="not_office_seed_title">비정상적인 니모닉이 감지됐습니다.</string>
+    <string name="not_office_seed_tips">출처를 알 수 없는 니모닉 단어의 사용으로 당신의 자산이 완전히 분실될 수도 있습니다. 그래도 니모닉을 사용하시겠습니까?</string>
+    <string name="text_continue">계속</string>
+    <string name="network_warning">지갑을 위한 테스트넷 또는 메인넷을 선택하십시오. 지갑이 생성되면 사용하실 수 없습니다.</string>
+    <string name="password_repeat_error">비밀번호가 일치하지 않습니다.</string>
+    <string name="at_least_8_word">비밀번호는 8자리 이상으로 설정해주세요.</string>
+    <string name="log_out_wallet_title">지갑 작성</string>
+    <string name="log_out_wallet_tips">지갑을 취소하기 전 니모닉 단어를 기록했는지 확인하십시오. 일단 지갑이 취소되면, 메모닉 단어 없이는 찾을 수 없습니다.</string>
+    <string name="continue_input">계속 입력</string>
+
+    <string name="fingerprint_title">"워크 월렛'의 Touch ID</string>
+    <string name="fingerprint_tips">워크 월렛 잠금 해제</string>
+    <string name="fingerprint_disable">지문 인증이 지원되지 않습니다.</string>
+    <string name="fingerprint_no_data">지문 인식 없음</string>
+    <string name="fingerprint_success">인증 완료</string>
+    <string name="fingerprint_faild">인증 실패</string>
+
+    <string name="official_web">v.systems</string>
+    <!--other end-->
+
+    <!-- start>>>  home list (wallet list /monitor list) -->
+
+    <string name="home_total_assets">총 잔고</string>
+    <string name="home_add_address">주소 추가</string>
+    <string name="home_add_address_tips">한 번에 하나의 주소만 추가 가능합니다.</string>
+    <string name="home_add_monitor">모니터 콜드 월렛에 QR 코드 인식</string>
+    <string name="home_add_monitor_tips">오프라인의 모바일에서도 콜드 월렛을 생성하실 수 있습니다.</string>
+    <string name="home_add_new">새로운 주소 추가</string>
+    <string name="home_add_new_tips">새 계정을 추가하시면 다시 삭제가 불가능 합니다. 그래도 추가 하시겠습니까?</string>
+    <string name="home_add">추가</string>
+    <!--end>>>  home list (wallet list /monitor list) -->
+
+    <!--start>>>  detail  (wallet detail/ monitor detail) -->
+    <string name="detail_wallet_title">핫 월렛</string>
+    <string name="detail_monitor_title">콜드 월렛</string>
+    <string name="detail_available_balance">이용가능한 잔고</string>
+    <string name="detail_total_balance">총 잔고</string>
+    <string name="detail_leased_out">Leased Out</string>
+    <string name="detail_leased_in">Leased In</string>
+    <string name="detail_send">전송</string>
+    <string name="detail_receive">수신</string>
+    <string name="detail_lease">주조</string>
+    <string name="detail_records">기록</string>
+    <string name="detail_sent">전송됨</string>
+    <string name="detail_received">수신됨</string>
+    <string name="detail_start_leasing">리스 시작</string>
+    <string name="detail_canceled_out_leasing">리스 취소</string>
+    <string name="detail_incoming_leasing">Incoming Leasing</string>
+    <string name="detail_canceled_int_leasing">Canceled Incoming Leasing</string>
+    <string name="detail_address_management">주소 관리</string>
+    <string name="detail_copy_address">주소 복사</string>
+    <string name="detail_cancel_out_leasing_btn">리스 취소</string>
+    <!--end>>>  detail  (wallet detail/ monitor detail) -->
+
+    <!--start>>>  records -->
+    <string name="records_title">트랜잭션 기록</string>
+    <string name="records_all">전부</string>
+    <!--end>>>  records -->
+
+    <!--start>>>  dateSelect -->
+    <string name="date_title">날짜 필터</string>
+    <string name="date_no_filter">필터 없음</string>
+    <string name="date_past_1_month">1개월 전</string>
+    <string name="date_select_date_range">날짜 범위를 선택해주세요</string>
+    <string name="date_default_format">DD/MM/YY</string>
+    <!--end>>>  dateSelect -->
+
+    <!--start>>>  transaction detail -->
+    <string name="transaction_detail_title">트랜잭션 세부사항</string>
+    <string name="transaction_detail_from">에서</string>
+    <string name="transaction_detail_to">로</string>
+    <string name="transaction_detail_type">유형</string>
+    <string name="transaction_detail_txid">TxId</string>
+    <string name="transaction_detail_amount">수량</string>
+    <string name="transaction_detail_fee">수량</string>
+    <string name="transaction_detail_time">시간</string>
+    <string name="transaction_detail_description">설명</string>
+    <!--end>>>  transaction detail -->
+
+    <!--start>>>  setting -->
+    <string name="setting_security">보안</string>
+    <string name="setting_device_lock">장치 잠금</string>
+    <string name="setting_wallet">지갑</string>
+    <string name="setting_recovery_phrase">니모닉 백업</string>
+    <string name="setting_back_up">지금 백업</string>
+    <string name="setting_address">주소 관리</string>
+    <string name="setting_other">기타</string>
+    <string name="setting_network">네트워크</string>
+    <string name="setting_language">언어</string>
+    <string name="setting_about_us">회사 소개</string>
+    <string name="setting_sign_out">로그아웃</string>
+    <string name="setting_official_website">공식 웹사이트</string>
+    <string name="setting_version">버전</string>
+    <string name="setting_fingerprint">지문</string>
+    <string name="setting_auto_lock">자동 잠금</string>
+    <string name="setting_5_min">5분</string>
+    <string name="setting_10_min">10분</string>
+    <string name="setting_wallet_address">지갑 주소</string>
+    <string name="setting_monitor_address">모니터 주소</string>
+    <string name="setting_address_and_available_balance">주소 &amp; 사용가능한 잔고</string>
+    <string name="setting_public_key">퍼블릭 키</string>
+    <string name="setting_private_key">프라이빗 키</string>
+    <string name="setting_show_private_key">프라이빗 키 보임</string>
+    <string name="setting_seed">니모닉 문장</string>
+    <string name="setting_show_seed">니모닉 문장 보기</string>
+    <string name="setting_secret_tips">표시할 비밀번호를 입력하십시오.</string>
+    <string name="setting_delete">삭제</string>
+    <string name="setting_delete_monitor_tips">정말 콜드월렛 보기 리스트에서 이 주소를 삭제하시겠습니까?</string>
+    <string name="setting_lan_cn">简体中文</string>
+    <string name="setting_lan_en">영어</string>
+    <string name="setting_logout">로그아웃</string>
+    <!--end>>>  setting -->
+
+    <!-- receive start-->
+    <string name="receive_title">수신</string>
+    <string name="receive_qrcode_title">QR 코드를 클릭해 사진을 저장하십시오.</string>
+    <!-- receive end -->
+
+    <!--wallet start-->
+    <string name="wallet_backup">백업 지갑</string>
+    <string name="wallet_backup_later">나중에 백업</string>
+    <string name="wallet_create">지갑 생성</string>
+    <string name="wallet_import">출금 지갑</string>
+    <string name="wallet_word_import">니모닉 단어</string>
+    <!--wallet end-->
+
+    <!--wallet create start-->
+    <string name="wallet_set_password">비밀번호 설정</string>
+    <string name="wallet_create_tips">워크 월렛은 비밀번호를 저장하지 않습니다. 비밀번호를 잊어버린 경우 복구가 불가능 합니다. 적절하게 관리하시기 바랍니다.</string>
+    <string name="wallet_create_password_label">비밀번호 생성</string>
+    <string name="wallet_create_password_tips">적어도 8자리</string>
+    <string name="wallet_create_comfirm_password_label">비밀번호 확인</string>
+    <string name="wallet_create_comfirm_password_tips">입력하십시오.</string>
+    <string name="wallet_create_password_weak_label">비밀번호</string>
+    <string name="wallet_create_password_weak_tips">지갑 보안을 위해, 비밀번호의 강도를 "좋음'이상으로 설정하십시오.</string>
+    <string name="wallet_reset_password">비밀번호 재설정</string>
+    <string name="wallet_continue_create">생성 완료</string>
+    <string name="password_strength_0"> </string>
+    <string name="password_strength_1">약함</string>
+    <string name="password_strength_2">보통</string>
+    <string name="password_strength_3">좋음</string>
+    <string name="password_strength_4">강함</string>
+    <string name="password_strength_5">완벽</string>
+    <string name="wallet_password_create_success_label">성공적으로 생성됨</string>
+    <string name="wallet_password_create_success_tips">지금 바로 지갑을 백업하시기를 강력히 권장합니다.</string>
+    <!--wallet create end-->
+
+    <!--seed import start-->
+    <string name="word_import_label">니모닉 단어는 15개의 단어로 구성 되어 있습니다. 분리된 입력 공간에 주의하십시오. 마지막에 띄어쓰기나 줄바꿈을 추가하지 마시기 바랍니다.</string>
+    <string name="word_import_hint">입력하십시오.</string>
+    <string name="word_backup_tips">스크린샷은 안전하지 않으며 당신의 사진이 다른 어플리케이션에 의해 사용될 수 있습니다. 펜과 종이를 사용해 다음의 니모닉 단어를 기록하시고 적절하게 보관하시기 바랍니다. 다음 화면에서 확인할 수 있습니다.</string>
+    <string name="word_confirm">나는 니모닉 단어를 위 지시에 따라 올바르게 저장했습니다.</string>
+    <string name="word_backup_success">성공적으로 백업되었습니다.</string>
+    <string name="word_backup_success_tips">니모닉 단어 관리에 유의하십시오.</string>
+    <string name="word_input_in_order">순서대로 니모닉 단어를 입력하십시오.</string>
+    <string name="word_backup_word">백업 니모닉</string>
+    <!--seed import end-->
+
+    <!--receive start-->
+    <string name="receive_address_caption">수신 주소</string>
+    <string name="receive_set_amount">수량 설정</string>
+    <string name="receive_copy_address">주소 복사</string>
+    <string name="receive_save_image_success">사진 저장 성공</string>
+    <string name="receive_copy_success">복사 성공</string>
+    <string name="receive_image_title">전송을 위한 QR 코드 스캔</string>
+    <!--receive end-->
+
+    <!-- send start-->
+    <string name="send_payment_title">전송</string>
+    <string name="send_lease_title">주조</string>
+    <string name="send_amount">수량</string>
+    <string name="send_lease_amount">리스 수량</string>
+    <string name="send_insufficient_balance_error">잔고 부족</string>
+    <string name="send_amount_empty_error">수량을 입력하십시오.</string>
+    <string name="send_available_balance">사용가능한 잔고: %1$s</string>
+    <string name="send_payment_to">로</string>
+    <string name="send_lease_to">로</string>
+    <string name="send_address_input_hint">수신 주소</string>
+    <string name="send_lease_address_input_hint">노드 주소</string>
+    <string name="send_address_input_error">오직 VSYS 주소로만 토큰이 전송 됩니다.</string>
+    <string name="send_to_self_error">수신 주소는 현재 주소로 설정할 수 없습니다.</string>
+    <string name="send_max_btn">최대</string>
+    <string name="send_paste_btn">붙여넣기</string>
+    <string name="send_scan_btn">QR 코드 인식</string>
+    <string name="send_explain_btn">리스란?</string>
+    <string name="send_supernode_btn">수퍼노드 순위리스트</string>
+    <string name="send_description">설명</string>
+    <string name="send_description_input_hint">입력 여부</string>
+    <string name="send_fee">수수료</string>
+    <string name="send_time">시간</string>
+    <string name="send_fee_tip">전송 수수료</string>
+    <string name="send_review_title">거래 검토</string>
+    <string name="send_review_from">내 주소</string>
+    <string name="send_review_send_to">로</string>
+    <string name="send_review_lease_to">로</string>
+    <string name="send_review_type">유형</string>
+    <string name="send_generate_qr_code_btn">QR 코드 생성</string>
+    <string name="send_scan_qr_code_title">QR 코드 인식</string>
+    <string name="send_scan_qr_code_tip"><![CDATA[1. QR 코드 스캔을 위해 <b><font color="#5E78E1">콜드 월렛</font></b> 클라이언트를 사용하십시오.<br><br> 2. 콜드 월렛 클라이언트가 QR 코드를 생성하고 나서 계속을 클릭하십시오.]]></string>
+    <string name="send_payment_success">%1$s 를 전송했습니다.</string>
+    <string name="send_lease_success">%1$s 를 대여했습니다</string>
+    <string name="send_cancel_lease_success">대한 %1$s 대여를 취소했습니다.</string>
+    <string name="send_success_check_tip">거래 기록을 확인할 수 있습니다.</string>
+    <!-- send end -->
+
+    <!-- verify password -->
+    <string name="verify_dialog_title">지갑 비밀번호</string>
+    <string name="verify_dialog_input_hint">입력하십시오.</string>
+
+    <!-- add cold account -->
+    <string name="add_cold_account_title">주소 &#038; 퍼블릭 키</string>
+    <string name="add_cold_account_scan_tip">추가를 위해서는 반드시 콜드 월렛의 퍼블릭 키와 주소가 동시에 입력돼야 합니다.</string>
+    <string name="add_cold_account_field_address">콜드 월렛 주소</string>
+    <string name="add_cold_account_field_address_hint">콜드 월렛 주소를 입력해주세요.</string>
+    <string name="add_cold_account_field_public_key">콜드 월렛 퍼블릭 키</string>
+    <string name="add_cold_account_address_exist_error">이미 존재하는 주소입니다.</string>
+
+    <!--init start-->
+    <string name="wallet_init_official_warning_dialog_msg">개인 자산의 보안을 보장하기 위해 월렛 어플이 VSYS의 홈페이지인 v.systems를 통해 다운로드 되었는지 확인하기 바랍니다.</string>
+    <string name="first_enter_tips">거의 사용하지 않고 인터넷 연결이 완전히 분리 가능한 핸드폰에 v.systems 웹사이트의 콜드 월렛을 다운 받을 수 있습니다.</string>
+    <!--init end-->
+</resources>
