@@ -70,8 +70,8 @@
     <string name="detail_monitor_title">콜드 월렛</string>
     <string name="detail_available_balance">이용가능한 잔고</string>
     <string name="detail_total_balance">총 잔고</string>
-    <string name="detail_leased_out">Leased Out</string>
-    <string name="detail_leased_in">Leased In</string>
+    <string name="detail_leased_out">리스 아웃</string>
+    <string name="detail_leased_in">리스 인</string>
     <string name="detail_send">전송</string>
     <string name="detail_receive">수신</string>
     <string name="detail_lease">주조</string>
@@ -80,8 +80,8 @@
     <string name="detail_received">수신됨</string>
     <string name="detail_start_leasing">리스 시작</string>
     <string name="detail_canceled_out_leasing">리스 취소</string>
-    <string name="detail_incoming_leasing">Incoming Leasing</string>
-    <string name="detail_canceled_int_leasing">Canceled Incoming Leasing</string>
+    <string name="detail_incoming_leasing">인커밍 리스 </string>
+    <string name="detail_canceled_int_leasing">인커밍 리스  취소</string>
     <string name="detail_address_management">주소 관리</string>
     <string name="detail_copy_address">주소 복사</string>
     <string name="detail_cancel_out_leasing_btn">리스 취소</string>
@@ -141,9 +141,7 @@
     <string name="setting_secret_tips">표시할 비밀번호를 입력하십시오.</string>
     <string name="setting_delete">삭제</string>
     <string name="setting_delete_monitor_tips">정말 콜드월렛 보기 리스트에서 이 주소를 삭제하시겠습니까?</string>
-    <string name="setting_lan_cn">简体中文</string>
-    <string name="setting_lan_en">영어</string>
-    <string name="setting_logout">로그아웃</string>
+
     <!--end>>>  setting -->
 
     <!-- receive start-->

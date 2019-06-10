@@ -141,8 +141,6 @@
     <string name="setting_secret_tips">请输入钱包密码显示</string>
     <string name="setting_delete">删除</string>
     <string name="setting_delete_monitor_tips">您是否确定将这个地址从冷钱包监控列表中移除？</string>
-    <string name="setting_lan_cn">简体中文</string>
-    <string name="setting_lan_en">English</string>
     <string name="setting_logout">注销钱包</string>
     <!--end>>>  setting -->
 

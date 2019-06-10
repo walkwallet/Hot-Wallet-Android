@@ -166,10 +166,12 @@ public class MainActivity extends BaseActivity {
         Resources resources = getResources();
         int languageType = SPUtils.getInt(Constants.LANGUAGE, Constants.LAN_EN_US);
         Configuration config = resources.getConfiguration();
-        if (languageType == Constants.LAN_EN_US) {
-            config.locale = Locale.ENGLISH;
-        } else {
+        if(languageType == Constants.LAN_ZH_CN){
             config.locale = Locale.SIMPLIFIED_CHINESE;
+        } else if(languageType == Constants.LAN_KO){
+            config.locale = Locale.KOREAN;
+        } else {
+            config.locale = Locale.ENGLISH;
         }
         DisplayMetrics dm = resources.getDisplayMetrics();
         resources.updateConfiguration(config, dm);

@@ -46,6 +46,21 @@
                 android:onClick="@{click.onClick}"
                 android:textColor="@color/color_orange_strong"
                 android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/divider" />
+
+            <TextView
+                android:id="@+id/tv_third"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/ripple_white_bottom_radius_8"
+                android:gravity="center"
+                android:onClick="@{click.onClick}"
+                android:textColor="@color/color_orange_strong"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
