@@ -6,8 +6,8 @@ android {
         applicationId "systems.v.wallet"
         minSdkVersion versions.min_sdk
         targetSdkVersion versions.target_sdk
-        versionCode 3
-        versionName "1.1.0"
+        versionCode 4
+        versionName "1.0.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }

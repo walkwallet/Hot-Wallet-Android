@@ -78,7 +78,6 @@ public class TokenInfoActivity extends BaseThemedActivity {
                 .subscribe(new Consumer<RespBean>() {
                     @Override
                     public void accept(RespBean respBean) throws Exception {
-                        Log.d(TAG, JSON.toJSONString(respBean));
                         ContractBean token = JSON.parseObject(respBean.getData(), ContractBean.class);
                         for (ContractInfoBean info: token.getInfo()){
                             if (info.getName().equals("issuer")){

@@ -16,10 +16,13 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -30,6 +33,7 @@ import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.bean.AccountBean;
 import systems.v.wallet.data.bean.RecordBean;
+import systems.v.wallet.data.bean.RecordRespBean;
 import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.databinding.ActivityWalletDetailBinding;
 import systems.v.wallet.databinding.HeaderDetailBinding;
@@ -40,6 +44,7 @@ import systems.v.wallet.ui.view.contract.TokenListActivity;
 import systems.v.wallet.ui.view.detail.adapter.RecordAdapter;
 import systems.v.wallet.ui.view.records.TransactionDetailActivity;
 import systems.v.wallet.ui.view.records.TransactionRecordsActivity;
+import systems.v.wallet.ui.view.records.fragment.RecordFragment;
 import systems.v.wallet.ui.view.setting.AddressManagementDetailActivity;
 import systems.v.wallet.ui.view.transaction.SendActivity;
 import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
@@ -59,11 +64,14 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
     }
 
     private final String TAG = DetailActivity.class.getSimpleName();
+    private final int PAGE_LIMIT = 20;
     private ActivityWalletDetailBinding mBinding;
     private HeaderDetailBinding mHeaderBinding;
     private HeaderAndFooterWrapper mAdapter;
     private List<RecordEntity> mData = new ArrayList<>();
     private boolean mIsFirst = true;
+    private boolean isAllLoaded = false;
+    private int mPageNum = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +79,8 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
         fullScreen();
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_wallet_detail);
         initView();
-        getRecords(mAccount.getAddress(), true);
+//        getRecords(mAccount.getAddress(), true);
+        getRecords(0);
     }
 
     @Override
@@ -100,7 +109,7 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
         super.onResume();
         if (!mIsFirst && mAccount != null) {
             getBalance(mAccount.getAddress());
-            getRecords(mAccount.getAddress(), false);
+            getRecords(0);
         }
         if (mIsFirst) {
             mIsFirst = false;
@@ -149,6 +158,33 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
         mAdapter = new HeaderAndFooterWrapper(innerAdapter);
         mBinding.rvTransactionRecords.setLayoutManager(new LinearLayoutManager(this));
         mBinding.rvTransactionRecords.setAdapter(mAdapter);
+        mBinding.rvTransactionRecords.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            boolean toBottom = false;
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int lastVisibleItem = manager.findLastCompletelyVisibleItemPosition();
+                    int totalItemCount = manager.getItemCount();
+
+                    if (lastVisibleItem == (totalItemCount - 1) && toBottom && !isAllLoaded) {
+                        getRecords(mPageNum + 1);
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    toBottom = true;
+                } else {
+                    toBottom = false;
+                }
+            }
+        });
         mHeaderBinding = DataBindingUtil.inflate(LayoutInflater.from(mActivity),
                 R.layout.header_detail, mBinding.rvTransactionRecords, false);
         mHeaderBinding.setClick(this);
@@ -175,25 +211,18 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
         });
     }
 
-    private void getRecords(final String address, boolean loading) {
-        Observable<RespBean> observable;
-        if (loading) {
-            observable = RetrofitHelper.getInstance().getNodeAPI().records(address, 1000)
-                    .compose(this.<RespBean>bindLoading());
-        } else {
-            observable = RetrofitHelper.getInstance().getNodeAPI().records(address, 1000);
-        }
-        Disposable d = observable.subscribeOn(Schedulers.io())
+    private void getRecords(final int pageNum) {
+        showLoading();
+        final String address = mAccount.getAddress();
+        Disposable d = RetrofitHelper.getInstance().getNodeAPI().records(address, -1, PAGE_LIMIT, pageNum * PAGE_LIMIT)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<RespBean>() {
                     @Override
                     public void accept(RespBean respBean) throws Exception {
-                        List<List<RecordBean>> resultList = JSON.parseObject(respBean.getData(),
-                                new TypeReference<List<List<RecordBean>>>() {
-                                });
-                        if (resultList != null && resultList.size() > 0
-                                && resultList.get(0) != null && resultList.get(0).size() > 0) {
-                            List<RecordBean> list = resultList.get(0);
+                        RecordRespBean resp = JSON.parseObject(respBean.getData(), RecordRespBean.class);
+                        if (resp.getTransactions() != null && resp.getTransactions().size() > 0){
+                            List<RecordBean> list = resp.getTransactions();
                             List<RecordEntity> recordEntityList = new ArrayList<>();
                             for (int i = 0; i < list.size(); i++) {
                                 RecordEntity entity = new RecordEntity(list.get(i));
@@ -202,21 +231,20 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                                     recordEntityList.add(entity);
                                 }
                             }
-                            mData.clear();
                             mData.addAll(recordEntityList);
-                            handleDataChange();
+                            mPageNum = pageNum;
+                            mAdapter.notifyDataSetChanged();
+                        }else{
+                            isAllLoaded = true;
                         }
+                        hideLoading();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Log.e(TAG, throwable.getMessage());
+                        hideLoading();
                     }
                 });
-    }
-
-    private void handleDataChange() {
-        mAdapter.notifyDataSetChanged();
     }
 
     @Subscribe

@@ -1,7 +1,9 @@
 package systems.v.wallet.data.api;
 
 import android.util.Log;
+import android.util.LogPrinter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -23,6 +25,25 @@ public class NodeAPI implements ITestNetNodeAPI, IMainNetNodeAPI {
             return mTestNodeAPI.records(address, limit);
         }
         return mMainNodeAPI.records(address, limit);
+    }
+
+    public Observable<RespBean> records(String address, int txType, int limit, int offset){
+        Map<String, Integer> map = new HashMap<>();
+        if (txType >= 0){
+            map.put("txType", txType);
+        }
+        map.put("limit", limit);
+        map.put("offset", offset);
+
+        return records(address, map);
+    }
+
+    @Override
+    public Observable<RespBean> records(String address, Map<String, Integer> map){
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.records(address, map);
+        }
+        return mMainNodeAPI.records(address, map);
     }
 
     @Override

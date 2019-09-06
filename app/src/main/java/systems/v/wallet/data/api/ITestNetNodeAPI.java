@@ -7,12 +7,17 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import systems.v.wallet.data.bean.RespBean;
 
 public interface ITestNetNodeAPI {
 
     @GET("transactions/address/{address}/limit/{limit}")
     Observable<RespBean> records(@Path("address") String address, @Path("limit") int limit);
+
+    @GET("transactions/list")
+    Observable<RespBean> records(@Query("address") String address, @QueryMap Map<String, Integer> intParams);
 
     @GET("addresses/balance/details/{address}")
     Observable<RespBean> balance(@Path("address") String address);
