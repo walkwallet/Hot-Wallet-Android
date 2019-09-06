@@ -291,7 +291,7 @@
     <string name="token_list_info">代币信息</string>
     <string name="token_list_issue">发行代币</string>
     <string name="token_list_destroy">销毁代币</string>
-    <string name="token_list_remove">移除代币</string>
+    <string name="token_list_remove">隐藏代币</string>
 
     <!--token list end-->
 

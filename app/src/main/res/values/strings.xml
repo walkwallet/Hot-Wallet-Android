@@ -295,7 +295,7 @@
     <string name="token_list_info">Get Token Info</string>
     <string name="token_list_issue">Issue Token</string>
     <string name="token_list_destroy">Destroy Token</string>
-    <string name="token_list_remove">Remove Token</string>
+    <string name="token_list_remove">Hide Token</string>
 
     <!--token list end-->
 

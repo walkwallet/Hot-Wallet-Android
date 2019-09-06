@@ -76,11 +76,14 @@
     <string name="detail_receive">수신</string>
     <string name="detail_lease">주조</string>
     <string name="detail_records">기록</string>
+    <string name="detail_token">토큰</string>
     <string name="detail_sent">전송됨</string>
     <string name="detail_received">수신됨</string>
     <string name="detail_start_leasing">리스 시작</string>
     <string name="detail_canceled_out_leasing">리스 취소</string>
     <string name="detail_incoming_leasing">인커밍 리스 </string>
+    <string name="detail_execute_contract">계약 체결</string>
+    <string name="detail_create_contract">계약 생성</string>
     <string name="detail_canceled_int_leasing">인커밍 리스  취소</string>
     <string name="detail_address_management">주소 관리</string>
     <string name="detail_copy_address">주소 복사</string>
@@ -252,4 +255,78 @@
     <string name="wallet_init_official_warning_dialog_msg">개인 자산의 보안을 보장하기 위해 월렛 어플이 VSYS의 홈페이지인 v.systems를 통해 다운로드 되었는지 확인하기 바랍니다.</string>
     <string name="first_enter_tips">거의 사용하지 않고 인터넷 연결이 완전히 분리 가능한 핸드폰에 v.systems 웹사이트의 콜드 월렛을 다운 받을 수 있습니다.</string>
     <!--init end-->
+
+    <!--register start-->
+    <string name="create_token_title">토큰 생성</string>
+    <string name="create_token_total_title">총 토큰</string>
+    <string name="create_token_contract_description_title">컨트랙트 설명</string>
+    <string name="create_token_token_description_title">토큰 설명</string>
+    <string name="create_token_description_hint">설명 입력</string>
+    <string name="create_token_description_note">다시 수정이 불가능합니다.</string>
+    <string name="create_token_unity_title">단위</string>
+    <string name="create_token_contract_main">분할 지원/ 병합 지원</string>
+    <string name="create_token_contract_secondary">(주의: 설정 후 수정이 불가합니다)</string>
+    <string name="create_token_transaction_fee_title">거래 수수료:</string>
+    <string name="create_token_available_titlte">이용가능한 잔고:</string>
+    <string name="create_token">거래 수수료:</string>
+    <string name="create_token_unitybase">10 ^ </string>
+    <string name="create_token_success">새로운 토큰이 생성되었습니다, 토큰 ID는:</string>
+    <string name="create_token_success_tip">토큰 즐겨찾기를 통해 확인 가능합니다.</string>
+    <string name="create_token_exceed_max">자리 수가 너무 큽니다. 단위를 줄이십시오.</string>
+    <string name="create_review_token_total_tokens">총 토큰</string>
+    <string name="create_review_token_description">설명</string>
+    <!--register end-->
+
+    <!--token list start-->
+    <string name="token_list_title">토큰</string>
+    <string name="token_list_available">이용가능한 VSYS</string>
+    <string name="token_list_add_token">토큰 추가</string>
+    <string name="token_list_create_token">토큰 생성</string>
+    <string name="token_list_list_title">토큰 관심 리스트</string>
+
+    <string name="token_list_send">토큰 전송</string>
+    <string name="token_list_info">토큰 정보 얻기</string>
+    <string name="token_list_issue">발행 토큰</string>
+    <string name="token_list_destroy">토큰 파괴</string>
+    <string name="token_list_remove">토큰숨기기</string>
+
+    <!--token list end-->
+
+    <!--add token start-->
+    <string name="add_token_token_id">토큰 아이디</string>
+
+    <!--add token end-->
+
+    <!--token operation start-->
+    <string name="token_info_title">토큰 정보</string>
+    <string name="token_info_token_id">토큰 아이디</string>
+    <string name="token_info_contract_id">컨트랙트 아이디</string>
+    <string name="token_info_issuer">발행자</string>
+    <string name="token_info_register_time">등록 시간</string>
+    <string name="token_info_unity">단위</string>
+    <string name="token_info_maker">메이커</string>
+    <string name="token_info_total_token">최대 유통량</string>
+    <string name="token_info_issued_tokens">현재 유통량</string>
+    <string name="token_info_description">토큰 설명</string>
+
+    <string name="issue_token_title">발행 토큰</string>
+    <string name="issue_token_amount">발행 수량</string>
+    <string name="issue_token_success">발행 수량</string>
+    <string name="issue_token_review_amount">발행 수량</string>
+    <string name="issue_available_balance">발행 이용가능한: %1$s</string>
+
+    <string name="add_token_input_hint">토큰 아이디 입력</string>
+    <string name="add_token_add">추가</string>
+    <string name="add_token_err_id">토큰이 존재하지 않습니다!</string>
+    <string name="add_token_added_token">이미 토큰이 추가되었습니다!</string>
+    <string name="add_token_success">성공적으로 추가됨</string>
+
+    <string name="destroy_token_amount">소각 코인 발행 수량</string>
+    <string name="destroy_token_review_amount">소각 코인 발행 수량</string>
+    <string name="send_token_title">토큰 전송</string>
+
+    <string name="send_token_review_amount">총액</string>
+
+    <!--token operation end-->
+
 </resources>
