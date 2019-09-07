@@ -18,15 +18,20 @@ import android.widget.SeekBar;
 import java.math.BigDecimal;
 
 import androidx.databinding.DataBindingUtil;
+
+import systems.v.wallet.App;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.AlertDialog;
 import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
+import systems.v.wallet.basic.utils.FileUtil;
 import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.databinding.ActivityCreateTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
+import systems.v.wallet.ui.view.wallet.WalletInitActivity;
 import systems.v.wallet.utils.ContractUtil;
+import systems.v.wallet.utils.SPUtils;
 import vsys.Contract;
 import vsys.Vsys;
 
@@ -78,6 +83,21 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
         mBinding.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    new AlertDialog.Builder(mActivity)
+                            .setTitle(R.string.warning)
+                            .setMessage(R.string.create_token_spilt_alert)
+                            .setPositiveButton(R.string.i_agree, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            }).setNegativeButton(R.string.i_dont_agree, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mBinding.checkBox.setChecked(false);
+                                }
+                            }).confirm();
+                }
                 isSplit = b;
             }
         });

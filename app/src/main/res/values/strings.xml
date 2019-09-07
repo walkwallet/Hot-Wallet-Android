@@ -14,6 +14,9 @@
     <string name="unsupported_qrcode">Unsupported QR code types</string>
     <string name="official_warning">Officials Hint</string>
     <string name="got_it">I got it</string>
+    <string name="i_agree">I agree</string>
+    <string name="i_dont_agree">I do not agree</string>
+    <string name="warning">WARNING</string>
 
     <!--other start-->
     <string name="scan_tip">Align QR code within frame to scan</string>
@@ -282,6 +285,7 @@
     <string name="create_token_exceed_max">Too many significant digits for amount. Please reduce unity.</string>
     <string name="create_review_token_total_tokens">Total Tokens</string>
     <string name="create_review_token_description">Description</string>
+    <string name="create_token_spilt_alert">Split/Reverse-Split is an experimental token feature requiring exchange support compatible with Unity Token Split Protocol. The proper use of token with split functionality requires due diligence of both the token issuer and the supporting exchanges. Token issuer shall agree to abide by the protocol and convention of proper use of the split/reverse-split functionality. Token issuer shall agree to defend, hold harmless, and indemnify V Systems Limited for damage and loss involving the use of split/reverse-split functionality of the token.</string>
     <!--register end-->
 
     <!--token list start-->
