@@ -2,6 +2,7 @@ package systems.v.wallet;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -15,6 +16,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import androidx.multidex.MultiDex;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -79,9 +81,12 @@ public class App extends Application {
                 int languageType = SPUtils.getInt(Constants.LANGUAGE, -1);
                 if (languageType == -1) {
                     Locale locale = getResources().getConfiguration().locale;
-                    if (locale.getLanguage().contains(Locale.SIMPLIFIED_CHINESE.getLanguage())) {
+                    String langStr = locale.getLanguage();
+                    if (langStr.contains(Locale.SIMPLIFIED_CHINESE.getLanguage())) {
                         languageType = Constants.LAN_ZH_CN;
-                    } else {
+                    } else if (langStr.contains(Locale.KOREAN.getLanguage())){
+                        languageType = Constants.LAN_KO;
+                    } else{
                         languageType = Constants.LAN_EN_US;
                     }
                     SPUtils.setInt(Constants.LANGUAGE, languageType);
@@ -90,6 +95,8 @@ public class App extends Application {
                     config.locale = Locale.ENGLISH;
                 } else if (languageType == Constants.LAN_ZH_CN) {
                     config.locale = Locale.SIMPLIFIED_CHINESE;
+                } else if (languageType == Constants.LAN_KO){
+                    config.locale = Locale.KOREAN;
                 }
                 resources.updateConfiguration(config, dm);
                 addActivity(activity);
@@ -137,7 +144,7 @@ public class App extends Application {
 
 
     /**
-     * @return The milliseconds time of activity's last call {@link Activity#onPause()}
+     * @return The milliseconds time of activity's last call {@link Activity #onPause()}
      */
     public long getLastPausedTime() {
         return mLastPausedTime;
@@ -177,7 +184,7 @@ public class App extends Application {
 
     /**
      * Record the activity use {@link #mTopActivity}.
-     * Must call this method in activity's {@link Activity#onResume()}
+     * Must call this method in activity's {@link Activity #onResume()}
      */
     public void resumeActivity(Activity activity) {
         mTopActivity = new WeakReference<>(activity);

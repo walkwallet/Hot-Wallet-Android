@@ -34,6 +34,7 @@ public class RecordAdapter extends BaseAdapter<RecordEntity> {
         int drawableId = 0;
         int textId = 0;
         String amount = item.getAmount() + "";
+        String address = UIUtil.getMutatedAddress(item.getRecipient());
         switch (item.getRecordType()) {
             case RecordEntity.TYPE_RECEIVED:
             case RecordEntity.TYPE_MINTING:
@@ -66,11 +67,31 @@ public class RecordAdapter extends BaseAdapter<RecordEntity> {
                 textId = R.string.detail_canceled_out_leasing;
                 amount = CoinUtil.format(item.getAmount());
                 break;
+            case RecordEntity.TYPE_REGISTER_CONTRACT:
+                textId = R.string.detail_create_contract;
+                amount = "-" + CoinUtil.format(item.getFee());
+                address = UIUtil.getMutatedAddress(item.getAddress());
+                if(item.getStatus().equals(RecordEntity.SUCCESS_TX)){
+                    drawableId = R.drawable.ic_reg_succ;
+                }else{
+                    drawableId = R.drawable.ic_exec_fail;
+                }
+                break;
+            case RecordEntity.TYPE_EXECUTE_CONTRACT:
+                textId = R.string.detail_execute_contract;
+                amount = "-" + CoinUtil.format(item.getFee());
+                address = UIUtil.getMutatedAddress(item.getAddress());
+                if(item.getStatus().equals(RecordEntity.SUCCESS_TX)){
+                    drawableId = R.drawable.ic_exec_succ;
+                }else{
+                    drawableId = R.drawable.ic_exec_fail;
+                }
+                break;
         }
         binding.ivRecordType.setImageResource(drawableId);
         binding.tvRecordType.setText(textId);
         binding.tvAmount.setText(amount);
-        binding.tvAddress.setText(UIUtil.getMutatedAddress(item.getRecipient()));
+        binding.tvAddress.setText(address);
         binding.tvTime.setText(DateUtils.getShowTime(item.getFormatTimestamp()));
         if (mHasHeader && position == 0) {
             binding.llTop.setVisibility(View.VISIBLE);

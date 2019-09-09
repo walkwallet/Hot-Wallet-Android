@@ -6,6 +6,7 @@
     <string name="cancel">取消</string>
     <string name="ok">好的</string>
     <string name="next">继续</string>
+    <string name="back">返回</string>
     <string name="scan">扫描</string>
     <string name="send">发送</string>
     <string name="complete">完成</string>
@@ -66,7 +67,7 @@
     <!--end>>>  home list (wallet list /monitor list) -->
 
     <!--start>>>  detail  (wallet detail/ monitor detail) -->
-    <string name="detail_wallet_title">钱包</string>
+    <string name="detail_wallet_title">热钱包</string>
     <string name="detail_monitor_title">冷钱包</string>
     <string name="detail_available_balance">可用余额</string>
     <string name="detail_total_balance">总余额</string>
@@ -76,11 +77,14 @@
     <string name="detail_receive">接收</string>
     <string name="detail_lease">铸币</string>
     <string name="detail_records">记录</string>
+    <string name="detail_token">代币</string>
     <string name="detail_sent">发送</string>
     <string name="detail_received">接收</string>
     <string name="detail_start_leasing">租出</string>
     <string name="detail_canceled_out_leasing">取消租出</string>
     <string name="detail_incoming_leasing">租入</string>
+    <string name="detail_create_contract">创建合约 </string>
+    <string name="detail_execute_contract">执行合约 </string>
     <string name="detail_canceled_int_leasing">取消租入</string>
     <string name="detail_address_management">地址管理</string>
     <string name="detail_copy_address">复制地址</string>
@@ -108,6 +112,7 @@
     <string name="transaction_detail_txid">交易Id</string>
     <string name="transaction_detail_amount">数量</string>
     <string name="transaction_detail_fee">手续费</string>
+    <string name="transaction_detail_status">状态</string>
     <string name="transaction_detail_time">时间</string>
     <string name="transaction_detail_description">备注</string>
     <!--end>>>  transaction detail -->
@@ -223,7 +228,8 @@
     <string name="send_time">时间</string>
     <string name="send_fee_tip">手续费 </string>
     <string name="send_review_title">确认交易</string>
-    <string name="send_review_from">我的地址</string>
+    <string name="send_review_my_address">我的地址</string>
+    <string name="send_review_from">发送地址</string>
     <string name="send_review_send_to">接收地址</string>
     <string name="send_review_lease_to">租出地址</string>
     <string name="send_review_type">类型</string>
@@ -252,4 +258,81 @@
     <string name="wallet_init_official_warning_dialog_msg">为保证您的个人财产安全，请务必确保您的钱包APP来自VSYS官方网站v.systems下载</string>
     <string name="first_enter_tips">您可以准备一个几乎不使用和可以完全断网的手机，从v.systems官网下载冷钱包。</string>
     <!--init end-->
+
+
+    <!--register start-->
+    <string name="create_token_title">创建代币</string>
+    <string name="create_token_total_title">代币总量</string>
+    <string name="create_token_contract_description_title">合约描述</string>
+    <string name="create_token_token_description_title">代币描述</string>
+    <string name="create_token_description_hint">请输入代币描述</string>
+    <string name="create_token_description_note">之后无法更改</string>
+    <string name="create_token_unity_title">单位:</string>
+    <string name="create_token_contract_main">支持Split/Reverse-split操作</string>
+    <string name="create_token_contract_secondary">(注意: 创建后无法更改)</string>
+    <string name="create_token_transaction_fee_title">手续费 </string>
+    <string name="create_token_available_titlte">可用余额</string>
+    <string name="create_token_success">您已成功创建合约, 代币 ID 为:</string>
+    <string name="create_token_success_tip">您可以在代币列表中查看</string>
+    <string name="create_token_exceed_max">位数过多，请减少</string>
+    <string name="create_review_token_total_tokens">代币总量</string>
+    <string name="create_review_token_description">描述</string>
+    <!--register end-->
+
+
+    <!--token list start-->
+    <string name="token_list_title">代币</string>
+    <string name="token_list_available">VSYS余额</string>
+    <string name="token_list_add_token">添加代币</string>
+    <string name="token_list_create_token">创建代币</string>
+    <string name="token_list_list_title">代币列表</string>
+
+    <string name="token_list_send">发送代币</string>
+    <string name="token_list_info">代币信息</string>
+    <string name="token_list_issue">发行代币</string>
+    <string name="token_list_destroy">销毁代币</string>
+    <string name="token_list_remove">隐藏代币</string>
+
+    <!--token list end-->
+
+    <!--add token start-->
+    <string name="add_token_token_id">代币 ID</string>
+
+    <!--add token end-->
+
+    <!--token operation start-->
+    <string name="token_info_title">代币信息</string>
+    <string name="token_info_token_id">代币 ID</string>
+    <string name="token_info_contract_id">合约 ID</string>
+    <string name="token_info_issuer">发行人</string>
+    <string name="token_info_register_time">创建时间</string>
+    <string name="token_info_unity">单位</string>
+    <string name="token_info_maker">创建人</string>
+    <string name="token_info_total_token">代币总量</string>
+    <string name="token_info_issued_tokens">已发行量</string>
+    <string name="token_info_description">描述</string>
+
+    <string name="issue_token_title">发行代币</string>
+    <string name="issue_token_amount">发行代币</string>
+    <string name="issue_token_success">发行数额</string>
+    <string name="issue_larger_than_max">发行数额超过最大可发行量.</string>
+    <string name="issue_token_review_amount">发行数额</string>
+    <string name="issue_available_balance">可发行量: %1$s</string>
+
+    <string name="add_token_input_hint">输入代币 ID</string>
+    <string name="add_token_add">添加</string>
+    <string name="add_token_err_id">代币不存在！</string>
+    <string name="add_token_added_token">代币已经存在！</string>
+    <string name="add_token_success">成功添加</string>
+
+    <string name="destroy_token_amount">销毁数额</string>
+    <string name="destroy_token_review_amount">销毁数额</string>
+    <string name="send_token_title">发送代币</string>
+
+    <string name="send_token_review_amount">数额</string>
+
+    <string name="invalid_precision">数额精度超出上限.</string>
+    <!--token operation end-->
+
+
 </resources>

@@ -1,0 +1,262 @@
+package systems.v.wallet.ui.view.contract;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+
+import com.alibaba.fastjson.JSON;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import systems.v.wallet.R;
+import systems.v.wallet.basic.utils.CoinUtil;
+import systems.v.wallet.basic.wallet.Token;
+import systems.v.wallet.data.BaseErrorConsumer;
+import systems.v.wallet.data.RetrofitHelper;
+import systems.v.wallet.data.api.NodeAPI;
+import systems.v.wallet.data.api.PublicApi;
+import systems.v.wallet.data.bean.RespBean;
+import systems.v.wallet.data.bean.TokenBalanceBean;
+import systems.v.wallet.data.bean.publicApi.TokenInfoBean;
+import systems.v.wallet.databinding.ActivityTokenListBinding;
+import systems.v.wallet.databinding.HeaderDetailBinding;
+import systems.v.wallet.databinding.HeaderTokenListBinding;
+import systems.v.wallet.ui.BaseThemedActivity;
+import systems.v.wallet.ui.view.contract.adapter.TokenAdapter;
+import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
+import systems.v.wallet.ui.widget.wrapper.HeaderAndFooterWrapper;
+import systems.v.wallet.utils.Constants;
+import systems.v.wallet.utils.SPUtils;
+import systems.v.wallet.utils.bus.AppEvent;
+import systems.v.wallet.utils.bus.annotation.Subscribe;
+
+public class TokenListActivity extends BaseThemedActivity implements View.OnClickListener{
+    public static void launch(Activity from, String publicKey) {
+        Intent intent = new Intent(from, TokenListActivity.class);
+        intent.putExtra("publicKey", publicKey);
+        from.startActivity(intent);
+    }
+
+    private final String TAG = TokenListActivity.class.getSimpleName();
+
+    private ActivityTokenListBinding mBinding;
+    private HeaderTokenListBinding mHeaderBinding;
+    private HeaderAndFooterWrapper mAdapter;
+    private List<Token> mData = new ArrayList<>();
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.ll_create_token:
+                CreateTokenActivity.launch(this, mAccount.getPublicKey());
+                break;
+            case R.id.ll_add_token:
+                AddTokenActivity.launch(this, mAccount.getPublicKey());
+                break;
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_token_list);
+        initView();
+        initData();
+    }
+
+    private void initView(){
+        setAppBar(mBinding.toolbar);
+        mBinding.setClick(this);
+
+        TokenAdapter tokenAdapter = new TokenAdapter(mData, mActivity);
+        tokenAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClickListener(View view, final int position) {
+                List<TokenOperationFragment.Operation> mOperation = new ArrayList<>();
+                mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_send, new TokenOperationFragment.Operation.OperationListener() {
+                    @Override
+                    public void onOperation(TokenOperationFragment dialog) {
+                        SendTokenActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
+                    }
+                }));
+                mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_info,new TokenOperationFragment.Operation.OperationListener() {
+                    @Override
+                    public void onOperation(TokenOperationFragment dialog) {
+                        TokenInfoActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
+                    }
+                }));
+                if(mData.get(position).getIssuer().equals(mAccount.getAddress())) {
+                    mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_issue, new TokenOperationFragment.Operation.OperationListener() {
+                        @Override
+                        public void onOperation(TokenOperationFragment dialog) {
+                            IssueActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
+                        }
+                    }));
+                    mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_destroy, new TokenOperationFragment.Operation.OperationListener() {
+                        @Override
+                        public void onOperation(TokenOperationFragment dialog) {
+                            DestroyTokenActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
+                        }
+                    }));
+                }
+                mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_remove, new TokenOperationFragment.Operation.OperationListener() {
+                    @Override
+                    public void onOperation(TokenOperationFragment dialog) {
+                        final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
+                        List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+                        if(tokens == null){
+                            return ;
+                        }
+                        for (int i=0; i<tokens.size();i++){
+                            if(tokens.get(i).getTokenId().equals(mData.get(position).getTokenId())){
+                                tokens.remove(i);
+                                SPUtils.setString(key, JSON.toJSONString(tokens));
+                                mData.remove(position);
+                                handleDataChange();
+                                break;
+                            }
+                        }
+
+                    }
+                }));
+                new TokenOperationFragment.Builder()
+                        .setOperations(mOperation)
+                        .setToken(mData.get(position))
+                        .create()
+                        .show(TokenListActivity.this.getSupportFragmentManager(),"");
+            }
+        });
+
+        mAdapter = new HeaderAndFooterWrapper(tokenAdapter);
+        mBinding.rvToken.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.rvToken.setAdapter(mAdapter);
+        mHeaderBinding = DataBindingUtil.inflate(LayoutInflater.from(mActivity), R.layout.header_token_list, mBinding.rvToken, false);
+        mHeaderBinding.setClick(this);
+        mAdapter.addHeaderView(mHeaderBinding.getRoot());
+
+    }
+
+    private void initData(){
+        setHeaderData();
+        getTokenList();
+    }
+
+    private void getTokenList(){
+        final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
+        List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+        if (tokens == null){
+            return ;
+        }
+
+        mData.clear();
+        mData.addAll(tokens);
+        final NodeAPI nodeApi = RetrofitHelper.getInstance().getNodeAPI();
+        final PublicApi publicApi = RetrofitHelper.getInstance().getPublicAPI();
+
+        if(mData != null) {
+            //Balance
+            Disposable nd = Observable.fromIterable(mData)
+                    .flatMap(new Function<Token, Observable<RespBean>>() {
+                        @Override
+                        public Observable<RespBean> apply(Token token){
+                            return nodeApi.tokenBalance(mAccount.getAddress(), token.getTokenId());
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<RespBean>() {
+                        @Override
+                        public void accept(RespBean resp) throws Exception {
+                            if(resp.getCode() == 0){
+                                TokenBalanceBean balance = JSON.parseObject(resp.getData(), TokenBalanceBean.class);
+                                for (int j = 0; j < mData.size(); j++) {
+                                    if (mData.get(j).getTokenId().equals(balance.getTokenId())) {
+                                        mData.get(j).setBalance(balance.getBalance());
+                                        mData.get(j).setUnity(balance.getUnity());
+                                    }
+                                }
+
+                                SPUtils.setString(key, JSON.toJSONString(mData));
+                                handleDataChange();
+                            }
+                        }
+                    }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
+                        @Override
+                        public void onError(int code, String msg) {
+                            Log.e(TAG, msg);
+                        }
+                    }));
+            //Official Token Icon & Name
+            Disposable pd = Observable.fromIterable(mData)
+                    .flatMap(new Function<Token, Observable<systems.v.wallet.data.bean.publicApi.RespBean>>() {
+                        @Override
+                        public Observable<systems.v.wallet.data.bean.publicApi.RespBean> apply(Token token){
+                            Map<String, Object> params = new HashMap<>();
+                            params.put("TokenId", token.getTokenId());
+                            return publicApi.getTokenDetail(params);
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<systems.v.wallet.data.bean.publicApi.RespBean>() {
+                        @Override
+                        public void accept(systems.v.wallet.data.bean.publicApi.RespBean resp) throws Exception {
+                            if(resp.getCode() == 0){
+                                TokenInfoBean t = JSON.parseObject((String)resp.getData(), TokenInfoBean.class);
+                                for (int j = 0; j < mData.size(); j++) {
+                                    if (mData.get(j).getTokenId().equals(t.getId())) {
+                                        mData.get(j).setIcon(Constants.PUBLIC_API_SERVER_RES + t.getIconUrl());
+                                        mData.get(j).setName(t.getName());
+                                    }
+                                }
+
+//                                SPUtils.setString(key, JSON.toJSONString(mData));
+                                handleDataChange();
+                            }
+
+                        }
+                    }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
+                        @Override
+                        public void onError(int code, String msg) {
+                            Log.e(TAG, msg);
+                        }
+                    }));
+        }
+        handleDataChange();
+    }
+
+    private void handleDataChange() {
+        if(mAdapter != null){
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Subscribe
+    public void onAppEvent(AppEvent event) {
+        switch (event.getType()) {
+            case TOKEN_ADD:
+                getTokenList();
+                break;
+        }
+    }
+
+    private void setHeaderData() {
+        if (mAccount != null) {
+            mHeaderBinding.tvBalance.setText(CoinUtil.formatWithUnit(mAccount.getAvailable()));
+        }
+    }
+}

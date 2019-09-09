@@ -1,5 +1,9 @@
 package systems.v.wallet.data.api;
 
+import android.util.Log;
+import android.util.LogPrinter;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -21,6 +25,25 @@ public class NodeAPI implements ITestNetNodeAPI, IMainNetNodeAPI {
             return mTestNodeAPI.records(address, limit);
         }
         return mMainNodeAPI.records(address, limit);
+    }
+
+    public Observable<RespBean> records(String address, int txType, int limit, int offset){
+        Map<String, Integer> map = new HashMap<>();
+        if (txType >= 0){
+            map.put("txType", txType);
+        }
+        map.put("limit", limit);
+        map.put("offset", offset);
+
+        return records(address, map);
+    }
+
+    @Override
+    public Observable<RespBean> records(String address, Map<String, Integer> map){
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.records(address, map);
+        }
+        return mMainNodeAPI.records(address, map);
     }
 
     @Override
@@ -54,4 +77,53 @@ public class NodeAPI implements ITestNetNodeAPI, IMainNetNodeAPI {
         }
         return mMainNodeAPI.cancelLease(cancel);
     }
+
+    @Override
+    public Observable<RespBean> registerContract(Map<String, Object> register) {
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.registerContract(register);
+        }
+        return mMainNodeAPI.registerContract(register);
+    }
+
+    @Override
+    public Observable<RespBean> executeContract(Map<String, Object> execute) {
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.executeContract(execute);
+        }
+        return mMainNodeAPI.executeContract(execute);
+    }
+
+    @Override
+    public Observable<RespBean> tokenInfo(String tokenId) {
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.tokenInfo(tokenId);
+        }
+        return mMainNodeAPI.tokenInfo(tokenId);
+    }
+
+    @Override
+    public Observable<RespBean> tokenBalance(String address, String tokenId) {
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.tokenBalance(address, tokenId);
+        }
+        return mMainNodeAPI.tokenBalance(address, tokenId);
+    }
+
+    @Override
+    public Observable<RespBean> contractContent(String contractId) {
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.contractContent(contractId);
+        }
+        return mMainNodeAPI.contractContent(contractId);
+    }
+
+    @Override
+    public Observable<RespBean> contractInfo(String contractId) {
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.contractInfo(contractId);
+        }
+        return mMainNodeAPI.contractInfo(contractId);
+    }
+
 }

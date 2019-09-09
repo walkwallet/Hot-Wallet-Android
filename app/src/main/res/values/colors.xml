@@ -10,6 +10,7 @@
     <color name="black_6">#99000000</color>
     <color name="black_5">#80000000</color>
     <color name="black_3">#4D000000</color>
+    <color name="black_7">#36363E</color>
     <color name="bg_common">#FFFFFF</color>
     <color name="white_pressed">#FFE6E6E6</color>
     <color name="bg_default">@color/bg_common</color>
@@ -46,4 +47,7 @@
     <color name="color_root">#FAFAFA</color>
     <color name="color_password_bg">#F5F5F5</color>
     <color name="color_label">#81818A</color>
+
+    <color name="text_green2">#23A28C</color>
+
 </resources>

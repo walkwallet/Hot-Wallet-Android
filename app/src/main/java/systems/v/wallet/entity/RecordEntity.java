@@ -13,10 +13,14 @@ public class RecordEntity extends RecordBean {
     public static final int TYPE_START_IN_LEASING = 5;
     public static final int TYPE_CANCELED_IN_LEASING = 6;
     public static final int TYPE_MINTING = 7;
-    public static final int TYPE_NONE = 8;
+    public static final int TYPE_REGISTER_CONTRACT = 8;
+    public static final int TYPE_EXECUTE_CONTRACT = 9;
+    public static final int TYPE_NONE = -1;
 
     private String address;
     private int recordType;
+
+    public static final String SUCCESS_TX = "Success";
 
     public RecordEntity() {
     }
@@ -31,6 +35,7 @@ public class RecordEntity extends RecordBean {
         setRecipient(bean.getRecipient());
         setAmount(bean.getAmount());
         setAttachment(bean.getAttachment());
+        setStatus(bean.getStatus());
     }
 
     public String getAddress() {
@@ -59,7 +64,11 @@ public class RecordEntity extends RecordBean {
             }
         } else if (type == Transaction.MINTING) {
             recordType = TYPE_MINTING;
-        } else {
+        } else if (type == Transaction.CONTRACT_REGISTER){
+            recordType = TYPE_REGISTER_CONTRACT;
+        } else if (type == Transaction.CONTRACT_EXECUTE){
+            recordType = TYPE_EXECUTE_CONTRACT;
+        } else{
             recordType = TYPE_NONE;
         }
         this.address = address;

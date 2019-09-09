@@ -84,7 +84,6 @@
         <activity
             android:name=".ui.view.setting.AboutUsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.view.wallet.TipsActivity"
             android:screenOrientation="portrait" />
@@ -98,27 +97,30 @@
             android:name=".ui.view.transaction.SendActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
-
         <activity
             android:name=".ui.view.transaction.ScannerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Translucent" />
-
         <activity
             android:name=".ui.view.setting.AddressManagementActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.view.setting.AddressManagementDetailActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.view.main.AddColdAccountActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Blue" />
-
         <activity
             android:name=".ui.view.transaction.ResultActivity"
             android:theme="@style/AppTheme.Transparent" />
+        <activity android:name=".ui.view.contract.CreateTokenActivity" />
+        <activity android:name=".ui.view.contract.DestroyTokenActivity" />
+        <activity android:name=".ui.view.contract.TokenListActivity" />
+        <activity android:name=".ui.view.contract.AddTokenActivity" />
+        <activity android:name=".ui.view.contract.IssueActivity" />
+        <activity android:name=".ui.view.contract.TokenInfoActivity" />
+        <activity android:name=".ui.view.contract.SendTokenActivity"></activity>
     </application>
 
 </manifest>

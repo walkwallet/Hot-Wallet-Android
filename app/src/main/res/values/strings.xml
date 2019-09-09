@@ -6,6 +6,7 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="next">Continue</string>
+    <string name="back">Back</string>
     <string name="scan">Scan</string>
     <string name="send">Send</string>
     <string name="complete">Complete</string>
@@ -13,6 +14,9 @@
     <string name="unsupported_qrcode">Unsupported QR code types</string>
     <string name="official_warning">Officials Hint</string>
     <string name="got_it">I got it</string>
+    <string name="i_agree">I agree</string>
+    <string name="i_dont_agree">I do not agree</string>
+    <string name="warning">WARNING</string>
 
     <!--other start-->
     <string name="scan_tip">Align QR code within frame to scan</string>
@@ -66,7 +70,7 @@
     <!--end>>>  home list (wallet list /monitor list) -->
 
     <!--start>>>  detail  (wallet detail/ monitor detail) -->
-    <string name="detail_wallet_title">Wallet</string>
+    <string name="detail_wallet_title">Hot Wallet</string>
     <string name="detail_monitor_title">Cold Wallet</string>
     <string name="detail_available_balance">Available Balance</string>
     <string name="detail_total_balance">Total Balance</string>
@@ -76,6 +80,7 @@
     <string name="detail_receive">Receive</string>
     <string name="detail_lease">Minting</string>
     <string name="detail_records">Records</string>
+    <string name="detail_token">Token</string>
     <string name="detail_sent">Sent</string>
     <string name="detail_received">Received</string>
     <string name="detail_start_leasing">Start Leasing</string>
@@ -84,6 +89,8 @@
     <string name="detail_canceled_int_leasing">Canceled Incoming Leasing</string>
     <string name="detail_address_management">Address Management</string>
     <string name="detail_copy_address">Copy the Address</string>
+    <string name="detail_create_contract">Create Contract </string>
+    <string name="detail_execute_contract">Execute Contract </string>
     <string name="detail_cancel_out_leasing_btn">Cancel Out Leasing</string>
     <!--end>>>  detail  (wallet detail/ monitor detail) -->
 
@@ -108,6 +115,7 @@
     <string name="transaction_detail_txid">TxId</string>
     <string name="transaction_detail_amount">Amount</string>
     <string name="transaction_detail_fee">Fee</string>
+    <string name="transaction_detail_status">Status</string>
     <string name="transaction_detail_time">Time</string>
     <string name="transaction_detail_description">Description</string>
     <!--end>>>  transaction detail -->
@@ -226,13 +234,15 @@
     <string name="send_time">Time</string>
     <string name="send_fee_tip">Transaction Fee</string>
     <string name="send_review_title">Review Transaction</string>
-    <string name="send_review_from">My Address</string>
+    <string name="send_review_my_address">My Address</string>
+    <string name="send_review_from">From</string>
     <string name="send_review_send_to">To</string>
     <string name="send_review_lease_to">To</string>
     <string name="send_review_type">Type</string>
     <string name="send_generate_qr_code_btn">Generate QR Code</string>
     <string name="send_scan_qr_code_title">Scan QR Code</string>
     <string name="send_scan_qr_code_tip"><![CDATA[1. Please use your <b><font color="#5E78E1">Cold Wallet</font></b> client to scan this QR code.<br><br>2. And click continue after your cold wallet client generates a QR code.]]></string>
+    <string name="send_scan_qr_code_page">Current Page: %1$s Total Page: %2$s </string>
     <string name="send_payment_success">You Sent %1$s to</string>
     <string name="send_lease_success">You Started Leasing  %1$s to</string>
     <string name="send_cancel_lease_success">You  Canceled Out Leasing  %1$s to</string>
@@ -255,4 +265,81 @@
     <string name="wallet_init_official_warning_dialog_msg">To ensure the security of your personal property, please make sure that your wallet APP is downloaded from v.systems, the official website of VSYS</string>
     <string name="first_enter_tips">You can download a cold wallet from the v.stems website with a phone that you barely use and can completely disconnect from the Internet</string>
     <!--init end-->
+
+    <!--register start-->
+    <string name="create_token_title">Create Token</string>
+    <string name="create_token_total_title">TOTAL TOKEN</string>
+    <string name="create_token_contract_description_title">CONTRACT DESCRIPTION</string>
+    <string name="create_token_token_description_title">TOKEN DESCRIPTION</string>
+    <string name="create_token_description_hint">Input description</string>
+    <string name="create_token_description_note">You cannot change the description later</string>
+    <string name="create_token_unity_title">Unity:</string>
+    <string name="create_token_contract_main">Support Split/Reverse-split</string>
+    <string name="create_token_contract_secondary">(Attention: cannot change after create)</string>
+    <string name="create_token_transaction_fee_title">Transaction Fee:</string>
+    <string name="create_token_available_titlte">Available balance:</string>
+    <string name="create_token">Transaction Fee:</string>
+    <string name="create_token_unitybase">10 ^ </string>
+    <string name="create_token_success">You have create a new token, token ID is:</string>
+    <string name="create_token_success_tip">You can check in your token watch list</string>
+    <string name="create_token_exceed_max">Too many significant digits for amount. Please reduce unity.</string>
+    <string name="create_review_token_total_tokens">Total Tokens</string>
+    <string name="create_review_token_description">Description</string>
+    <string name="create_token_spilt_alert">Split/Reverse-Split is an experimental token feature requiring exchange support compatible with Unity Token Split Protocol. The proper use of token with split functionality requires due diligence of both the token issuer and the supporting exchanges. Token issuer shall agree to abide by the protocol and convention of proper use of the split/reverse-split functionality. Token issuer shall agree to defend, hold harmless, and indemnify V Systems Limited for damage and loss involving the use of split/reverse-split functionality of the token.</string>
+    <!--register end-->
+
+    <!--token list start-->
+    <string name="token_list_title">Token</string>
+    <string name="token_list_available">Available VSYS</string>
+    <string name="token_list_add_token">Add Token</string>
+    <string name="token_list_create_token">Create Token</string>
+    <string name="token_list_list_title">Token Watch List</string>
+
+    <string name="token_list_send">Send Token</string>
+    <string name="token_list_info">Get Token Info</string>
+    <string name="token_list_issue">Issue Token</string>
+    <string name="token_list_destroy">Destroy Token</string>
+    <string name="token_list_remove">Hide Token</string>
+
+    <!--token list end-->
+
+    <!--add token start-->
+    <string name="add_token_token_id">TOKEN ID</string>
+
+    <!--add token end-->
+
+    <!--token operation start-->
+    <string name="token_info_title">Token Info</string>
+    <string name="token_info_token_id">Token ID</string>
+    <string name="token_info_contract_id">Contract ID</string>
+    <string name="token_info_issuer">Issuer</string>
+    <string name="token_info_register_time">Register Time</string>
+    <string name="token_info_unity">Unity</string>
+    <string name="token_info_maker">Maker</string>
+    <string name="token_info_total_token">Max Supply</string>
+    <string name="token_info_issued_tokens">Current Supply</string>
+    <string name="token_info_description">Token Description</string>
+
+    <string name="issue_token_title">Issue Token</string>
+    <string name="issue_token_amount">ISSUE AMOUNT</string>
+    <string name="issue_token_success">Issue amount</string>
+    <string name="issue_larger_than_max">The issued token can not larger than max supply.</string>
+    <string name="issue_token_review_amount">Issue Amount</string>
+    <string name="issue_available_balance">Issue available: %1$s</string>
+
+    <string name="add_token_input_hint">Input the token ID</string>
+    <string name="add_token_add">Add</string>
+    <string name="add_token_err_id">Token does not exist!</string>
+    <string name="add_token_added_token">Token already added!</string>
+    <string name="add_token_success">Successful added</string>
+
+    <string name="destroy_token_amount">DESTROY AMOUNT</string>
+    <string name="destroy_token_review_amount">Destroy Amount</string>
+    <string name="send_token_title">Send Token</string>
+
+    <string name="send_token_review_amount">Amount</string>
+
+    <string name="invalid_precision">The number of digits after the decimal point may be larger than the token precision.</string>
+    <!--token operation end-->
+
 </resources>

@@ -32,6 +32,9 @@
                 android:layout_gravity="center|end"
                 android:textColor="@color/color_white_5"
                 android:textSize="72sp"
+                android:maxEms="5"
+                android:ellipsize="middle"
+                android:singleLine="true"
                 tools:text="01" />
 
             <LinearLayout

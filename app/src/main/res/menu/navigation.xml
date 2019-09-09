@@ -3,10 +3,16 @@
 
     <item
         android:id="@+id/nav_address_manage"
-        android:title="@string/detail_address_management" />
+        android:title="@string/detail_address_management"
+        android:icon="@drawable/ico_address"/>
 
     <item
         android:id="@+id/nav_copy_address"
-        android:title="@string/detail_copy_address" />
+        android:title="@string/detail_copy_address"
+        android:icon="@drawable/ico_copy_address"/>
+    <item
+        android:id="@+id/nav_records"
+        android:title="@string/detail_records"
+        android:icon="@drawable/ico_records"/>
 
 </menu>

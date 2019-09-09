@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -54,8 +55,9 @@ public class DisplayUtil {
     }
 
     public static int sp2px(Context context, float sp) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (sp * fontScale + 0.5f);
+//        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+//        return (int) (sp * fontScale + 0.5f);
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
     }
 
     public static int measureWidth(String text, Paint paint) {

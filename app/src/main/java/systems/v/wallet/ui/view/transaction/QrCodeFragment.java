@@ -2,9 +2,12 @@ package systems.v.wallet.ui.view.transaction;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,17 +27,47 @@ public class QrCodeFragment extends TransactionDialogFragment {
         return fragment;
     }
 
+    private List<String> pageMessages;
+    private int current;
+    private FragmentSendQrCodeBinding binding;
+    private final static String TAG = "QrCodeFragment";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentSendQrCodeBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_send_qr_code, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_send_qr_code, container, false);
         String tx = getArguments().getString("tx");
-        binding.ivQrCode.setImageBitmap(QRCodeUtil.generateQRCode(tx, 800));
+
+        if(tx != null && tx.length() > QRCodeUtil.PageSize){
+            Log.d( "page code", tx);
+            pageMessages = QRCodeUtil.formatPageMessages(tx);
+            current = 1;
+            binding.tvPage.setVisibility(View.VISIBLE);
+            binding.btnBack.setVisibility(View.VISIBLE);
+        }else{
+            Log.d("single code", tx);
+            binding.ivQrCode.setImageBitmap(QRCodeUtil.generateQRCode(tx, 800));
+            binding.tvPage.setVisibility(View.GONE);
+            binding.btnBack.setVisibility(View.GONE);
+        }
+        setCurrentCode();
         binding.btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mNextListener != null) {
+                if(pageMessages != null && current < pageMessages.size()){
+                    ++current;
+                    setCurrentCode();
+                }else if (mNextListener != null) {
                     mNextListener.onNext();
+                }
+            }
+        });
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pageMessages != null && current > 0){
+                    --current;
+                    setCurrentCode();
                 }
             }
         });
@@ -46,5 +79,12 @@ public class QrCodeFragment extends TransactionDialogFragment {
             }
         });
         return binding.getRoot();
+    }
+
+    private void setCurrentCode(){
+        if(pageMessages != null && current <= pageMessages.size() && current > 0){
+            binding.ivQrCode.setImageBitmap(QRCodeUtil.generateQRCode(pageMessages.get(current - 1), 800));
+            binding.tvPage.setText(getString(R.string.send_scan_qr_code_page, current, pageMessages.size()));
+        }
     }
 }

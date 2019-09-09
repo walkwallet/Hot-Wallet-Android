@@ -148,7 +148,7 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
                     return;
                 }
                 SPUtils.setInt(Constants.LANGUAGE, Constants.LAN_KO);
-                mBinding.ciLanguage.setRightText(R.string.setting_lan_cn);
+                mBinding.ciLanguage.setRightText(R.string.setting_lan_ko);
                 if (mSelectDialog.isShowing()) {
                     mSelectDialog.dismiss();
                 }

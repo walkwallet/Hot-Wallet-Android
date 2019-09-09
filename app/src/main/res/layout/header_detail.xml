@@ -221,7 +221,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_records"
+                android:id="@+id/ll_token"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -236,12 +236,12 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginBottom="6dp"
-                    android:src="@drawable/ico_records" />
+                    android:src="@drawable/ico_token" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/detail_records"
+                    android:text="@string/detail_token"
                     android:textColor="@color/text_weak"
                     android:textSize="12sp" />
             </LinearLayout>

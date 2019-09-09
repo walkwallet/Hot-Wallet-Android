@@ -3,15 +3,18 @@ package systems.v.wallet.ui.view.main;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +32,7 @@ import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.bean.AccountBean;
 import systems.v.wallet.data.bean.RespBean;
+import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.databinding.FooterAddWalletBinding;
 import systems.v.wallet.databinding.FragmentTabWalletBinding;
 import systems.v.wallet.ui.BaseFragment;
@@ -283,6 +287,40 @@ public class TabWalletFragment extends BaseFragment implements View.OnClickListe
                         }
                     }
                 }
+                break;
+            case MODIFY_ALIAS:
+                if(mWallet == null){
+                    return ;
+                }
+                if(mType == TYPE_MONITOR){
+                    String aliasStr = SPUtils.getString(Constants.ALIAS);
+                    if(!aliasStr.isEmpty()) {
+                        Map<String, String> aliases = JSON.parseObject(aliasStr, Map.class);
+                        if (aliases != null) {
+                            for (int i = 0; i < mMonitorList.size(); i++) {
+                                String a = aliases.get(mMonitorList.get(i).getAddress());
+                                if (a != null && !a.isEmpty()) {
+                                    mMonitorList.get(i).setAlias(a);
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    String aliasStr = SPUtils.getString(Constants.ALIAS);
+                    if(!aliasStr.isEmpty()) {
+                        Map<String, String> aliases = JSON.parseObject(aliasStr, Map.class);
+                        if (aliases != null) {
+                            for (int i = 0; i < mAddressList.size(); i++) {
+                                String a = aliases.get(mAddressList.get(i).getAddress());
+                                if (a != null && !a.isEmpty()) {
+                                    mAddressList.get(i).setAlias(a);
+                                }
+                            }
+                        }
+                    }
+                }
+                initData();
+                getData();
                 break;
         }
     }

@@ -13,10 +13,14 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import androidx.databinding.DataBindingUtil;
@@ -271,8 +275,30 @@ public class VerifyActivity extends BaseActivity {
                     colds = JSONArray.parseArray(cold, Account.class);
                 }
                 ArrayList<Account> coldList = new ArrayList<>(colds);
+                ArrayList<Account> hotsList = wallet.generateAccounts();
+
+                String aliasStr = SPUtils.getString(Constants.ALIAS);
+                if(!aliasStr.isEmpty()) {
+                    Map<String, String> aliases = JSON.parseObject(aliasStr, Map.class);
+                    if (aliases != null) {
+                        for (int i = 0; i < coldList.size(); i++) {
+                            String a = aliases.get(coldList.get(i).getAddress());
+                            if (a != null && !a.isEmpty()) {
+                                coldList.get(i).setAlias(a);
+                            }
+                        }
+
+                        for (int i = 0; i < hotsList.size(); i++) {
+                            String a = aliases.get(hotsList.get(i).getAddress());
+                            if (a != null && !a.isEmpty()) {
+                                hotsList.get(i).setAlias(a);
+                            }
+                        }
+                    }
+                }
                 wallet.setColdAccounts(coldList);
-                wallet.generateAccounts();
+                wallet.setAccounts(hotsList);
+
                 mApp.setWallet(wallet);
                 MainActivity.launch(mActivity, false);
                 mApp.finishAllActivities();

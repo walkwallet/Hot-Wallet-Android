@@ -17,6 +17,8 @@ versions.rxandroid = "2.1.0"
 versions.okhttp_logging_interceptor = "3.12.0"
 versions.flexbox = "1.0.0"
 versions.autofittextview="0.2.1"
+versions.picasso="2.71828"
+versions.picasso_transform="2.2.1"
 def deps = [:]
 
 def espresso = [:]
@@ -51,6 +53,8 @@ deps.rxjava = "io.reactivex.rxjava2:rxjava:$versions.rxjava"
 deps.rxandroid = "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
 deps.flexbox = "com.google.android:flexbox:$versions.flexbox"
 deps.autofittextview="me.grantland:autofittextview:$versions.autofittextview"
+deps.picasso="com.squareup.picasso:picasso:$versions.picasso"
+deps.picasso_transform="jp.wasabeef:picasso-transformations:$versions.picasso_transform"
 ext.deps = deps
 
 versions.min_sdk = 19

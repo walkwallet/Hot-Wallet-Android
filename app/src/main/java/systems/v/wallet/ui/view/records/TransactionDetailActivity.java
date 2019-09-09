@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
 
+import org.w3c.dom.Text;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -21,7 +23,7 @@ import systems.v.wallet.basic.utils.TxUtil;
 import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.databinding.ActivityTransactionDetailBinding;
-import systems.v.wallet.databinding.ItemTransactionInfoVerticalBinding;
+import systems.v.wallet.databinding.ItemInfoVerticalBinding;
 import systems.v.wallet.entity.RecordEntity;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
@@ -65,7 +67,7 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
             String senderPublicKey = mRecord.getProofs().get(0).getPublicKey();
             senderAddress = Wallet.getAddress(mWallet.getNetwork(), senderPublicKey);
         }
-        ItemTransactionInfoVerticalBinding bindingFrom = UIUtil.addItemVertical(inflater, container,
+        ItemInfoVerticalBinding bindingFrom = UIUtil.addItemVertical(inflater, container,
                 R.string.transaction_detail_from, senderAddress);
         bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,14 +75,16 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
                 UIUtil.copyToClipboard(mActivity, senderAddress);
             }
         });
-        ItemTransactionInfoVerticalBinding bindingTo = UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_to,
-                mRecord.getRecipient());
-        bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtil.copyToClipboard(mActivity, mRecord.getRecipient());
-            }
-        });
+        if(mRecord.getRecipient() != null && TextUtils.isEmpty(mRecord.getRecipient())){
+            ItemInfoVerticalBinding bindingTo = UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_to,
+                    mRecord.getRecipient());
+            bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UIUtil.copyToClipboard(mActivity, mRecord.getRecipient());
+                }
+            });
+        }
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_txid,
                 mRecord.getId());
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_type,
@@ -89,6 +93,8 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
                 CoinUtil.formatWithUnit(mRecord.getAmount()));
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_fee,
                 CoinUtil.formatWithUnit(mRecord.getFee()));
+        UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_status,
+                mRecord.getStatus());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
         String time = dateFormat.format(new Timestamp(mRecord.getTimestamp()));
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_time,

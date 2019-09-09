@@ -20,7 +20,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="30dp"
@@ -29,6 +29,7 @@
                 android:padding="@dimen/activity_horizontal_margin">
 
                 <ImageView
+                    android:id="@+id/iv_icon_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ico_success" />
@@ -40,7 +41,8 @@
                     android:layout_marginTop="24dp"
                     android:gravity="center"
                     android:textColor="@color/secondary_text"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:text="You Sent 2 To" />
 
                 <TextView
                     android:id="@+id/tv_address"
@@ -52,6 +54,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/tv_tip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
