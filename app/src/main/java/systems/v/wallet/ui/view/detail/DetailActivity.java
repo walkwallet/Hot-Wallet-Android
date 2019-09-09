@@ -2,12 +2,14 @@ package systems.v.wallet.ui.view.detail;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -15,6 +17,7 @@ import com.alibaba.fastjson.TypeReference;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -50,6 +53,7 @@ import systems.v.wallet.ui.view.transaction.SendActivity;
 import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
 import systems.v.wallet.ui.widget.wrapper.HeaderAndFooterWrapper;
 import systems.v.wallet.utils.DataUtil;
+import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
 import systems.v.wallet.utils.bus.AppEvent;
 import systems.v.wallet.utils.bus.annotation.Subscribe;
@@ -79,8 +83,8 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
         fullScreen();
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_wallet_detail);
         initView();
-//        getRecords(mAccount.getAddress(), true);
-        getRecords(0);
+        getBalance(mAccount.getAddress());
+        getRecords(0, true);
     }
 
     @Override
@@ -102,18 +106,6 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
             }
         }
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (!mIsFirst && mAccount != null) {
-            getBalance(mAccount.getAddress());
-            getRecords(0);
-        }
-        if (mIsFirst) {
-            mIsFirst = false;
-        }
     }
 
     @Override
@@ -170,7 +162,7 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                     int totalItemCount = manager.getItemCount();
 
                     if (lastVisibleItem == (totalItemCount - 1) && toBottom && !isAllLoaded) {
-                        getRecords(mPageNum + 1);
+                        getRecords(mPageNum + 1, true);
                     }
                 }
             }
@@ -211,40 +203,44 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
         });
     }
 
-    private void getRecords(final int pageNum) {
-        showLoading();
+    private void getRecords(final int pageNum, boolean isLoading) {
         final String address = mAccount.getAddress();
-        Disposable d = RetrofitHelper.getInstance().getNodeAPI().records(address, -1, PAGE_LIMIT, pageNum * PAGE_LIMIT)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<RespBean>() {
-                    @Override
-                    public void accept(RespBean respBean) throws Exception {
-                        RecordRespBean resp = JSON.parseObject(respBean.getData(), RecordRespBean.class);
-                        if (resp.getTransactions() != null && resp.getTransactions().size() > 0){
-                            List<RecordBean> list = resp.getTransactions();
-                            List<RecordEntity> recordEntityList = new ArrayList<>();
-                            for (int i = 0; i < list.size(); i++) {
-                                RecordEntity entity = new RecordEntity(list.get(i));
-                                entity.setAddress(address);
-                                if (entity.getRecordType() != RecordEntity.TYPE_NONE) {
-                                    recordEntityList.add(entity);
-                                }
-                            }
-                            mData.addAll(recordEntityList);
-                            mPageNum = pageNum;
-                            mAdapter.notifyDataSetChanged();
-                        }else{
-                            isAllLoaded = true;
+        Observable<RespBean> o = RetrofitHelper.getInstance().getNodeAPI().records(address, -1, PAGE_LIMIT, pageNum * PAGE_LIMIT);
+        if(isLoading){
+            o = o.compose(this.<RespBean>bindLoading());
+        }
+        Disposable d = o.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<RespBean>() {
+            @Override
+            public void accept(RespBean respBean) throws Exception {
+                RecordRespBean resp = JSON.parseObject(respBean.getData(), RecordRespBean.class);
+                if (resp.getTransactions() != null && resp.getTransactions().size() > 0){
+                    List<RecordBean> list = resp.getTransactions();
+                    List<RecordEntity> recordEntityList = new ArrayList<>();
+                    for (int i = 0; i < list.size(); i++) {
+                        RecordEntity entity = new RecordEntity(list.get(i));
+                        entity.setAddress(address);
+                        if (entity.getRecordType() != RecordEntity.TYPE_NONE) {
+                            recordEntityList.add(entity);
                         }
-                        hideLoading();
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        hideLoading();
+                    if(pageNum == 0){
+                        mData.clear();
                     }
-                });
+                    mData.addAll(recordEntityList);
+                    mPageNum = pageNum;
+                    mAdapter.notifyDataSetChanged();
+                }else{
+                    isAllLoaded = true;
+                }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+
+            }
+        });
     }
 
     @Subscribe
@@ -252,6 +248,17 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
         switch (event.getType()) {
             case COLD_REMOVE:
                 finish();
+                break;
+            case NEW_TRANSACTION:
+                Observable.timer(3000, TimeUnit.MILLISECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<Long>() {
+                            @Override
+                            public void accept(Long aLong) throws Exception {
+                                getBalance(mAccount.getAddress());
+                                getRecords(0, false);
+                            }
+                        });
                 break;
         }
     }
@@ -263,7 +270,6 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                 .subscribe(new Consumer<RespBean>() {
                     @Override
                     public void accept(RespBean respBean) throws Exception {
-                        Log.d(TAG, JSON.toJSONString(respBean));
                         AccountBean accountBean = JSON.parseObject(respBean.getData(), AccountBean.class);
                         mAccount.updateBalance(accountBean);
                         setHeaderData();

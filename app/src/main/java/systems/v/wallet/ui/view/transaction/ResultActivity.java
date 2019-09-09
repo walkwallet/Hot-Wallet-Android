@@ -138,9 +138,11 @@ public class ResultActivity extends BaseThemedActivity {
                         mBinding.tvTip.setTextColor(getResources().getColor(R.color.text_strong));
                         break;
                 }
-
                 break;
+            default:
+                return;
         }
+        AppBus.getInstance().post(new AppEvent(AppEventType.NEW_TRANSACTION));
     }
 
     @Override

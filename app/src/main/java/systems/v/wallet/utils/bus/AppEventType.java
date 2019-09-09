@@ -14,5 +14,7 @@ public enum AppEventType {
     //
     TOKEN_CREATE_SUCCESS,
     // modify Alias;
-    MODIFY_ALIAS;
+    MODIFY_ALIAS,
+    //
+    NEW_TRANSACTION;
 }
