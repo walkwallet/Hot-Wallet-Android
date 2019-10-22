@@ -17,6 +17,7 @@
     <string name="i_agree">I agree</string>
     <string name="i_dont_agree">I do not agree</string>
     <string name="warning">WARNING</string>
+    <string name="refresh">刷新</string>
 
     <!--other start-->
     <string name="scan_tip">Align QR code within frame to scan</string>
@@ -329,6 +330,7 @@
 
     <string name="add_token_input_hint">Input the token ID</string>
     <string name="add_token_add">Add</string>
+    <string name="add_token_added">Added</string>
     <string name="add_token_err_id">Token does not exist!</string>
     <string name="add_token_added_token">Token already added!</string>
     <string name="add_token_success">Successful added</string>

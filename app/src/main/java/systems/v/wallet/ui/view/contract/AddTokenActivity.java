@@ -6,11 +6,15 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -18,12 +22,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import org.reactivestreams.Subscriber;
+
 import go.error;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -41,6 +50,7 @@ import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.TxUtil;
 import systems.v.wallet.basic.wallet.ContractFunc;
 import systems.v.wallet.basic.wallet.Token;
+import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.data.BaseErrorConsumer;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.NodeAPI;
@@ -52,7 +62,10 @@ import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.databinding.ActivityAddTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
+import systems.v.wallet.ui.view.contract.adapter.AddTokenAdapter;
+import systems.v.wallet.ui.view.contract.adapter.TokenAdapter;
 import systems.v.wallet.ui.view.transaction.ScannerActivity;
+import systems.v.wallet.utils.AssetJsonUtil;
 import systems.v.wallet.utils.Constants;
 import systems.v.wallet.utils.SPUtils;
 import systems.v.wallet.utils.ToastUtil;
@@ -71,6 +84,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
 
     private final String TAG = AddTokenActivity.class.getSimpleName();
     private ActivityAddTokenBinding mBinding;
+    private List<Token> mData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +92,15 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_token);
         mBinding.setClick(this);
         setAppBar(mBinding.toolbar);
+        mBinding.rcvTokens.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.rcvTokens.setAdapter(new AddTokenAdapter(mData, AddTokenActivity.this){
+            @Override
+            public void addToken(Token token) {
+
+                addWatchedToken(token.getTokenId());
+            }
+        });
+        initTokenData();
 
     }
 
@@ -85,7 +108,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_add:
-                addWatchedToken();
+                addWatchedToken(mBinding.etTokenId.getText().toString());
                 break;
             case R.id.btn_paste: {
                 ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -103,8 +126,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
         }
     }
 
-    public void addWatchedToken(){
-        final String tokenId = mBinding.etTokenId.getText().toString();
+    public void addWatchedToken(final String tokenId){
         final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
         if(tokenId.isEmpty()){
             return ;
@@ -229,6 +251,52 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                 }));
     }
 
+    private void initTokenData(){
+        final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
+        final List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+
+
+        Disposable d = Observable.create(new ObservableOnSubscribe<List<Token>>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<List<Token>> emitter) throws Exception {
+                        if(mData == null) {
+                            mData = new ArrayList<>();
+                        }
+                        mData.clear();
+
+                        Map map = AssetJsonUtil.getJsonObj(AddTokenActivity.this, "verified_token.json", Map.class);
+                        JSONArray jsonArray = (JSONArray)map.get(Wallet.MAIN_NET);
+                        if (jsonArray != null) {
+                            List<Token> verifiedTokens = jsonArray.toJavaList(Token.class);
+                            for (int i = 0; i < verifiedTokens.size(); i++) {
+                                Token vToken = verifiedTokens.get(i);
+                                if (tokens != null) {
+                                    for (Token token : tokens) {
+                                        if (token.getTokenId().equals(verifiedTokens.get(i).getTokenId())) {
+                                            vToken.setAdded(true);
+                                            break;
+                                        }
+                                    }
+                                }
+                                mData.add(vToken);
+                            }
+                        }
+
+                        emitter.onNext(mData);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Token>>() {
+                    @Override
+                    public void accept(List<Token> list) throws Exception {
+                        if(mBinding.rcvTokens.getAdapter() != null) {
+                            mBinding.rcvTokens.getAdapter().notifyDataSetChanged();
+                        }
+                    }
+                });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -241,4 +309,21 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_token, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menu_refresh) {
+            //TODO refresh
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
