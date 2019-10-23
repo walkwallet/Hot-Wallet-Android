@@ -33,11 +33,13 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
+import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.bean.AccountBean;
 import systems.v.wallet.data.bean.RecordBean;
 import systems.v.wallet.data.bean.RecordRespBean;
 import systems.v.wallet.data.bean.RespBean;
+import systems.v.wallet.data.statics.TokenHelper;
 import systems.v.wallet.databinding.ActivityWalletDetailBinding;
 import systems.v.wallet.databinding.HeaderDetailBinding;
 import systems.v.wallet.entity.RecordEntity;
@@ -218,9 +220,9 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                 if (resp.getTransactions() != null && resp.getTransactions().size() > 0){
                     List<RecordBean> list = resp.getTransactions();
                     List<RecordEntity> recordEntityList = new ArrayList<>();
+                    List<Token> verifiedTokenInfo = TokenHelper.getVerifiedFromCache(DetailActivity.this, mAccount.getNetwork());
                     for (int i = 0; i < list.size(); i++) {
-                        RecordEntity entity = new RecordEntity(list.get(i));
-                        entity.setAddress(address);
+                        RecordEntity entity = new RecordEntity(list.get(i), verifiedTokenInfo, address);
                         if (entity.getRecordType() != RecordEntity.TYPE_NONE) {
                             recordEntityList.add(entity);
                         }

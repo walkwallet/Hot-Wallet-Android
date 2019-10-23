@@ -162,12 +162,12 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
     }
 
     private void generateTransaction() {
-        Contract c = new Contract();
+        Contract c = ContractUtil.generateContract(
+                (long)Math.pow(10, unityPower),
+                CoinUtil.parse(mBinding.etTotal.getText().toString(), (long)Math.pow(10, unityPower)),
+                mBinding.etTokenDescription.getText().toString(),
+                isSplit);
 
-        c.setUnity((long)Math.pow(10, unityPower));
-        c.setMax(CoinUtil.parse(mBinding.etTotal.getText().toString(), c.getUnity()));
-        c.setTokenDescription(mBinding.etTokenDescription.getText().toString());
-        c.setContract(isSplit ? Base58.decode(Vsys.ConstContractSplit): Base58.decode(Vsys.ConstContractDefault));
         mTransaction = new Transaction();
         mTransaction.setFee(Transaction.DEFAULT_CREATE_TOKEN_FEE);
         mTransaction.setAddress(mAccount.getAddress());

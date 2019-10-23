@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import systems.v.wallet.databinding.ItemInfoVerticalBinding;
 import systems.v.wallet.entity.RecordEntity;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
+import systems.v.wallet.utils.LogUtil;
 import systems.v.wallet.utils.TxRecordUtil;
 import systems.v.wallet.utils.UIUtil;
 
@@ -67,6 +69,10 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
             String senderPublicKey = mRecord.getProofs().get(0).getPublicKey();
             senderAddress = Wallet.getAddress(mWallet.getNetwork(), senderPublicKey);
         }
+        UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_txid,
+                mRecord.getId());
+        UIUtil.addItemVertical(inflater, container, R.string.send_review_my_address,
+                mRecord.getAddress());
         ItemInfoVerticalBinding bindingFrom = UIUtil.addItemVertical(inflater, container,
                 R.string.transaction_detail_from, senderAddress);
         bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
@@ -85,12 +91,17 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
                 }
             });
         }
-        UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_txid,
-                mRecord.getId());
+        LogUtil.Log("daniel", mRecord);
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_type,
                 TxRecordUtil.getTypeText(this, mRecord.getRecordType()));
-        UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_amount,
-                CoinUtil.formatWithUnit(mRecord.getAmount()));
+        if((mRecord.getRecordType() == RecordEntity.TYPE_EXECUTE_CONTRACT_RECEIVED || mRecord.getRecordType() == RecordEntity.TYPE_SENT)
+                && mRecord.getToken() != null && mRecord.getAmount() != 0){
+            UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_amount,
+                    CoinUtil.formatWithUnit(mRecord.getAmount(), mRecord.getToken().getUnity(), mRecord.getToken().getName()));
+        }else{
+            UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_amount,
+                    CoinUtil.formatWithUnit(mRecord.getAmount()));
+        }
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_fee,
                 CoinUtil.formatWithUnit(mRecord.getFee()));
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_status,

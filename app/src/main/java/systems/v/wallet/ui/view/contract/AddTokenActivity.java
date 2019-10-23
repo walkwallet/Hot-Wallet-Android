@@ -60,6 +60,7 @@ import systems.v.wallet.data.bean.ContractInfoBean;
 import systems.v.wallet.data.bean.ErrorBean;
 import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.bean.TokenBean;
+import systems.v.wallet.data.statics.TokenHelper;
 import systems.v.wallet.databinding.ActivityAddTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.contract.adapter.AddTokenAdapter;
@@ -264,22 +265,18 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                         }
                         mData.clear();
 
-                        Map map = AssetJsonUtil.getJsonObj(AddTokenActivity.this, "verified_token.json", Map.class);
-                        JSONArray jsonArray = (JSONArray)map.get(Wallet.MAIN_NET);
-                        if (jsonArray != null) {
-                            List<Token> verifiedTokens = jsonArray.toJavaList(Token.class);
-                            for (int i = 0; i < verifiedTokens.size(); i++) {
-                                Token vToken = verifiedTokens.get(i);
-                                if (tokens != null) {
-                                    for (Token token : tokens) {
-                                        if (token.getTokenId().equals(verifiedTokens.get(i).getTokenId())) {
-                                            vToken.setAdded(true);
-                                            break;
-                                        }
+                        List<Token> verifiedTokens = TokenHelper.getVerifiedFromCache(AddTokenActivity.this, mAccount.getNetwork());
+                        for (int i = 0; i < verifiedTokens.size(); i++) {
+                            Token vToken = verifiedTokens.get(i);
+                            if (tokens != null) {
+                                for (Token token : tokens) {
+                                    if (token.getTokenId().equals(verifiedTokens.get(i).getTokenId())) {
+                                        vToken.setAdded(true);
+                                        break;
                                     }
                                 }
-                                mData.add(vToken);
                             }
+                            mData.add(vToken);
                         }
 
                         emitter.onNext(mData);

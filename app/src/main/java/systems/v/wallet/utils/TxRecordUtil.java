@@ -35,6 +35,12 @@ public class TxRecordUtil {
             case RecordEntity.TYPE_EXECUTE_CONTRACT:
                 textId = R.string.detail_execute_contract;
                 break;
+            case RecordEntity.TYPE_EXECUTE_CONTRACT_SENT:
+                textId = R.string.detail_execute_contract_sent;
+                break;
+            case RecordEntity.TYPE_EXECUTE_CONTRACT_RECEIVED:
+                textId = R.string.detail_execute_contract_received;
+                break;
         }
         if (textId != 0) {
             return context.getString(textId);

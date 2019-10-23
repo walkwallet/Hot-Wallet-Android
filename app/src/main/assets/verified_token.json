@@ -4,8 +4,16 @@
             "name": "IPX",
             "unity": 1000000000,
             "tokenId": "TWZZfKFqcaNVe5TrphLRNEm5DQFnBRJMjDDByqv84",
-            "Icon": "https://explorer.v.systems/data/Upload/d11fce4a1845ff8a2593df28f313f2c8.png"
+            "Icon": "https://explorer.v.systems/data/Upload/d11fce4a1845ff8a2593df28f313f2c8.png",
+            "isSpilt": false,
         }
     ],
-    "T":[]
+    "T":[
+        {
+            "name": "TuesNight",
+            "unity": 100000000,
+            "tokenId": "TWuSGC4p9MJGyBZszMdNEfe3F96FzDnr4VyCFyoo2",
+            "isSpilt": true
+        }
+    ]
 }

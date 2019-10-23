@@ -59,6 +59,7 @@ public class AddTokenAdapter extends BaseAdapter<Token> {
         }
 
         Picasso.get().load(token.getIcon())
+                .placeholder(R.drawable.ico_token)
                 .transform(new CropCircleTransformation())
                 .into(binding.ivTokenIcon);
 
