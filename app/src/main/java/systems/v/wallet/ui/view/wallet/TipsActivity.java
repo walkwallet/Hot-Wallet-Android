@@ -92,7 +92,12 @@ public class TipsActivity extends BaseActivity implements View.OnClickListener {
             mBinding.tvLabel.setText(R.string.wallet_password_create_success_label);
             mBinding.tvTips.setText(R.string.wallet_password_create_success_tips);
             mBinding.btnBottomFirst.setText(R.string.wallet_backup);
-            mBinding.btnBottomSecond.setText(R.string.wallet_backup_later);
+            if (SPUtils.getString(Constants.NETWORK_ENVIRONMENT).equals(Wallet.MAIN_NET) &&
+                 mType == TYPE_SUCCESS){
+                mBinding.btnBottomSecond.setVisibility(View.GONE);
+            } else{
+                mBinding.btnBottomSecond.setText(R.string.wallet_backup_later);
+            }
         }
     }
 

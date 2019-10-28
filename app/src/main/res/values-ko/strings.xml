@@ -214,7 +214,6 @@
     <string name="send_address_input_hint">수신 주소</string>
     <string name="send_lease_address_input_hint">노드 주소</string>
     <string name="send_address_input_error">오직 VSYS 주소로만 토큰이 전송 됩니다.</string>
-    <string name="send_to_self_error">수신 주소는 현재 주소로 설정할 수 없습니다.</string>
     <string name="send_max_btn">최대</string>
     <string name="send_paste_btn">붙여넣기</string>
     <string name="send_scan_btn">QR 코드 인식</string>
@@ -269,7 +268,6 @@
     <string name="create_token_transaction_fee_title">거래 수수료:</string>
     <string name="create_token_available_titlte">이용가능한 잔고:</string>
     <string name="create_token">거래 수수료:</string>
-    <string name="create_token_unitybase">10 ^ </string>
     <string name="create_token_success">새로운 토큰이 생성되었습니다, 토큰 ID는:</string>
     <string name="create_token_success_tip">토큰 즐겨찾기를 통해 확인 가능합니다.</string>
     <string name="create_token_exceed_max">자리 수가 너무 큽니다. 단위를 줄이십시오.</string>

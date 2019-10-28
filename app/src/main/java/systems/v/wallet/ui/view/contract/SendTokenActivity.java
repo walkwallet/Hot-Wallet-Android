@@ -37,6 +37,7 @@ import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
 import systems.v.wallet.ui.view.transaction.ScannerActivity;
 import systems.v.wallet.utils.ContractUtil;
+import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
 import vsys.Contract;
 import vsys.Vsys;
@@ -164,8 +165,6 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
                     textId = R.string.send_insufficient_balance_error;
                 } else if (!Wallet.validateAddress(address)) {
                     textId = R.string.send_address_input_error;
-                } else if (address.equals(mAccount.getAddress())) {
-                    textId = R.string.send_to_self_error;
                 }
                 if (textId != 0) {
                     new AlertDialog.Builder(mActivity)
@@ -177,6 +176,9 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
                                 }
                             }).show();
                     return;
+                }
+                if (address.equals(mAccount.getAddress())) {
+                    ToastUtil.showLongToast(R.string.send_to_self_error);
                 }
                 generateTransaction();
 //                mTransaction.sign(mAccount);

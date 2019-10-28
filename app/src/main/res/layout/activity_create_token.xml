@@ -10,6 +10,9 @@
         <variable
             name="unity"
             type="int"/>
+        <variable
+            name="min_unit"
+            type="String" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -142,7 +145,7 @@
                             android:layout_marginStart="6dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{@string/create_token_unitybase+unity}"
+                            android:text="@{min_unit}"
                             />
                     </LinearLayout>
                     <LinearLayout

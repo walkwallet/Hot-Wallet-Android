@@ -31,6 +31,7 @@ import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
 import systems.v.wallet.ui.view.wallet.WalletInitActivity;
 import systems.v.wallet.utils.ContractUtil;
+import systems.v.wallet.utils.LogUtil;
 import systems.v.wallet.utils.SPUtils;
 import vsys.Contract;
 import vsys.Vsys;
@@ -61,13 +62,13 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
 
     private void initView(){
         setAppBar(mBinding.toolbar);
-        mBinding.setUnity(unityPower);
+        setUnity(unityPower);
         mBinding.setClick(this);
         mBinding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 unityPower = i;
-                mBinding.setUnity(i);
+                setUnity(i);
             }
 
             @Override
@@ -124,12 +125,12 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
         switch (view.getId()){
             case R.id.btn_unity_plus:
                 if (unityPower < 16){
-                    mBinding.setUnity( ++unityPower );
+                    setUnity( ++unityPower );
                 }
                 break;
             case R.id.btn_unity_minus:
                 if (unityPower > 0){
-                    mBinding.setUnity( --unityPower );
+                    setUnity( --unityPower );
                 }
                 break;
             case R.id.btn_confirm:
@@ -159,6 +160,11 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
 
                 ResultActivity.launch(this, mAccount.getPublicKey(), mTransaction);
                 break;        }
+    }
+
+    private void setUnity(int unityPower){
+        mBinding.setUnity(unityPower);
+        mBinding.setMinUnit(getString(R.string.create_token_unitybase, unityPower, BigDecimal.valueOf(1).movePointLeft(unityPower).toPlainString()));
     }
 
     private void generateTransaction() {

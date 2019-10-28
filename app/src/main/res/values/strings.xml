@@ -225,7 +225,7 @@
     <string name="send_address_input_hint">Receive Address</string>
     <string name="send_lease_address_input_hint">Node Address</string>
     <string name="send_address_input_error">You can only send tokens to an VSYS address.</string>
-    <string name="send_to_self_error">The receiving address cannot be the current address</string>
+    <string name="send_to_self_error">The receiving address is the current address</string>
     <string name="send_max_btn">Max</string>
     <string name="send_paste_btn">PASTE</string>
     <string name="send_scan_btn">SCAN QR</string>
@@ -282,7 +282,7 @@
     <string name="create_token_transaction_fee_title">Transaction Fee:</string>
     <string name="create_token_available_titlte">Available balance:</string>
     <string name="create_token">Transaction Fee:</string>
-    <string name="create_token_unitybase">10 ^ </string>
+    <string name="create_token_unitybase">10 ^ %1d (The minimum amount will be %2s Token)</string>
     <string name="create_token_success">You have create a new token, token ID is:</string>
     <string name="create_token_success_tip">You can check in your token watch list</string>
     <string name="create_token_exceed_max">Too many significant digits for amount. Please reduce unity.</string>

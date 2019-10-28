@@ -29,6 +29,7 @@ import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.databinding.ActivitySendBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
+import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
 
 public class SendActivity extends BaseThemedActivity implements View.OnClickListener {
@@ -158,8 +159,6 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                     textId = R.string.send_insufficient_balance_error;
                 } else if (!Wallet.validateAddress(address)) {
                     textId = R.string.send_address_input_error;
-                } else if (address.equals(mAccount.getAddress())) {
-                    textId = R.string.send_to_self_error;
                 }
                 if (textId != 0) {
                     new AlertDialog.Builder(mActivity)
@@ -171,6 +170,9 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                                 }
                             }).show();
                     return;
+                }
+                if (address.equals(mAccount.getAddress())) {
+                    ToastUtil.showLongToast(R.string.send_to_self_error);
                 }
                 generateTransaction();
                 ResultActivity.launch(this, mAccount.getPublicKey(), mTransaction);
@@ -225,7 +227,10 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                     }
                     mBinding.etAmount.setText(text);
                 }
-
+                if (op.get("invoice") != null){
+                    String invoice = op.getString("invoice");
+                    mBinding.etAttachment.setText(invoice);
+                }
             }
         }
     }
