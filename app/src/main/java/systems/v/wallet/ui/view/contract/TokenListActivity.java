@@ -40,9 +40,11 @@ import systems.v.wallet.ui.view.contract.adapter.TokenAdapter;
 import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
 import systems.v.wallet.ui.widget.wrapper.HeaderAndFooterWrapper;
 import systems.v.wallet.utils.Constants;
+import systems.v.wallet.utils.LogUtil;
 import systems.v.wallet.utils.SPUtils;
 import systems.v.wallet.utils.bus.AppEvent;
 import systems.v.wallet.utils.bus.annotation.Subscribe;
+import vsys.Vsys;
 
 public class TokenListActivity extends BaseThemedActivity implements View.OnClickListener{
     public static void launch(Activity from, String publicKey) {
@@ -157,7 +159,8 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
 
     private void getTokenList(){
         final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
-        List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+        String str = SPUtils.getString(key);
+        List<Token> tokens = JSON.parseArray(str, Token.class);
         if (tokens == null){
             return ;
         }
@@ -219,7 +222,7 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                                 TokenInfoBean t = JSON.parseObject((String)resp.getData(), TokenInfoBean.class);
                                 for (int j = 0; j < mData.size(); j++) {
                                     if (mData.get(j).getTokenId().equals(t.getId())) {
-                                        mData.get(j).setIcon(Constants.PUBLIC_API_SERVER_RES + t.getIconUrl());
+                                        mData.get(j).setIcon((mWallet.getNetwork().equals(Vsys.NetworkMainnet) ? Constants.PUBLIC_API_SERVER : Constants.PUBLIC_API_SERVER_TEST) + t.getIconUrl());
                                         mData.get(j).setName(t.getName());
                                     }
                                 }

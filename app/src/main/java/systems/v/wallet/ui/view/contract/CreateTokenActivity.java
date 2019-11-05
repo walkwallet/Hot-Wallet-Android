@@ -29,10 +29,7 @@ import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.databinding.ActivityCreateTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
-import systems.v.wallet.ui.view.wallet.WalletInitActivity;
 import systems.v.wallet.utils.ContractUtil;
-import systems.v.wallet.utils.LogUtil;
-import systems.v.wallet.utils.SPUtils;
 import vsys.Contract;
 import vsys.Vsys;
 

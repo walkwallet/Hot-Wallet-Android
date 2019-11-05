@@ -91,7 +91,6 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
                 }
             });
         }
-        LogUtil.Log("daniel", mRecord);
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_type,
                 TxRecordUtil.getTypeText(this, mRecord.getRecordType()));
         if((mRecord.getRecordType() == RecordEntity.TYPE_EXECUTE_CONTRACT_RECEIVED || mRecord.getRecordType() == RecordEntity.TYPE_SENT)

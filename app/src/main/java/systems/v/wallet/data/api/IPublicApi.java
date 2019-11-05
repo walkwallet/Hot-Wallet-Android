@@ -10,4 +10,7 @@ import systems.v.wallet.data.bean.publicApi.RespBean;
 public interface IPublicApi {
     @POST("/api/getTokenDetail")
     Observable<RespBean> getTokenDetail(@Body Map<String, Object> request);
+
+    @POST("/api/getTokenList")
+    Observable<RespBean> getTokenList();
 }

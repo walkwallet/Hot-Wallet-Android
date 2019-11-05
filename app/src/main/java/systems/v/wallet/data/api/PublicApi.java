@@ -17,4 +17,9 @@ public class PublicApi implements IPublicApi{
     public Observable<RespBean> getTokenDetail(Map<String, Object> request) {
         return iPublicAPI.getTokenDetail(request);
     }
+
+    @Override
+    public Observable<RespBean> getTokenList(){
+        return iPublicAPI.getTokenList();
+    }
 }

@@ -15,12 +15,14 @@ import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -54,12 +56,15 @@ import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.data.BaseErrorConsumer;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.NodeAPI;
+import systems.v.wallet.data.api.PublicApi;
 import systems.v.wallet.data.bean.ContractBean;
 import systems.v.wallet.data.bean.ContractContentBean;
 import systems.v.wallet.data.bean.ContractInfoBean;
 import systems.v.wallet.data.bean.ErrorBean;
 import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.bean.TokenBean;
+import systems.v.wallet.data.bean.publicApi.ListRespBean;
+import systems.v.wallet.data.bean.publicApi.TokenInfoBean;
 import systems.v.wallet.data.statics.TokenHelper;
 import systems.v.wallet.databinding.ActivityAddTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
@@ -68,6 +73,7 @@ import systems.v.wallet.ui.view.contract.adapter.TokenAdapter;
 import systems.v.wallet.ui.view.transaction.ScannerActivity;
 import systems.v.wallet.utils.AssetJsonUtil;
 import systems.v.wallet.utils.Constants;
+import systems.v.wallet.utils.LogUtil;
 import systems.v.wallet.utils.SPUtils;
 import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.bus.AppBus;
@@ -255,41 +261,131 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
     private void initTokenData(){
         final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
         final List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+        List<Token> verifiedTokenCache = TokenHelper.getVerifiedFromCache(this, mAccount.getNetwork());
+        if(mData == null) {
+            mData = new ArrayList<>();
+        }
+        mData.clear();
 
+        for (int i = 0; i < verifiedTokenCache.size(); i++) {
+            Token vToken = verifiedTokenCache.get(i);
+            boolean isAdded = false;
+            if (tokens != null) {
+                for (int j = 0; j < tokens.size(); j++) {
+                    if (tokens.get(j).getTokenId().equals(vToken.getTokenId())) {
+                        isAdded = true;
+                        break;
+                    }
+                }
+            }
+            vToken.setAdded(isAdded);
+            mData.add(vToken);
+        }
 
-        Disposable d = Observable.create(new ObservableOnSubscribe<List<Token>>() {
+        Collections.sort(mData, new Comparator<Token>() {
+            @Override
+            public int compare(Token o1, Token o2) {
+                if (o1.isAdded() && !o2.isAdded()){
+                    return -1;
+                }else if(!o1.isAdded() && o2.isAdded()){
+                    return 1;
+                }else{
+                    return 0;
+                }
+            }
+        });
+
+        updateVerifiedToken();
+    }
+
+    private void updateVerifiedToken(){
+        final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
+        final List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+        final PublicApi publicApi = RetrofitHelper.getInstance().getPublicAPI();
+        Disposable d1 = publicApi.getTokenList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(new Function<systems.v.wallet.data.bean.publicApi.RespBean, ObservableSource<String>>() {
                     @Override
-                    public void subscribe(ObservableEmitter<List<Token>> emitter) throws Exception {
-                        if(mData == null) {
-                            mData = new ArrayList<>();
-                        }
-                        mData.clear();
+                    public ObservableSource<String> apply(final systems.v.wallet.data.bean.publicApi.RespBean respBean) throws Exception {
+                        if(respBean != null && respBean.getCode() == 0) {
+                            ListRespBean tokenList = JSON.parseObject((String)respBean.getData(), ListRespBean.class);
 
-                        List<Token> verifiedTokens = TokenHelper.getVerifiedFromCache(AddTokenActivity.this, mAccount.getNetwork());
-                        for (int i = 0; i < verifiedTokens.size(); i++) {
-                            Token vToken = verifiedTokens.get(i);
-                            if (tokens != null) {
-                                for (Token token : tokens) {
-                                    if (token.getTokenId().equals(verifiedTokens.get(i).getTokenId())) {
-                                        vToken.setAdded(true);
-                                        break;
+                            List<TokenInfoBean> verifiedTokens = new ArrayList<>();
+                            for (Object o : tokenList.getList()){
+                                JSONObject jo = (JSONObject) o;
+                                verifiedTokens.add(JSONObject.parseObject(jo.toJSONString(), TokenInfoBean.class));
+                            }
+
+                            if(mData == null) {
+                                mData = new ArrayList<>();
+                            }
+                            mData.clear();
+
+                            for (int i = 0; i < verifiedTokens.size(); i++) {
+                                TokenInfoBean vToken = verifiedTokens.get(i);
+                                boolean isAdded = false;
+                                if (tokens != null) {
+                                    for (int j = 0; j < tokens.size(); j++) {
+                                        if (tokens.get(j).getTokenId().equals(vToken.getId())) {
+                                            isAdded = true;
+                                            break;
+                                        }
                                     }
                                 }
+                                Token t = new Token();
+                                t.setAdded(isAdded);
+                                t.setName(vToken.getName());
+                                t.setIcon((mWallet.getNetwork().equals(Vsys.NetworkMainnet) ? Constants.PUBLIC_API_SERVER : Constants.PUBLIC_API_SERVER_TEST ) + vToken.getIconUrl());
+                                t.setTokenId(vToken.getId());
+                                mData.add(t);
                             }
-                            mData.add(vToken);
-                        }
 
-                        emitter.onNext(mData);
+                            Collections.sort(mData, new Comparator<Token>() {
+                                @Override
+                                public int compare(Token o1, Token o2) {
+                                    if (o1.isAdded() && !o2.isAdded()){
+                                        return -1;
+                                    }else if(!o1.isAdded() && o2.isAdded()){
+                                        return 1;
+                                    }else{
+                                        return 0;
+                                    }
+                                }
+                            });
+
+                            SPUtils.setString(TokenHelper.VERIFIED_TOKEN_ + mAccount.getNetwork(), JSON.toJSONString(mData.toArray()));
+
+                            return Observable.create(new ObservableOnSubscribe<String>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                                    emitter.onNext("");
+                                }
+                            });
+                        }else{
+                            return Observable.create(new ObservableOnSubscribe<String>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                                    if (respBean != null) {
+                                        emitter.onNext(respBean.getMsg());
+                                    }
+                                }
+                            });
+                        }
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Token>>() {
+                .subscribe(new Consumer<String>() {
                     @Override
-                    public void accept(List<Token> list) throws Exception {
-                        if(mBinding.rcvTokens.getAdapter() != null) {
+                    public void accept(String s) throws Exception {
+                        if (mBinding.rcvTokens.getAdapter() != null) {
                             mBinding.rcvTokens.getAdapter().notifyDataSetChanged();
                         }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
                     }
                 });
     }
@@ -317,7 +413,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
         int id = item.getItemId();
 
         if (id == R.id.menu_refresh) {
-            //TODO refresh
+            updateVerifiedToken();
             return true;
         }
 

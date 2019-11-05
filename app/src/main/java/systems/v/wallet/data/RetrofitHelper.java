@@ -57,7 +57,7 @@ public class RetrofitHelper {
         mNodeAPI = new NodeAPI(mainAPI, testAPI);
 
         Retrofit retrofitPublic = new Retrofit.Builder()
-                .baseUrl(Constants.PUBLIC_API_SERVER)
+                .baseUrl(isTest ? Constants.PUBLIC_API_SERVER_TEST : Constants.PUBLIC_API_SERVER)
                 .client(client)
                 .addConverterFactory(JsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
