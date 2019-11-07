@@ -220,6 +220,10 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
                     }
                     mBinding.etAmount.setText(text);
                 }
+                if (op.get("invoice") != null){
+                    String invoice = op.getString("invoice");
+                    mBinding.etAttachment.setText(invoice);
+                }
             }
         }
     }

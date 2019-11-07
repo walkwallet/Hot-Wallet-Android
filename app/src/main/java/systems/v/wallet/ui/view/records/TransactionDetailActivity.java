@@ -93,7 +93,7 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
         }
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_type,
                 TxRecordUtil.getTypeText(this, mRecord.getRecordType()));
-        if((mRecord.getRecordType() == RecordEntity.TYPE_EXECUTE_CONTRACT_RECEIVED || mRecord.getRecordType() == RecordEntity.TYPE_SENT)
+        if((mRecord.getRecordType() == RecordEntity.TYPE_EXECUTE_CONTRACT_RECEIVED || mRecord.getRecordType() == RecordEntity.TYPE_EXECUTE_CONTRACT_SENT)
                 && mRecord.getToken() != null && mRecord.getAmount() != 0){
             UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_amount,
                     CoinUtil.formatWithUnit(mRecord.getAmount(), mRecord.getToken().getUnity(), mRecord.getToken().getName()));

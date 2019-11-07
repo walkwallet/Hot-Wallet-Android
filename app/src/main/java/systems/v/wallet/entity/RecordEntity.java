@@ -52,9 +52,9 @@ public class RecordEntity extends RecordBean {
         setProofs(bean.getProofs());
         setLease(bean.getLease());
         // decode token transaction
-        if (bean.getType() == TYPE_EXECUTE_CONTRACT) {
-            for (Token token : verifiedTokens){
-                if (Vsys.tokenId2ContractId(token.getTokenId()).equals(bean.getContractId())){
+        if (bean.getType() == TYPE_EXECUTE_CONTRACT && verifiedTokens != null) {
+            for (Token token : verifiedTokens) {
+                if (Vsys.tokenId2ContractId(token.getTokenId()).equals(bean.getContractId())) {
                     bean = ContractUtil.decodeRecordData(ContractUtil.generateContract(token.getUnity(), token.getMax(), token.getDescription(), token.isSpilt()), bean);
                     setToken(token);
                     break;

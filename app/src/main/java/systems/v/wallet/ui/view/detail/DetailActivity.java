@@ -12,10 +12,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -27,18 +30,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.data.RetrofitHelper;
+import systems.v.wallet.data.api.PublicApi;
 import systems.v.wallet.data.bean.AccountBean;
 import systems.v.wallet.data.bean.RecordBean;
 import systems.v.wallet.data.bean.RecordRespBean;
 import systems.v.wallet.data.bean.RespBean;
+import systems.v.wallet.data.bean.publicApi.ListRespBean;
+import systems.v.wallet.data.bean.publicApi.TokenInfoBean;
 import systems.v.wallet.data.statics.TokenHelper;
 import systems.v.wallet.databinding.ActivityWalletDetailBinding;
 import systems.v.wallet.databinding.HeaderDetailBinding;
@@ -54,11 +64,15 @@ import systems.v.wallet.ui.view.setting.AddressManagementDetailActivity;
 import systems.v.wallet.ui.view.transaction.SendActivity;
 import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
 import systems.v.wallet.ui.widget.wrapper.HeaderAndFooterWrapper;
+import systems.v.wallet.utils.Constants;
 import systems.v.wallet.utils.DataUtil;
+import systems.v.wallet.utils.LogUtil;
+import systems.v.wallet.utils.SPUtils;
 import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
 import systems.v.wallet.utils.bus.AppEvent;
 import systems.v.wallet.utils.bus.annotation.Subscribe;
+import vsys.Vsys;
 
 public class DetailActivity extends BaseThemedActivity implements View.OnClickListener {
 
@@ -87,6 +101,7 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
         initView();
         getBalance(mAccount.getAddress());
         getRecords(0, true);
+        updateVerifiedToken();
     }
 
     @Override
@@ -220,9 +235,10 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                 if (resp.getTransactions() != null && resp.getTransactions().size() > 0){
                     List<RecordBean> list = resp.getTransactions();
                     List<RecordEntity> recordEntityList = new ArrayList<>();
-                    List<Token> verifiedTokenInfo = TokenHelper.getVerifiedFromCache(DetailActivity.this, mAccount.getNetwork());
+                    final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
+                    List<Token> addedTokens = JSON.parseArray(SPUtils.getString(key), Token.class);
                     for (int i = 0; i < list.size(); i++) {
-                        RecordEntity entity = new RecordEntity(list.get(i), verifiedTokenInfo, address);
+                        RecordEntity entity = new RecordEntity(list.get(i), addedTokens, address);
                         if (entity.getRecordType() != RecordEntity.TYPE_NONE) {
                             recordEntityList.add(entity);
                         }
@@ -291,5 +307,60 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
             mHeaderBinding.tvLeasedOut.setText(CoinUtil.formatWithUnit(mAccount.getRegular() - mAccount.getAvailable()));
             mHeaderBinding.tvLeasedIn.setText(CoinUtil.formatWithUnit(mAccount.getEffective() - mAccount.getAvailable()));
         }
+    }
+
+    private void updateVerifiedToken(){
+        final PublicApi publicApi = RetrofitHelper.getInstance().getPublicAPI();
+        Disposable d1 = publicApi.getTokenList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(new Function<systems.v.wallet.data.bean.publicApi.RespBean, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(final systems.v.wallet.data.bean.publicApi.RespBean respBean) throws Exception {
+                        if(respBean != null && respBean.getCode() == 0) {
+                            ListRespBean tokenList = JSON.parseObject((String)respBean.getData(), ListRespBean.class);
+
+                            List<Token> verifiedTokens = new ArrayList<>();
+                            for (Object o : tokenList.getList()){
+                                JSONObject jo = (JSONObject) o;
+                                TokenInfoBean tokenInfoBean = JSONObject.parseObject(jo.toJSONString(), TokenInfoBean.class);
+                                Token t = new Token();
+                                t.setName(tokenInfoBean.getName());
+                                t.setIcon((mWallet.getNetwork().equals(Vsys.NetworkMainnet) ? Constants.PUBLIC_API_SERVER : Constants.PUBLIC_API_SERVER_TEST ) + tokenInfoBean.getIconUrl());
+                                t.setTokenId(tokenInfoBean.getId());
+                                verifiedTokens.add(t);
+                            }
+
+                            SPUtils.setString(TokenHelper.VERIFIED_TOKEN_ + mAccount.getNetwork(), JSON.toJSONString(verifiedTokens.toArray()));
+
+                            return Observable.create(new ObservableOnSubscribe<String>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                                    emitter.onNext("");
+                                }
+                            });
+                        }else{
+                            return Observable.create(new ObservableOnSubscribe<String>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                                    if (respBean != null) {
+                                        emitter.onNext(respBean.getMsg());
+                                    }
+                                }
+                            });
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                    }
+                });
     }
 }

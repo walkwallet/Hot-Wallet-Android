@@ -298,8 +298,10 @@
     <string name="token_list_create_token">Create Token</string>
     <string name="token_list_list_title">Token Watch List</string>
 
+    <string name="token_list_supersede">Supersede</string>
     <string name="token_list_send">Send Token</string>
     <string name="token_list_info">Get Token Info</string>
+    <string name="token_list_split">Split Token</string>
     <string name="token_list_issue">Issue Token</string>
     <string name="token_list_destroy">Destroy Token</string>
     <string name="token_list_remove">Hide Token</string>

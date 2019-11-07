@@ -104,7 +104,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
             @Override
             public void addToken(Token token) {
 
-                addWatchedToken(token.getTokenId());
+                addWatchedToken(token.getName(), token.getTokenId());
             }
         });
         initTokenData();
@@ -115,7 +115,18 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_add:
-                addWatchedToken(mBinding.etTokenId.getText().toString());
+                List<Token> tokens = TokenHelper.getVerifiedFromCache(this, mAccount.getNetwork());
+                String name = null;
+                String tokenId = mBinding.etTokenId.getText().toString();
+                if(tokens != null) {
+                    for (Token token : tokens) {
+                        if (token.getName().equals(tokenId)) {
+                            name = token.getName();
+                            break;
+                        }
+                    }
+                }
+                addWatchedToken(name, tokenId);
                 break;
             case R.id.btn_paste: {
                 ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -133,7 +144,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
         }
     }
 
-    public void addWatchedToken(final String tokenId){
+    public void addWatchedToken(final String name, final String tokenId){
         final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
         if(tokenId.isEmpty()){
             return ;
@@ -163,6 +174,9 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                             newToken.setContractId(token.getContractId());
                             newToken.setUnity(token.getUnity());
                             newToken.setMax(token.getMax());
+                            if (name != null && !name.isEmpty()) {
+                                newToken.setName(name);
+                            }
                             newToken.setDescription(TxUtil.decodeAttachment(token.getDescription()).substring(2));
                             return nodeApi.contractInfo(Vsys.tokenId2ContractId(tokenId));
                         }else{

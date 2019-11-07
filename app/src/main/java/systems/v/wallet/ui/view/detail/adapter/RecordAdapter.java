@@ -1,6 +1,7 @@
 package systems.v.wallet.ui.view.detail.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +16,7 @@ import systems.v.wallet.databinding.ItemRecordsBinding;
 import systems.v.wallet.entity.RecordEntity;
 import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
 import systems.v.wallet.utils.DateUtils;
+import systems.v.wallet.utils.LogUtil;
 import systems.v.wallet.utils.UIUtil;
 
 public class RecordAdapter extends BaseAdapter<RecordEntity> {

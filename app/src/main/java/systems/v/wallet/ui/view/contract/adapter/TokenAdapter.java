@@ -4,13 +4,14 @@ import android.content.Context;
 import android.util.Log;
 import android.view.ViewGroup;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.List;
 import java.util.Locale;
 
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
+
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
@@ -50,12 +51,14 @@ public class TokenAdapter extends BaseAdapter<Token> {
         binding.tvTokenBalance.setText( balanceStr);
 
         if(item.getIcon() != null && !item.getIcon().isEmpty()){
-            Picasso.get().load(item.getIcon())
-                    .transform(new CropCircleTransformation())
+            Picasso.get()
+                    .load(item.getIcon())
+//                    .transform(new CropCircleTransformation())
                     .into(binding.ivTokenIcon);
         }else{
-            Picasso.get().load(R.drawable.ico_token)
-                    .transform(new CropCircleTransformation())
+            Picasso.get()
+                    .load(R.drawable.ico_token)
+//                    .transform(new CropCircleTransformation())
                     .into(binding.ivTokenIcon);
         }
     }

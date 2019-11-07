@@ -32,6 +32,7 @@ import systems.v.wallet.data.api.PublicApi;
 import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.bean.TokenBalanceBean;
 import systems.v.wallet.data.bean.publicApi.TokenInfoBean;
+import systems.v.wallet.data.statics.TokenHelper;
 import systems.v.wallet.databinding.ActivityTokenListBinding;
 import systems.v.wallet.databinding.HeaderDetailBinding;
 import systems.v.wallet.databinding.HeaderTokenListBinding;
@@ -88,7 +89,16 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
         tokenAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(View view, final int position) {
+//                final Token token = mData.get(position);
                 List<TokenOperationFragment.Operation> mOperation = new ArrayList<>();
+//                if (mAccount.getAddress().equals(token.getMaker())){
+//                    mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_supersede, new TokenOperationFragment.Operation.OperationListener() {
+//                        @Override
+//                        public void onOperation(TokenOperationFragment dialog) {
+//
+//                        }
+//                    }));
+//                }
                 mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_send, new TokenOperationFragment.Operation.OperationListener() {
                     @Override
                     public void onOperation(TokenOperationFragment dialog) {
@@ -102,6 +112,12 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                     }
                 }));
                 if(mData.get(position).getIssuer().equals(mAccount.getAddress())) {
+//                    mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_split, new TokenOperationFragment.Operation.OperationListener() {
+//                        @Override
+//                        public void onOperation(TokenOperationFragment dialog) {
+//                            IssueActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
+//                        }
+//                    }));
                     mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_issue, new TokenOperationFragment.Operation.OperationListener() {
                         @Override
                         public void onOperation(TokenOperationFragment dialog) {
@@ -164,11 +180,19 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
         if (tokens == null){
             return ;
         }
+        List<Token> verifiedTokens = TokenHelper.getVerifiedFromCache(this, mAccount.getNetwork());
+        for (int i=0; i < tokens.size(); i++) {
+            for (Token token : verifiedTokens) {
+                if (token.getTokenId() != null && token.getTokenId().equals(tokens.get(i).getTokenId())) {
+                    tokens.get(i).setName(token.getName());
+                    tokens.get(i).setIcon(token.getIcon());
+                }
+            }
+        }
 
         mData.clear();
         mData.addAll(tokens);
         final NodeAPI nodeApi = RetrofitHelper.getInstance().getNodeAPI();
-        final PublicApi publicApi = RetrofitHelper.getInstance().getPublicAPI();
 
         if(mData != null) {
             //Balance
@@ -196,41 +220,6 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                                 SPUtils.setString(key, JSON.toJSONString(mData));
                                 handleDataChange();
                             }
-                        }
-                    }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
-                        @Override
-                        public void onError(int code, String msg) {
-                            Log.e(TAG, msg);
-                        }
-                    }));
-            //Official Token Icon & Name
-            Disposable pd = Observable.fromIterable(mData)
-                    .flatMap(new Function<Token, Observable<systems.v.wallet.data.bean.publicApi.RespBean>>() {
-                        @Override
-                        public Observable<systems.v.wallet.data.bean.publicApi.RespBean> apply(Token token){
-                            Map<String, Object> params = new HashMap<>();
-                            params.put("TokenId", token.getTokenId());
-                            return publicApi.getTokenDetail(params);
-                        }
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<systems.v.wallet.data.bean.publicApi.RespBean>() {
-                        @Override
-                        public void accept(systems.v.wallet.data.bean.publicApi.RespBean resp) throws Exception {
-                            if(resp.getCode() == 0){
-                                TokenInfoBean t = JSON.parseObject((String)resp.getData(), TokenInfoBean.class);
-                                for (int j = 0; j < mData.size(); j++) {
-                                    if (mData.get(j).getTokenId().equals(t.getId())) {
-                                        mData.get(j).setIcon((mWallet.getNetwork().equals(Vsys.NetworkMainnet) ? Constants.PUBLIC_API_SERVER : Constants.PUBLIC_API_SERVER_TEST) + t.getIconUrl());
-                                        mData.get(j).setName(t.getName());
-                                    }
-                                }
-
-//                                SPUtils.setString(key, JSON.toJSONString(mData));
-                                handleDataChange();
-                            }
-
                         }
                     }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
                         @Override

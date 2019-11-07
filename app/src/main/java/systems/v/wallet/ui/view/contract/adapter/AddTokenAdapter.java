@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.databinding.ViewDataBinding;
 
+
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -33,13 +34,15 @@ public class AddTokenAdapter extends BaseAdapter<Token> {
         ItemAddTokenBinding binding = (ItemAddTokenBinding) viewDataBinding;
         final Token token = mData.get(position);
         if(token.isAdded()){
-            Picasso.get().load(R.drawable.ico_added_small)
+            Picasso.get()
+                    .load(R.drawable.ico_added_small)
                     .into(binding.ivAdded);
             binding.tvAdded.setTextColor(getContext().getResources().getColor(R.color.gray2));
             binding.tvAdded.setText(R.string.add_token_added);
             binding.llAdded.setBackground(null);
         }else{
-            Picasso.get().load(R.drawable.ico_add_token_small)
+            Picasso.get()
+                    .load(R.drawable.ico_add_token_small)
                     .into(binding.ivAdded);
             binding.tvAdded.setTextColor(getContext().getResources().getColor(R.color.orange3));
             binding.tvAdded.setText(R.string.add_token_add);
@@ -58,8 +61,9 @@ public class AddTokenAdapter extends BaseAdapter<Token> {
             binding.tvTokenName.setText(token.getName());
         }
 
-        Picasso.get().load(token.getIcon())
-                .placeholder(R.drawable.ico_token)
+        Picasso.get()
+                .load(token.getIcon())
+//                .placeholder(R.drawable.ico_token)
                 .transform(new CropCircleTransformation())
                 .into(binding.ivTokenIcon);
 

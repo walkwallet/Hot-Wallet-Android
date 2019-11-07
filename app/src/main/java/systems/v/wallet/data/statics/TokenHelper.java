@@ -31,7 +31,7 @@ public class TokenHelper {
      */
     public static List<Token> getVerifiedFromCache(Context c, String network) {
 //        Map map = AssetJsonUtil.getJsonObj(c, "verified_token.json", Map.class);
-        String tokenStr = SPUtils.getString("VERIFIED_TOKEN_" + network);
+        String tokenStr = SPUtils.getString(VERIFIED_TOKEN_ + network);
         JSONArray jsonArray = JSON.parseArray(tokenStr);
         return jsonArray != null ? jsonArray.toJavaList(Token.class): new ArrayList<Token>();
     }
