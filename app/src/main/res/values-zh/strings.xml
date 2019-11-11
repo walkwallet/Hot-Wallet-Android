@@ -75,8 +75,10 @@
     <string name="detail_leased_out">租出</string>
     <string name="detail_leased_in">租入</string>
     <string name="detail_send">发送</string>
+    <string name="detail_payment">转账</string>
     <string name="detail_receive">接收</string>
     <string name="detail_lease">铸币</string>
+    <string name="detail_cancel_lease">取消铸币</string>
     <string name="detail_records">记录</string>
     <string name="detail_token">Token</string>
     <string name="detail_sent">发送</string>
