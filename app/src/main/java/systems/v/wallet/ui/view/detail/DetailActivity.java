@@ -41,6 +41,7 @@ import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.wallet.Token;
+import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.PublicApi;
 import systems.v.wallet.data.bean.AccountBean;
@@ -235,12 +236,20 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                 if (resp.getTransactions() != null && resp.getTransactions().size() > 0){
                     List<RecordBean> list = resp.getTransactions();
                     List<RecordEntity> recordEntityList = new ArrayList<>();
-                    final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
-                    List<Token> addedTokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+                    List<Token> verifiedToken = TokenHelper.getVerifiedFromCache(DetailActivity.this, mAccount.getNetwork());
                     for (int i = 0; i < list.size(); i++) {
-                        RecordEntity entity = new RecordEntity(list.get(i), addedTokens, address);
+                        RecordBean bean = list.get(i);
+                        RecordEntity entity = new RecordEntity(bean, verifiedToken, address);
+
                         if (entity.getRecordType() != RecordEntity.TYPE_NONE) {
                             recordEntityList.add(entity);
+                        }
+                        //add one more tx when sent to self
+                        if (entity.getRecordType() == RecordEntity.TYPE_RECEIVED &&
+                                entity.getSender().equals(entity.getRecipient())){
+                            RecordEntity entitySend = new RecordEntity(bean, verifiedToken, address);
+                            entitySend.setRecordType(RecordEntity.TYPE_SENT);
+                            recordEntityList.add(entitySend);
                         }
                     }
                     if(pageNum == 0){

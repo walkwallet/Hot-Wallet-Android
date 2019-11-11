@@ -85,6 +85,7 @@ public class UIUtil {
             addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
             addItemVertical(inflater, container, R.string.send_description, tx.getAttachment());
         }else if(type == Transaction.LEASE){
+            addItemVertical(inflater, container, R.string.send_review_my_address, sender.getAddress());
             ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.send_review_lease_to, sender.getAddress());
             bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override

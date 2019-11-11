@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -36,6 +37,7 @@ import systems.v.wallet.databinding.ActivitySendTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
 import systems.v.wallet.ui.view.transaction.ScannerActivity;
+import systems.v.wallet.ui.widget.inputfilter.MaxByteFilter;
 import systems.v.wallet.utils.ContractUtil;
 import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
@@ -80,6 +82,7 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
         mBinding.tvSendToLabel.setText(R.string.send_payment_to);
         mBinding.etAddress.setHint(R.string.send_address_input_hint);
         mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, CoinUtil.format(mToken.getBalance(), mToken.getUnity())));
+        mBinding.etAttachment.setFilters(new InputFilter[]{new MaxByteFilter()});
     }
 
     private void initListener() {

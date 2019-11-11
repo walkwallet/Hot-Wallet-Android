@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -29,6 +30,7 @@ import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.databinding.ActivitySendBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
+import systems.v.wallet.ui.widget.inputfilter.MaxByteFilter;
 import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
 
@@ -81,6 +83,7 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
             mBinding.tvSendToLabel.setText(R.string.send_payment_to);
             mBinding.etAddress.setHint(R.string.send_address_input_hint);
         }
+        mBinding.etAttachment.setFilters(new InputFilter[]{new MaxByteFilter()});
         initListener();
     }
 
@@ -159,6 +162,9 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                     textId = R.string.send_insufficient_balance_error;
                 } else if (!Wallet.validateAddress(address)) {
                     textId = R.string.send_address_input_error;
+                }
+                if (mType == Transaction.LEASE && address.equals(mAccount.getAddress())){
+                    textId = R.string.send_lease_to_self_error;
                 }
                 if (textId != 0) {
                     new AlertDialog.Builder(mActivity)

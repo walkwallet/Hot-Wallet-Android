@@ -237,9 +237,10 @@
     <string name="send_time">Time</string>
     <string name="send_fee_tip">Transaction Fee</string>
     <string name="send_review_title">Review Transaction</string>
-    <string name="send_review_my_address">My Address</string>
+    <string name="send_review_my_address">From (My address)</string>
     <string name="send_review_from">From</string>
     <string name="send_review_send_to">To</string>
+    <string name="send_review_to_my_address">To (My address)</string>
     <string name="send_review_lease_to">To</string>
     <string name="send_review_type">Type</string>
     <string name="send_generate_qr_code_btn">Generate QR Code</string>
@@ -248,6 +249,7 @@
     <string name="send_scan_qr_code_page">Current Page: %1$s Total Page: %2$s </string>
     <string name="send_payment_success">You Sent %1$s to</string>
     <string name="send_lease_success">You Started Leasing  %1$s to</string>
+    <string name="send_lease_to_self_error">You can\'t lease to yourself</string>
     <string name="send_cancel_lease_success">You  Canceled Out Leasing  %1$s to</string>
     <string name="send_success_check_tip">You can check in your transaction records</string>
     <!-- send end -->

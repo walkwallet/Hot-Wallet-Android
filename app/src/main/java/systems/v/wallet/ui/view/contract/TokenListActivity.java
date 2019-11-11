@@ -17,6 +17,9 @@ import java.util.Map;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -24,13 +27,19 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
+import systems.v.wallet.basic.utils.TxUtil;
+import systems.v.wallet.basic.wallet.ContractFunc;
 import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.data.BaseErrorConsumer;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.NodeAPI;
 import systems.v.wallet.data.api.PublicApi;
+import systems.v.wallet.data.bean.ContractBean;
+import systems.v.wallet.data.bean.ContractContentBean;
+import systems.v.wallet.data.bean.ContractInfoBean;
 import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.bean.TokenBalanceBean;
+import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.data.bean.publicApi.TokenInfoBean;
 import systems.v.wallet.data.statics.TokenHelper;
 import systems.v.wallet.databinding.ActivityTokenListBinding;
@@ -171,6 +180,7 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
     private void initData(){
         setHeaderData();
         getTokenList();
+        updateTokensInfo();
     }
 
     private void getTokenList(){
@@ -229,6 +239,105 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                     }));
         }
         handleDataChange();
+    }
+
+    private void updateTokensInfo(){
+        final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
+        Disposable d = Observable.fromIterable(mData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .flatMap(new Function<Token, ObservableSource<Token>>() {
+                    @Override
+                    public ObservableSource<Token> apply(Token token) throws Exception {
+                        return updateTokenInfo(token.getTokenId());
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Token>() {
+                    @Override
+                    public synchronized void accept(Token token) throws Exception {
+                        if(token != null) {
+                            List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+                            if (tokens == null) {
+                                tokens = new ArrayList<>();
+                            }
+                            for (int i=0;i < tokens.size();i++) {
+                                if (tokens.get(i).getTokenId().equals(token.getTokenId())){
+                                    tokens.get(i).setUnity(token.getUnity());
+                                    tokens.get(i).setIssuer(token.getIssuer());
+                                    tokens.get(i).setMaker(token.getMaker());
+                                }
+                            }
+                            SPUtils.setString(key, JSON.toJSONString(tokens));
+
+                            for (int i=0;i < mData.size();i++){
+                                if (mData.get(i).getTokenId().equals(token.getTokenId())){
+                                    mData.get(i).setUnity(token.getUnity());
+                                    mData.get(i).setIssuer(token.getIssuer());
+                                    mData.get(i).setMaker(token.getMaker());
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+
+    }
+
+    private Observable<Token> updateTokenInfo(final String tokenId){
+        final Token newToken = new Token();
+        final NodeAPI nodeApi = RetrofitHelper.getInstance().getNodeAPI();
+        return nodeApi.tokenInfo(tokenId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(new Function<RespBean, Observable<RespBean>>() {// request contract info
+                    @Override
+                    public Observable<RespBean> apply(final RespBean respBean) throws Exception {
+
+                        if(respBean != null) {
+                            final TokenBean token = JSON.parseObject(respBean.getData(), TokenBean.class);
+                            newToken.setTokenId(token.getTokenId());
+                            newToken.setContractId(token.getContractId());
+                            newToken.setUnity(token.getUnity());
+                            newToken.setMax(token.getMax());
+                            newToken.setDescription(TxUtil.decodeAttachment(token.getDescription()).substring(2));
+                            return nodeApi.contractInfo(Vsys.tokenId2ContractId(tokenId));
+                        }else{
+                            return Observable.create(new ObservableOnSubscribe<RespBean>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<RespBean> emitter) throws Exception {
+                                    emitter.onError(new Throwable(respBean.getMsg()));
+                                }
+                            });
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(new Function<RespBean, Observable<Token>>() {// contract content
+                    @Override
+                    public Observable<Token> apply(final RespBean respBean) throws Exception {
+                        if(respBean != null) {
+                            ContractBean contractBean = JSON.parseObject(respBean.getData(), ContractBean.class);
+                            for (ContractInfoBean info: contractBean.getInfo()){
+                                if (info.getName().equals("issuer")){
+                                    newToken.setIssuer(info.getData());
+                                }else if(info.getName().equals("maker")){
+                                    newToken.setMaker(info.getData());
+                                }
+                            }
+                            return Observable.create(new ObservableOnSubscribe<Token>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<Token> emitter) throws Exception {
+                                    emitter.onNext(newToken);
+                                }
+                            });
+                        }else{
+                            return null;
+                        }
+                    }
+                });
     }
 
     private void handleDataChange() {

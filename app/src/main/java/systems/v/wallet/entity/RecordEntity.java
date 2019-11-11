@@ -18,7 +18,7 @@ import systems.v.wallet.utils.DateUtils;
 import systems.v.wallet.utils.LogUtil;
 import vsys.Vsys;
 
-public class RecordEntity extends RecordBean {
+public class RecordEntity extends RecordBean implements Cloneable{
 
     public static final int TYPE_SENT = 1;
     public static final int TYPE_RECEIVED = 2;
@@ -38,6 +38,7 @@ public class RecordEntity extends RecordBean {
     private String address;
     private int recordType;
     private Token token;
+    private String sender;
 
     public static final String SUCCESS_TX = "Success";
 
@@ -55,6 +56,8 @@ public class RecordEntity extends RecordBean {
         if (bean.getType() == TYPE_EXECUTE_CONTRACT && verifiedTokens != null) {
             for (Token token : verifiedTokens) {
                 if (Vsys.tokenId2ContractId(token.getTokenId()).equals(bean.getContractId())) {
+                    LogUtil.Log("daniel", token);
+                    LogUtil.Log("bean", bean);
                     bean = ContractUtil.decodeRecordData(ContractUtil.generateContract(token.getUnity(), token.getMax(), token.getDescription(), token.isSpilt()), bean);
                     setToken(token);
                     break;
@@ -65,6 +68,11 @@ public class RecordEntity extends RecordBean {
         setAmount(bean.getAmount());
         setAttachment(bean.getAttachment());
         setStatus(bean.getStatus());
+        if (bean.getProofs() != null && bean.getProofs().size() != 0 ){
+            setSender(bean.getProofs().get(0).getAddress());
+        } else{
+            setSender("");
+        }
         setAddress(address);
         initRecordType();
     }
@@ -149,5 +157,18 @@ public class RecordEntity extends RecordBean {
 
     public long getFormatTimestamp() {
         return DateUtils.getFormat(getTimestamp());
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 }

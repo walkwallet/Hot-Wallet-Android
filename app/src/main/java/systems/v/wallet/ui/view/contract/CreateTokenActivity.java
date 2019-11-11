@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.databinding.ActivityCreateTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
+import systems.v.wallet.ui.widget.inputfilter.MaxByteFilter;
 import systems.v.wallet.utils.ContractUtil;
 import vsys.Contract;
 import vsys.Vsys;
@@ -115,6 +117,8 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
         mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, balance));
         String fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_CREATE_TOKEN_FEE);
         mBinding.tvFee.setText(fee);
+        mBinding.etContractDescription.setFilters(new InputFilter[]{new MaxByteFilter()});
+        mBinding.etTokenDescription.setFilters(new InputFilter[]{new MaxByteFilter()});
     }
 
     @Override

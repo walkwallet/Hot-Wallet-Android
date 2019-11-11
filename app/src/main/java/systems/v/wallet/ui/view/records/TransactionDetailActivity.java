@@ -71,18 +71,11 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
         }
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_txid,
                 mRecord.getId());
-        UIUtil.addItemVertical(inflater, container, R.string.send_review_my_address,
-                mRecord.getAddress());
-        ItemInfoVerticalBinding bindingFrom = UIUtil.addItemVertical(inflater, container,
-                R.string.transaction_detail_from, senderAddress);
-        bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtil.copyToClipboard(mActivity, senderAddress);
-            }
-        });
+        UIUtil.addItemVertical(inflater, container, senderAddress.equals(mAccount.getAddress()) ? R.string.send_review_my_address : R.string.send_review_from,
+                senderAddress);
         if(mRecord.getRecipient() != null && TextUtils.isEmpty(mRecord.getRecipient())){
-            ItemInfoVerticalBinding bindingTo = UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_to,
+            ItemInfoVerticalBinding bindingTo = UIUtil.addItemVertical(inflater, container,
+                    mAccount.getAddress().equals(mRecord.getRecipient()) ? R.string.send_review_to_my_address : R.string.transaction_detail_to,
                     mRecord.getRecipient());
             bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
