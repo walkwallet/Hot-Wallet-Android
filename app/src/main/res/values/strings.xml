@@ -79,7 +79,9 @@
     <string name="detail_leased_in">Leased In</string>
     <string name="detail_send">Send</string>
     <string name="detail_receive">Receive</string>
-    <string name="detail_lease">Minting</string>
+    <string name="detail_payment">Payment</string>
+    <string name="detail_lease">Leasing</string>
+    <string name="detail_cancel_lease">Cancel leasing</string>
     <string name="detail_records">Records</string>
     <string name="detail_token">Token</string>
     <string name="detail_sent">Sent</string>

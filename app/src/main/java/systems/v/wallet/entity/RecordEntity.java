@@ -56,8 +56,6 @@ public class RecordEntity extends RecordBean implements Cloneable{
         if (bean.getType() == TYPE_EXECUTE_CONTRACT && verifiedTokens != null) {
             for (Token token : verifiedTokens) {
                 if (Vsys.tokenId2ContractId(token.getTokenId()).equals(bean.getContractId())) {
-                    LogUtil.Log("daniel", token);
-                    LogUtil.Log("bean", bean);
                     bean = ContractUtil.decodeRecordData(ContractUtil.generateContract(token.getUnity(), token.getMax(), token.getDescription(), token.isSpilt()), bean);
                     setToken(token);
                     break;
