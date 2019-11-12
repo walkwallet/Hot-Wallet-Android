@@ -18,6 +18,7 @@ import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.IPublicApi;
 import systems.v.wallet.data.api.NodeAPI;
 import systems.v.wallet.utils.AssetJsonUtil;
+import systems.v.wallet.utils.Constants;
 import systems.v.wallet.utils.SPUtils;
 
 public class TokenHelper {
@@ -34,5 +35,17 @@ public class TokenHelper {
         String tokenStr = SPUtils.getString(VERIFIED_TOKEN_ + network);
         JSONArray jsonArray = JSON.parseArray(tokenStr);
         return jsonArray != null ? jsonArray.toJavaList(Token.class): new ArrayList<Token>();
+    }
+
+    public static List<Token> getAddedVerifiedTokens(Context c, String publicKey){
+        final String key = Constants.WATCHED_TOKEN.concat(publicKey);
+        List<Token> addedTokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+        List<Token> verifiedTokens = new ArrayList<>();
+        for (Token token : addedTokens){
+            if (token.isVerified()){
+                verifiedTokens.add(token);
+            }
+        }
+        return verifiedTokens;
     }
 }

@@ -88,6 +88,8 @@
     <string name="detail_incoming_leasing">租入</string>
     <string name="detail_create_contract">创建合约 </string>
     <string name="detail_execute_contract">执行合约 </string>
+    <string name="detail_execute_contract_sent">执行合约(发送Token)</string>
+    <string name="detail_execute_contract_received">执行合约(接收Token)</string>
     <string name="detail_canceled_int_leasing">取消租入</string>
     <string name="detail_address_management">地址管理</string>
     <string name="detail_copy_address">复制地址</string>
@@ -234,6 +236,7 @@
     <string name="send_review_my_address">发送地址（我的地址）</string>
     <string name="send_review_from">发送地址</string>
     <string name="send_review_send_to">接收地址</string>
+    <string name="send_review_to_my_address">接收地址 (我的地址)</string>
     <string name="send_review_lease_to">租出地址</string>
     <string name="send_review_type">类型</string>
     <string name="send_generate_qr_code_btn">生成二维码</string>

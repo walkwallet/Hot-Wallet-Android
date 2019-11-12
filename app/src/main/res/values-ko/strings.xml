@@ -83,6 +83,8 @@
     <string name="detail_canceled_out_leasing">리스 취소</string>
     <string name="detail_incoming_leasing">인커밍 리스 </string>
     <string name="detail_execute_contract">계약 체결</string>
+    <string name="detail_execute_contract_sent">계약 체결</string>
+    <string name="detail_execute_contract_received">계약 체결</string>
     <string name="detail_create_contract">계약 생성</string>
     <string name="detail_canceled_int_leasing">인커밍 리스  취소</string>
     <string name="detail_address_management">주소 관리</string>
@@ -226,7 +228,9 @@
     <string name="send_fee_tip">전송 수수료</string>
     <string name="send_review_title">거래 검토</string>
     <string name="send_review_from">내 주소</string>
+    <string name="send_review_my_address">내 주소</string>
     <string name="send_review_send_to">로</string>
+    <string name="send_review_to_my_address">로</string>
     <string name="send_review_lease_to">로</string>
     <string name="send_review_type">유형</string>
     <string name="send_generate_qr_code_btn">QR 코드 생성</string>

@@ -104,7 +104,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
             @Override
             public void addToken(Token token) {
 
-                addWatchedToken(token.getName(), token.getTokenId());
+                addWatchedToken(token.getName(), token.getTokenId(), true);
             }
         });
         initTokenData();
@@ -126,7 +126,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                         }
                     }
                 }
-                addWatchedToken(name, tokenId);
+                addWatchedToken(name, tokenId, false);
                 break;
             case R.id.btn_paste: {
                 ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -144,7 +144,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
         }
     }
 
-    public void addWatchedToken(final String name, final String tokenId){
+    public void addWatchedToken(final String name, final String tokenId, boolean isVerified){
         final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
         if(tokenId.isEmpty()){
             return ;
@@ -160,6 +160,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
         }
         final NodeAPI nodeApi = RetrofitHelper.getInstance().getNodeAPI();
         final Token newToken = new Token();
+        newToken.setVerified(isVerified);
         Disposable d = nodeApi.tokenInfo(tokenId)// request token info
                 .compose(this.<RespBean>bindLoading())
                 .subscribeOn(Schedulers.io())
@@ -230,6 +231,11 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                                         }
                                         ContractContentBean contract = JSON.parseObject(respBean.getData(), ContractContentBean.class);
                                         List<ContractFunc> funcs = new ArrayList<>((JSON.parseArray(Vsys.decodeContractTextrue(contract.getTextual().getDescriptors()), ContractFunc.class)));
+                                        for (ContractFunc func : funcs){
+                                            if (func.getName().equals("split")){
+                                                newToken.setSpilt(true);
+                                            }
+                                        }
                                         newToken.setFuncs(funcs.toArray(new ContractFunc[funcs.size()]));
                                         tokens.add(newToken);
                                         SPUtils.setString(key, JSON.toJSONString(tokens));

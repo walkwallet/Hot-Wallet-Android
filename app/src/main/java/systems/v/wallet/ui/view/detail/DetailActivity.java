@@ -236,7 +236,7 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                 if (resp.getTransactions() != null && resp.getTransactions().size() > 0){
                     List<RecordBean> list = resp.getTransactions();
                     List<RecordEntity> recordEntityList = new ArrayList<>();
-                    List<Token> verifiedToken = TokenHelper.getVerifiedFromCache(DetailActivity.this, mAccount.getNetwork());
+                    List<Token> verifiedToken = TokenHelper.getAddedVerifiedTokens(DetailActivity.this, mAccount.getPublicKey());
                     for (int i = 0; i < list.size(); i++) {
                         RecordBean bean = list.get(i);
                         RecordEntity entity = new RecordEntity(bean, verifiedToken, address);

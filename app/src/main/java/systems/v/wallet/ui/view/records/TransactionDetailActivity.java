@@ -73,7 +73,7 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
                 mRecord.getId());
         UIUtil.addItemVertical(inflater, container, senderAddress.equals(mAccount.getAddress()) ? R.string.send_review_my_address : R.string.send_review_from,
                 senderAddress);
-        if(mRecord.getRecipient() != null && TextUtils.isEmpty(mRecord.getRecipient())){
+        if(mRecord.getRecipient() != null && !TextUtils.isEmpty(mRecord.getRecipient())){
             ItemInfoVerticalBinding bindingTo = UIUtil.addItemVertical(inflater, container,
                     mAccount.getAddress().equals(mRecord.getRecipient()) ? R.string.send_review_to_my_address : R.string.transaction_detail_to,
                     mRecord.getRecipient());

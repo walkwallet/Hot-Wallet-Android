@@ -36,6 +36,7 @@ import systems.v.wallet.databinding.FragmentRecordBinding;
 import systems.v.wallet.entity.RecordEntity;
 import systems.v.wallet.ui.BaseActivity;
 import systems.v.wallet.ui.BaseFragment;
+import systems.v.wallet.ui.view.detail.DetailActivity;
 import systems.v.wallet.ui.view.detail.adapter.RecordAdapter;
 import systems.v.wallet.ui.view.records.DateSelectActivity;
 import systems.v.wallet.ui.view.records.TransactionDetailActivity;
@@ -48,8 +49,8 @@ import systems.v.wallet.utils.LogUtil;
 public class RecordFragment extends BaseFragment {
     public static final int TYPE_ALL = -1;
     public static final int TYPE_PAYMENT = 2;
-    public static final int TYPE_LEASE = 4;
-    public static final int TYPE_LEASE_OUT = 5;
+    public static final int TYPE_LEASE = 3;
+    public static final int TYPE_LEASE_OUT = 4;
     public static final int TYPE_CREATE_CONTRACT = 8;
     public static final int TYPE_EXECUTE_CONTRACT = 9;
     private final int PAGE_SIZE = 20;
@@ -225,7 +226,7 @@ public class RecordFragment extends BaseFragment {
                         if (resp.getTransactions() != null && resp.getTransactions().size() > 0){
                             List<RecordBean> list = resp.getTransactions();
                             List<RecordEntity> recordEntityList = new ArrayList<>();
-                            List<Token> verifiedToken = TokenHelper.getVerifiedFromCache(mActivity, mAccount.getNetwork());
+                            List<Token> verifiedToken = TokenHelper.getAddedVerifiedTokens(mActivity, mAccount.getPublicKey());
                             for (int i = 0; i < list.size(); i++) {
                                 RecordBean bean = list.get(i);
                                 RecordEntity entity = new RecordEntity(bean, verifiedToken, mAccount.getAddress());
