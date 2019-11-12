@@ -265,7 +265,7 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-
+                LogUtil.Log("err", throwable.toString());
             }
         });
     }

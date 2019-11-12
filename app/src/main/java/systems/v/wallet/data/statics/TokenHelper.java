@@ -41,9 +41,11 @@ public class TokenHelper {
         final String key = Constants.WATCHED_TOKEN.concat(publicKey);
         List<Token> addedTokens = JSON.parseArray(SPUtils.getString(key), Token.class);
         List<Token> verifiedTokens = new ArrayList<>();
-        for (Token token : addedTokens){
-            if (token.isVerified()){
-                verifiedTokens.add(token);
+        if(addedTokens != null) {
+            for (Token token : addedTokens) {
+                if (token.isVerified()) {
+                    verifiedTokens.add(token);
+                }
             }
         }
         return verifiedTokens;
