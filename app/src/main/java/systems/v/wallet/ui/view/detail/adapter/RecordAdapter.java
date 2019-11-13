@@ -102,7 +102,7 @@ public class RecordAdapter extends BaseAdapter<RecordEntity> {
             case RecordEntity.TYPE_EXECUTE_CONTRACT_RECEIVED:
                 if(item.getAmount() != 0 && item.getToken() != null) {
                     textId = R.string.detail_execute_contract_received;
-                    amount = "-" + CoinUtil.formatWithUnit(item.getAmount(), item.getToken().getUnity(), item.getToken().getName());
+                    amount = "+" + CoinUtil.formatWithUnit(item.getAmount(), item.getToken().getUnity(), item.getToken().getName());
                     drawableId = R.drawable.ico_record_received;
                     address = UIUtil.getMutatedAddress(item.getAddress());
                 }

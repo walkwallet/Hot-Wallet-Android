@@ -240,6 +240,11 @@ public class RecordFragment extends BaseFragment {
                                     RecordEntity entitySend = new RecordEntity(bean, verifiedToken, mAccount.getAddress());
                                     entitySend.setRecordType(RecordEntity.TYPE_SENT);
                                     recordEntityList.add(entitySend);
+                                } else if(entity.getRecordType() == RecordEntity.TYPE_EXECUTE_CONTRACT_RECEIVED &&
+                                        entity.getSender().equals(entity.getRecipient())){
+                                    RecordEntity entitySend = new RecordEntity(bean, verifiedToken, mAccount.getAddress());
+                                    entitySend.setRecordType(RecordEntity.TYPE_EXECUTE_CONTRACT_SENT);
+                                    recordEntityList.add(entitySend);
                                 }
                             }
                             if(mPageNum == 0){

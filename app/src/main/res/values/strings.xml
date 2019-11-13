@@ -94,8 +94,8 @@
     <string name="detail_copy_address">Copy the Address</string>
     <string name="detail_create_contract">Create Contract </string>
     <string name="detail_execute_contract">Execute Contract </string>
-    <string name="detail_execute_contract_sent">Execute Contract Function(Sent Token)</string>
-    <string name="detail_execute_contract_received">Execute Contract Function(Received Token)</string>
+    <string name="detail_execute_contract_sent">Sent Token</string>
+    <string name="detail_execute_contract_received">Received Token</string>
     <string name="detail_cancel_out_leasing_btn">Cancel Out Leasing</string>
     <!--end>>>  detail  (wallet detail/ monitor detail) -->
 
