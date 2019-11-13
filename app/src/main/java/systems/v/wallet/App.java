@@ -10,18 +10,25 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import androidx.multidex.MultiDex;
+
+
+import com.squareup.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
 import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.ui.view.VerifyActivity;
@@ -52,6 +59,7 @@ public class App extends Application {
         mInstance = this;
         MultiDex.install(this);
         registerActivity();
+        initPicasso();
     }
 
 
@@ -378,5 +386,14 @@ public class App extends Application {
 
     public void setLanguageChange(boolean languageChange) {
         this.mLanguageChange = languageChange;
+    }
+
+    private void initPicasso(){
+        Picasso.Builder builder = new Picasso.Builder(this);
+        builder.downloader(new OkHttp3Downloader(this,Integer.MAX_VALUE));
+        Picasso built = builder.build();
+//        built.setIndicatorsEnabled(true);
+//        built.setLoggingEnabled(true);
+        Picasso.setSingletonInstance(built);
     }
 }

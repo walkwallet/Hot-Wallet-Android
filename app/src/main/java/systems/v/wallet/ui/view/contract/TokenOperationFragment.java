@@ -49,14 +49,14 @@ public class TokenOperationFragment extends BottomSheetFragment {
         llop.setOrientation(LinearLayout.VERTICAL);
         llop.setBackgroundResource(R.drawable.bg_white_radius_8);
 
-        TextView tvTitle = new TextView(inflater.getContext());
-        tvTitle.setMinHeight(operationHeight);
-        tvTitle.setGravity(Gravity.CENTER);
-
-        tvTitle.setText(token.getName());
-
-        llop.addView(tvTitle);
-        addDivider(inflater.getContext(), llop);
+        if (token.getName() != null && !token.getName().isEmpty()) {
+            TextView tvTitle = new TextView(inflater.getContext());
+            tvTitle.setMinHeight(operationHeight);
+            tvTitle.setGravity(Gravity.CENTER);
+            tvTitle.setText(token.getName());
+            llop.addView(tvTitle);
+            addDivider(inflater.getContext(), llop);
+        }
 
         for (int i = 0; i < operations.size(); i++){
             TextView tvOperation = new TextView(inflater.getContext());

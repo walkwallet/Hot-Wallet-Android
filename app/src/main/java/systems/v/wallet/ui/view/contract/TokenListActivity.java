@@ -17,6 +17,9 @@ import java.util.Map;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -24,14 +27,21 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
+import systems.v.wallet.basic.utils.TxUtil;
+import systems.v.wallet.basic.wallet.ContractFunc;
 import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.data.BaseErrorConsumer;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.NodeAPI;
 import systems.v.wallet.data.api.PublicApi;
+import systems.v.wallet.data.bean.ContractBean;
+import systems.v.wallet.data.bean.ContractContentBean;
+import systems.v.wallet.data.bean.ContractInfoBean;
 import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.bean.TokenBalanceBean;
+import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.data.bean.publicApi.TokenInfoBean;
+import systems.v.wallet.data.statics.TokenHelper;
 import systems.v.wallet.databinding.ActivityTokenListBinding;
 import systems.v.wallet.databinding.HeaderDetailBinding;
 import systems.v.wallet.databinding.HeaderTokenListBinding;
@@ -40,9 +50,11 @@ import systems.v.wallet.ui.view.contract.adapter.TokenAdapter;
 import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
 import systems.v.wallet.ui.widget.wrapper.HeaderAndFooterWrapper;
 import systems.v.wallet.utils.Constants;
+import systems.v.wallet.utils.LogUtil;
 import systems.v.wallet.utils.SPUtils;
 import systems.v.wallet.utils.bus.AppEvent;
 import systems.v.wallet.utils.bus.annotation.Subscribe;
+import vsys.Vsys;
 
 public class TokenListActivity extends BaseThemedActivity implements View.OnClickListener{
     public static void launch(Activity from, String publicKey) {
@@ -86,7 +98,16 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
         tokenAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(View view, final int position) {
+//                final Token token = mData.get(position);
                 List<TokenOperationFragment.Operation> mOperation = new ArrayList<>();
+//                if (mAccount.getAddress().equals(token.getMaker())){
+//                    mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_supersede, new TokenOperationFragment.Operation.OperationListener() {
+//                        @Override
+//                        public void onOperation(TokenOperationFragment dialog) {
+//
+//                        }
+//                    }));
+//                }
                 mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_send, new TokenOperationFragment.Operation.OperationListener() {
                     @Override
                     public void onOperation(TokenOperationFragment dialog) {
@@ -100,6 +121,12 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                     }
                 }));
                 if(mData.get(position).getIssuer().equals(mAccount.getAddress())) {
+//                    mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_split, new TokenOperationFragment.Operation.OperationListener() {
+//                        @Override
+//                        public void onOperation(TokenOperationFragment dialog) {
+//                            IssueActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
+//                        }
+//                    }));
                     mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_issue, new TokenOperationFragment.Operation.OperationListener() {
                         @Override
                         public void onOperation(TokenOperationFragment dialog) {
@@ -153,19 +180,29 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
     private void initData(){
         setHeaderData();
         getTokenList();
+        updateTokensInfo();
     }
 
     private void getTokenList(){
         final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
-        List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+        String str = SPUtils.getString(key);
+        List<Token> tokens = JSON.parseArray(str, Token.class);
         if (tokens == null){
             return ;
+        }
+        List<Token> verifiedTokens = TokenHelper.getVerifiedFromCache(this, mAccount.getNetwork());
+        for (int i=0; i < tokens.size(); i++) {
+            for (Token token : verifiedTokens) {
+                if (token.getTokenId() != null && token.getTokenId().equals(tokens.get(i).getTokenId())) {
+                    tokens.get(i).setName(token.getName());
+                    tokens.get(i).setIcon(token.getIcon());
+                }
+            }
         }
 
         mData.clear();
         mData.addAll(tokens);
         final NodeAPI nodeApi = RetrofitHelper.getInstance().getNodeAPI();
-        final PublicApi publicApi = RetrofitHelper.getInstance().getPublicAPI();
 
         if(mData != null) {
             //Balance
@@ -200,43 +237,107 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                             Log.e(TAG, msg);
                         }
                     }));
-            //Official Token Icon & Name
-            Disposable pd = Observable.fromIterable(mData)
-                    .flatMap(new Function<Token, Observable<systems.v.wallet.data.bean.publicApi.RespBean>>() {
-                        @Override
-                        public Observable<systems.v.wallet.data.bean.publicApi.RespBean> apply(Token token){
-                            Map<String, Object> params = new HashMap<>();
-                            params.put("TokenId", token.getTokenId());
-                            return publicApi.getTokenDetail(params);
-                        }
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<systems.v.wallet.data.bean.publicApi.RespBean>() {
-                        @Override
-                        public void accept(systems.v.wallet.data.bean.publicApi.RespBean resp) throws Exception {
-                            if(resp.getCode() == 0){
-                                TokenInfoBean t = JSON.parseObject((String)resp.getData(), TokenInfoBean.class);
-                                for (int j = 0; j < mData.size(); j++) {
-                                    if (mData.get(j).getTokenId().equals(t.getId())) {
-                                        mData.get(j).setIcon(Constants.PUBLIC_API_SERVER_RES + t.getIconUrl());
-                                        mData.get(j).setName(t.getName());
-                                    }
-                                }
-
-//                                SPUtils.setString(key, JSON.toJSONString(mData));
-                                handleDataChange();
-                            }
-
-                        }
-                    }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
-                        @Override
-                        public void onError(int code, String msg) {
-                            Log.e(TAG, msg);
-                        }
-                    }));
         }
         handleDataChange();
+    }
+
+    private void updateTokensInfo(){
+        final String key = Constants.WATCHED_TOKEN.concat(mAccount.getPublicKey());
+        Disposable d = Observable.fromIterable(mData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .flatMap(new Function<Token, ObservableSource<Token>>() {
+                    @Override
+                    public ObservableSource<Token> apply(Token token) throws Exception {
+                        return updateTokenInfo(token.getTokenId());
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Token>() {
+                    @Override
+                    public synchronized void accept(Token token) throws Exception {
+                        if(token != null) {
+                            List<Token> tokens = JSON.parseArray(SPUtils.getString(key), Token.class);
+                            if (tokens == null) {
+                                tokens = new ArrayList<>();
+                            }
+                            for (int i=0;i < tokens.size();i++) {
+                                if (tokens.get(i).getTokenId().equals(token.getTokenId())){
+                                    tokens.get(i).setUnity(token.getUnity());
+                                    tokens.get(i).setIssuer(token.getIssuer());
+                                    tokens.get(i).setMaker(token.getMaker());
+                                }
+                            }
+                            SPUtils.setString(key, JSON.toJSONString(tokens));
+
+                            for (int i=0;i < mData.size();i++){
+                                if (mData.get(i).getTokenId().equals(token.getTokenId())){
+                                    mData.get(i).setUnity(token.getUnity());
+                                    mData.get(i).setIssuer(token.getIssuer());
+                                    mData.get(i).setMaker(token.getMaker());
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+
+    }
+
+    private Observable<Token> updateTokenInfo(final String tokenId){
+        final Token newToken = new Token();
+        final NodeAPI nodeApi = RetrofitHelper.getInstance().getNodeAPI();
+        return nodeApi.tokenInfo(tokenId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(new Function<RespBean, Observable<RespBean>>() {// request contract info
+                    @Override
+                    public Observable<RespBean> apply(final RespBean respBean) throws Exception {
+
+                        if(respBean != null) {
+                            final TokenBean token = JSON.parseObject(respBean.getData(), TokenBean.class);
+                            newToken.setTokenId(token.getTokenId());
+                            newToken.setContractId(token.getContractId());
+                            newToken.setUnity(token.getUnity());
+                            newToken.setMax(token.getMax());
+                            newToken.setDescription(TxUtil.decodeAttachment(token.getDescription()).substring(2));
+                            return nodeApi.contractInfo(Vsys.tokenId2ContractId(tokenId));
+                        }else{
+                            return Observable.create(new ObservableOnSubscribe<RespBean>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<RespBean> emitter) throws Exception {
+                                    emitter.onError(new Throwable(respBean.getMsg()));
+                                }
+                            });
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(new Function<RespBean, Observable<Token>>() {// contract content
+                    @Override
+                    public Observable<Token> apply(final RespBean respBean) throws Exception {
+                        if(respBean != null) {
+                            ContractBean contractBean = JSON.parseObject(respBean.getData(), ContractBean.class);
+                            for (ContractInfoBean info: contractBean.getInfo()){
+                                if (info.getName().equals("issuer")){
+                                    newToken.setIssuer(info.getData());
+                                }else if(info.getName().equals("maker")){
+                                    newToken.setMaker(info.getData());
+                                }
+                            }
+                            return Observable.create(new ObservableOnSubscribe<Token>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<Token> emitter) throws Exception {
+                                    emitter.onNext(newToken);
+                                }
+                            });
+                        }else{
+                            return null;
+                        }
+                    }
+                });
     }
 
     private void handleDataChange() {

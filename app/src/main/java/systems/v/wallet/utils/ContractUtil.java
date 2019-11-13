@@ -1,10 +1,16 @@
 package systems.v.wallet.utils;
 
 
+import android.util.Log;
+
 import java.util.Locale;
 
 import systems.v.wallet.basic.utils.Base58;
+import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.wallet.ContractFunc;
+import systems.v.wallet.basic.wallet.Token;
+import systems.v.wallet.data.bean.RecordBean;
+import vsys.Contract;
 import vsys.Vsys;
 
 public class ContractUtil {
@@ -45,5 +51,38 @@ public class ContractUtil {
                 return String.format(Locale.US, "%s %s token", actionCode, args[0]);
         }
         return "";
+    }
+
+    public static Contract generateContract(long unity, long max ,String description, boolean isSplit){
+        Contract c = new Contract();
+
+        c.setUnity(unity);
+        c.setMax(max);
+        c.setTokenDescription(description);
+        c.setContract(isSplit ? Base58.decode(Vsys.ConstContractSplit): Base58.decode(Vsys.ConstContractDefault));
+        return c;
+    }
+
+    public static RecordBean decodeRecordData(Contract c, RecordBean recordBean){
+        boolean isSplit = Base58.encode(c.getContract()).equals(Vsys.ConstContractSplit);
+        if (isSplit){
+            switch (recordBean.getFunctionIndex()){
+                case 4:
+                    c.decodeSend(Base58.decode(recordBean.getFunctionData()));
+                    recordBean.setAmount(c.getAmount());
+                    recordBean.setRecipient(c.getRecipient());
+                    break;
+            }
+        }else{
+            switch (recordBean.getFunctionIndex()){
+                case 3:
+                    c.decodeSend(Base58.decode(recordBean.getFunctionData()));
+                    recordBean.setAmount(c.getAmount());
+                    recordBean.setRecipient(c.getRecipient());
+                    break;
+            }
+        }
+
+        return recordBean;
     }
 }

@@ -13,17 +13,22 @@ import com.alibaba.fastjson.TypeReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.StringRes;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
+import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.bean.RecordBean;
 import systems.v.wallet.data.bean.RespBean;
+import systems.v.wallet.data.statics.TokenHelper;
 import systems.v.wallet.databinding.ActivityTransactionRecordsBinding;
 import systems.v.wallet.entity.RecordEntity;
 import systems.v.wallet.ui.BaseThemedActivity;
@@ -43,8 +48,13 @@ public class TransactionRecordsActivity extends BaseThemedActivity implements Vi
 
     private ActivityTransactionRecordsBinding mBinding;
     private List<String> mTabs = new ArrayList<>();
-    private List<RecordEntity> mData = new ArrayList<>();
     private List<RecordFragment> mFragments = new ArrayList<>();
+    private @StringRes int[] txTypeStr = new int[]{R.string.records_all, R.string.detail_payment, R.string.detail_lease,
+            R.string.detail_cancel_lease, R.string.detail_create_contract, R.string.detail_execute_contract};
+    private int[] typeArray = new int[]{RecordFragment.TYPE_ALL, RecordFragment.TYPE_PAYMENT, RecordFragment.TYPE_LEASE,
+            RecordFragment.TYPE_LEASE_OUT, RecordFragment.TYPE_CREATE_CONTRACT, RecordFragment.TYPE_EXECUTE_CONTRACT};
+    public DateSelectActivity.Result mFilterType = new DateSelectActivity.Result(DateSelectActivity.TYPE_NO_FILTER);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +66,11 @@ public class TransactionRecordsActivity extends BaseThemedActivity implements Vi
     }
 
     private void initView() {
-        mTabs.add(getString(R.string.records_all));
-        mTabs.add(getString(R.string.detail_send));
-        mTabs.add(getString(R.string.detail_receive));
-        mTabs.add(getString(R.string.detail_lease));
         String publicKey = mAccount.getPublicKey();
-        mFragments.add(RecordFragment.newInstance(publicKey, RecordFragment.TYPE_ALL));
-        mFragments.add(RecordFragment.newInstance(publicKey, RecordFragment.TYPE_SEND));
-        mFragments.add(RecordFragment.newInstance(publicKey, RecordFragment.TYPE_RECEIVE));
-        mFragments.add(RecordFragment.newInstance(publicKey, RecordFragment.TYPE_LEASE));
+        for (int i=0; i < txTypeStr.length; i++ ){
+            mTabs.add(getString(txTypeStr[i]));
+            mFragments.add(RecordFragment.newInstance(publicKey, typeArray[i]));
+        }
         if (mAccount.isColdAccount()) {
             mBinding.llTime.setBackgroundResource(R.drawable.bg_blue_radius_13);
         } else {
@@ -89,43 +95,7 @@ public class TransactionRecordsActivity extends BaseThemedActivity implements Vi
         for (int i = 0, len = mBinding.tlRecords.getTabCount(); i < len; i++) {
             mBinding.tlRecords.getTabAt(i).setText(mTabs.get(i));
         }
-        mBinding.vpRecords.setOffscreenPageLimit(4);
-        showLoading();
-        getRecords(mAccount.getAddress());
-    }
-
-    private void getRecords(final String address) {
-        Disposable d = RetrofitHelper.getInstance().getNodeAPI().records(address, 1000)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<RespBean>() {
-                    @Override
-                    public void accept(RespBean respBean) throws Exception {
-                        List<List<RecordBean>> resultList = JSON.parseObject(respBean.getData(),
-                                new TypeReference<List<List<RecordBean>>>() {
-                                });
-                        if (resultList != null && resultList.size() > 0
-                                && resultList.get(0) != null && resultList.get(0).size() > 0) {
-                            List<RecordBean> list = resultList.get(0);
-                            List<RecordEntity> recordEntityList = new ArrayList<>();
-                            for (int i = 0; i < list.size(); i++) {
-                                RecordEntity entity = new RecordEntity(list.get(i));
-                                entity.setAddress(address);
-                                if (entity.getRecordType() != RecordEntity.TYPE_NONE) {
-                                    recordEntityList.add(entity);
-                                }
-                            }
-                            mData.clear();
-                            mData.addAll(recordEntityList);
-                            notifyDataChange();
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
-                });
+        mBinding.vpRecords.setOffscreenPageLimit(6);
     }
 
     @Override
@@ -139,25 +109,13 @@ public class TransactionRecordsActivity extends BaseThemedActivity implements Vi
         }
     }
 
-    private void notifyDataChange() {
-        for (RecordFragment fragment : mFragments) {
-            if (fragment != null) {
-                fragment.notifyDataChange();
-            }
-        }
-        hideLoading();
-    }
-
     private void changeData(DateSelectActivity.Result result) {
+        mFilterType = result;
         for (RecordFragment fragment : mFragments) {
             if (fragment != null) {
-                fragment.changeData(result);
+                fragment.changeData();
             }
         }
-    }
-
-    public List<RecordEntity> getData() {
-        return mData;
     }
 
     @Override
@@ -168,7 +126,7 @@ public class TransactionRecordsActivity extends BaseThemedActivity implements Vi
                 break;
             case R.id.iv_close_time:
                 mBinding.flTime.setVisibility(View.GONE);
-                notifyDataChange();
+                changeData(new DateSelectActivity.Result(DateSelectActivity.TYPE_NO_FILTER));
                 break;
         }
     }

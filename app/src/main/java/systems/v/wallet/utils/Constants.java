@@ -19,6 +19,6 @@ public class Constants {
 
     public static final String ALIAS = "alias";
 
-    public static final String PUBLIC_API_SERVER = "http://explorer.tonode.com/";//TODO
-    public static final String PUBLIC_API_SERVER_RES = "http://explorer.tonode.com";//TODO
+    public static final String PUBLIC_API_SERVER = "https://explorer.v.systems";
+    public static final String PUBLIC_API_SERVER_TEST = "https://testexplorer.v.systems";
 }

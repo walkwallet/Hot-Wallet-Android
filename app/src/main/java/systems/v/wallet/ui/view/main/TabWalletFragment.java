@@ -258,6 +258,9 @@ public class TabWalletFragment extends BaseFragment implements View.OnClickListe
                     }
                     mMonitorList.clear();
                     mMonitorList.addAll(mWallet.getColdAccounts());
+                    if (mMonitorList.size() <= 0){
+                        return;
+                    }
                     mData.add(mMonitorList.get(mMonitorList.size() - 1));
                     mAdapter.notifyDataSetChanged();
                     try {

@@ -60,7 +60,7 @@
                 app:tabGravity="fill"
                 app:tabIndicatorColor="?attr/colorAccent"
                 app:tabIndicatorHeight="2dp"
-                app:tabMode="fixed"
+                app:tabMode="scrollable"
                 app:tabSelectedTextColor="?attr/colorAccent"
                 app:tabTextAppearance="@style/TextAppearance.Tab.BottomNavigation"
                 app:tabTextColor="@color/text_weak" />

@@ -17,6 +17,7 @@
     <string name="i_agree">I agree</string>
     <string name="i_dont_agree">I do not agree</string>
     <string name="warning">WARNING</string>
+    <string name="refresh">刷新</string>
 
     <!--other start-->
     <string name="scan_tip">Align QR code within frame to scan</string>
@@ -78,7 +79,9 @@
     <string name="detail_leased_in">Leased In</string>
     <string name="detail_send">Send</string>
     <string name="detail_receive">Receive</string>
-    <string name="detail_lease">Minting</string>
+    <string name="detail_payment">Payment</string>
+    <string name="detail_lease">Leasing</string>
+    <string name="detail_cancel_lease">Cancel leasing</string>
     <string name="detail_records">Records</string>
     <string name="detail_token">Token</string>
     <string name="detail_sent">Sent</string>
@@ -91,6 +94,8 @@
     <string name="detail_copy_address">Copy the Address</string>
     <string name="detail_create_contract">Create Contract </string>
     <string name="detail_execute_contract">Execute Contract </string>
+    <string name="detail_execute_contract_sent">Sent Token</string>
+    <string name="detail_execute_contract_received">Received Token</string>
     <string name="detail_cancel_out_leasing_btn">Cancel Out Leasing</string>
     <!--end>>>  detail  (wallet detail/ monitor detail) -->
 
@@ -222,7 +227,7 @@
     <string name="send_address_input_hint">Receive Address</string>
     <string name="send_lease_address_input_hint">Node Address</string>
     <string name="send_address_input_error">You can only send tokens to an VSYS address.</string>
-    <string name="send_to_self_error">The receiving address cannot be the current address</string>
+    <string name="send_to_self_error">The receiving address is the current address</string>
     <string name="send_max_btn">Max</string>
     <string name="send_paste_btn">PASTE</string>
     <string name="send_scan_btn">SCAN QR</string>
@@ -234,9 +239,10 @@
     <string name="send_time">Time</string>
     <string name="send_fee_tip">Transaction Fee</string>
     <string name="send_review_title">Review Transaction</string>
-    <string name="send_review_my_address">My Address</string>
+    <string name="send_review_my_address">From (My address)</string>
     <string name="send_review_from">From</string>
     <string name="send_review_send_to">To</string>
+    <string name="send_review_to_my_address">To (My address)</string>
     <string name="send_review_lease_to">To</string>
     <string name="send_review_type">Type</string>
     <string name="send_generate_qr_code_btn">Generate QR Code</string>
@@ -245,6 +251,7 @@
     <string name="send_scan_qr_code_page">Current Page: %1$s Total Page: %2$s </string>
     <string name="send_payment_success">You Sent %1$s to</string>
     <string name="send_lease_success">You Started Leasing  %1$s to</string>
+    <string name="send_lease_to_self_error">You can\'t lease to yourself</string>
     <string name="send_cancel_lease_success">You  Canceled Out Leasing  %1$s to</string>
     <string name="send_success_check_tip">You can check in your transaction records</string>
     <!-- send end -->
@@ -279,7 +286,7 @@
     <string name="create_token_transaction_fee_title">Transaction Fee:</string>
     <string name="create_token_available_titlte">Available balance:</string>
     <string name="create_token">Transaction Fee:</string>
-    <string name="create_token_unitybase">10 ^ </string>
+    <string name="create_token_unitybase">10 ^ %1d (The minimum amount will be %2s Token)</string>
     <string name="create_token_success">You have create a new token, token ID is:</string>
     <string name="create_token_success_tip">You can check in your token watch list</string>
     <string name="create_token_exceed_max">Too many significant digits for amount. Please reduce unity.</string>
@@ -295,8 +302,10 @@
     <string name="token_list_create_token">Create Token</string>
     <string name="token_list_list_title">Token Watch List</string>
 
+    <string name="token_list_supersede">Supersede</string>
     <string name="token_list_send">Send Token</string>
     <string name="token_list_info">Get Token Info</string>
+    <string name="token_list_split">Split Token</string>
     <string name="token_list_issue">Issue Token</string>
     <string name="token_list_destroy">Destroy Token</string>
     <string name="token_list_remove">Hide Token</string>
@@ -329,6 +338,7 @@
 
     <string name="add_token_input_hint">Input the token ID</string>
     <string name="add_token_add">Add</string>
+    <string name="add_token_added">Added</string>
     <string name="add_token_err_id">Token does not exist!</string>
     <string name="add_token_added_token">Token already added!</string>
     <string name="add_token_success">Successful added</string>

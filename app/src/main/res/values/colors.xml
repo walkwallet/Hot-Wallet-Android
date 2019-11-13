@@ -22,6 +22,7 @@
     <color name="text_white">@color/color_white</color>
     <color name="color_white_5">#88FFFFFF</color>
     <color name="color_gray">#F2F2F5</color>
+    <color name="gray2">#BEBEC4</color>
 
     <color name="error">#F5354B</color>
     <color name="secondary_text">#54545C</color>
@@ -49,5 +50,6 @@
     <color name="color_label">#81818A</color>
 
     <color name="text_green2">#23A28C</color>
+    <color name="orange3">#FF8837</color>
 
 </resources>

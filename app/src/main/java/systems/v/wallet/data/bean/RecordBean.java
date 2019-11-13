@@ -14,6 +14,9 @@ public class RecordBean {
     private long amount;
     private String attachment;
     private String status;
+    private String contractId;
+    private String functionData;
+    private int functionIndex;
 
     public RecordBean() {
     }
@@ -99,5 +102,29 @@ public class RecordBean {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
+    }
+
+    public String getFunctionData() {
+        return functionData;
+    }
+
+    public void setFunctionData(String functionData) {
+        this.functionData = functionData;
+    }
+
+    public int getFunctionIndex() {
+        return functionIndex;
+    }
+
+    public void setFunctionIndex(int functionIndex) {
+        this.functionIndex = functionIndex;
     }
 }

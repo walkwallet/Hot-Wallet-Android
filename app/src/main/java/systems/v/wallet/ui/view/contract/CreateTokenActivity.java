@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -29,9 +30,8 @@ import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.databinding.ActivityCreateTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
-import systems.v.wallet.ui.view.wallet.WalletInitActivity;
+import systems.v.wallet.ui.widget.inputfilter.MaxByteFilter;
 import systems.v.wallet.utils.ContractUtil;
-import systems.v.wallet.utils.SPUtils;
 import vsys.Contract;
 import vsys.Vsys;
 
@@ -61,13 +61,13 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
 
     private void initView(){
         setAppBar(mBinding.toolbar);
-        mBinding.setUnity(unityPower);
+        setUnity(unityPower);
         mBinding.setClick(this);
         mBinding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 unityPower = i;
-                mBinding.setUnity(i);
+                setUnity(i);
             }
 
             @Override
@@ -117,6 +117,8 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
         mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, balance));
         String fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_CREATE_TOKEN_FEE);
         mBinding.tvFee.setText(fee);
+        mBinding.etContractDescription.setFilters(new InputFilter[]{new MaxByteFilter()});
+        mBinding.etTokenDescription.setFilters(new InputFilter[]{new MaxByteFilter()});
     }
 
     @Override
@@ -124,12 +126,12 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
         switch (view.getId()){
             case R.id.btn_unity_plus:
                 if (unityPower < 16){
-                    mBinding.setUnity( ++unityPower );
+                    setUnity( ++unityPower );
                 }
                 break;
             case R.id.btn_unity_minus:
                 if (unityPower > 0){
-                    mBinding.setUnity( --unityPower );
+                    setUnity( --unityPower );
                 }
                 break;
             case R.id.btn_confirm:
@@ -161,13 +163,18 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
                 break;        }
     }
 
-    private void generateTransaction() {
-        Contract c = new Contract();
+    private void setUnity(int unityPower){
+        mBinding.setUnity(unityPower);
+        mBinding.setMinUnit(getString(R.string.create_token_unitybase, unityPower, BigDecimal.valueOf(1).movePointLeft(unityPower).toPlainString()));
+    }
 
-        c.setUnity((long)Math.pow(10, unityPower));
-        c.setMax(CoinUtil.parse(mBinding.etTotal.getText().toString(), c.getUnity()));
-        c.setTokenDescription(mBinding.etTokenDescription.getText().toString());
-        c.setContract(isSplit ? Base58.decode(Vsys.ConstContractSplit): Base58.decode(Vsys.ConstContractDefault));
+    private void generateTransaction() {
+        Contract c = ContractUtil.generateContract(
+                (long)Math.pow(10, unityPower),
+                CoinUtil.parse(mBinding.etTotal.getText().toString(), (long)Math.pow(10, unityPower)),
+                mBinding.etTokenDescription.getText().toString(),
+                isSplit);
+
         mTransaction = new Transaction();
         mTransaction.setFee(Transaction.DEFAULT_CREATE_TOKEN_FEE);
         mTransaction.setAddress(mAccount.getAddress());

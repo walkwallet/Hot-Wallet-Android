@@ -9,6 +9,8 @@ public class TokenInfoBean {
     private long TotalSupply;
     private String CreatorAddress;
     private int    Index;
+    private String RegisterTime;
+    private boolean isSplit;
 
     public String getId() {
         return Id;
@@ -73,4 +75,21 @@ public class TokenInfoBean {
     public void setIndex(int index) {
         Index = index;
     }
+
+    public String getRegisterTime() {
+        return RegisterTime;
+    }
+
+    public void setRegisterTime(String registerTime) {
+        RegisterTime = registerTime;
+    }
+
+    public boolean isSplit() {
+        return isSplit;
+    }
+
+    public void setSplit(boolean split) {
+        isSplit = split;
+    }
+
 }

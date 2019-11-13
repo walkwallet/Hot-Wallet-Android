@@ -205,6 +205,10 @@ public class DateSelectActivity extends BaseThemedActivity implements View.OnCli
         public Result() {
         }
 
+        public Result(int type) {
+            this.type = type;
+        }
+
         public int getType() {
             return type;
         }
