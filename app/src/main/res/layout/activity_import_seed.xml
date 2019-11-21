@@ -29,7 +29,7 @@
                 android:layout_gravity="end"
                 android:padding="12dp"
                 android:src="@drawable/ico_scan"
-                android:visibility="gone" />
+                />
         </FrameLayout>
 
         <ScrollView

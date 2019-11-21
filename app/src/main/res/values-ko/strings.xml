@@ -192,6 +192,7 @@
     <string name="word_backup_success_tips">니모닉 단어 관리에 유의하십시오.</string>
     <string name="word_input_in_order">순서대로 니모닉 단어를 입력하십시오.</string>
     <string name="word_backup_word">백업 니모닉</string>
+    <string name="word_backup_word_export_qrcode">백업 니모닉 QR 코드</string>
     <!--seed import end-->
 
     <!--receive start-->
@@ -208,7 +209,7 @@
     <string name="send_lease_title">주조</string>
     <string name="send_amount">수량</string>
     <string name="send_lease_amount">리스 수량</string>
-    <string name="send_insufficient_balance_error">잔고 부족</string>
+    <string name="send_insufficient_balance_error">%1$s 잔고 부족</string>
     <string name="send_amount_empty_error">수량을 입력하십시오.</string>
     <string name="send_available_balance">사용가능한 잔고: %1$s</string>
     <string name="send_payment_to">로</string>
@@ -287,6 +288,7 @@
     <string name="token_list_list_title">토큰 관심 리스트</string>
 
     <string name="token_list_send">토큰 전송</string>
+    <string name="token_list_receive">토큰 수신</string>
     <string name="token_list_info">토큰 정보 얻기</string>
     <string name="token_list_issue">발행 토큰</string>
     <string name="token_list_destroy">토큰 파괴</string>

@@ -17,7 +17,7 @@
     <string name="i_agree">I agree</string>
     <string name="i_dont_agree">I do not agree</string>
     <string name="warning">WARNING</string>
-    <string name="refresh">刷新</string>
+    <string name="refresh">refresh</string>
 
     <!--other start-->
     <string name="scan_tip">Align QR code within frame to scan</string>
@@ -203,6 +203,7 @@
     <string name="word_backup_success_tips">Please keep your mnemonic words carefully</string>
     <string name="word_input_in_order">Click on the mnemonic words orderly to confirm.</string>
     <string name="word_backup_word">Backup mnemonics</string>
+    <string name="word_backup_word_export_qrcode">Export mnemonics QR Code</string>
     <!--seed import end-->
 
     <!--receive start-->
@@ -219,7 +220,7 @@
     <string name="send_lease_title">Minting</string>
     <string name="send_amount">Amount</string>
     <string name="send_lease_amount">Lease Amount</string>
-    <string name="send_insufficient_balance_error">Insufficient balance</string>
+    <string name="send_insufficient_balance_error">Insufficient %1$s balance</string>
     <string name="send_amount_empty_error">Please enter the amount</string>
     <string name="send_available_balance">Available balance: %1$s</string>
     <string name="send_payment_to">To</string>
@@ -248,7 +249,7 @@
     <string name="send_generate_qr_code_btn">Generate QR Code</string>
     <string name="send_scan_qr_code_title">Scan QR Code</string>
     <string name="send_scan_qr_code_tip"><![CDATA[1. Please use your <b><font color="#5E78E1">Cold Wallet</font></b> client to scan this QR code.<br><br>2. And click continue after your cold wallet client generates a QR code.]]></string>
-    <string name="send_scan_qr_code_page">Current Page: %1$s Total Page: %2$s </string>
+    <string name="send_scan_qr_code_page">Current Page: %1$d Total Page: %2$d </string>
     <string name="send_payment_success">You Sent %1$s to</string>
     <string name="send_lease_success">You Started Leasing  %1$s to</string>
     <string name="send_lease_to_self_error">You can\'t lease to yourself</string>
@@ -304,6 +305,7 @@
 
     <string name="token_list_supersede">Supersede</string>
     <string name="token_list_send">Send Token</string>
+    <string name="token_list_receive">Receive Token</string>
     <string name="token_list_info">Get Token Info</string>
     <string name="token_list_split">Split Token</string>
     <string name="token_list_issue">Issue Token</string>
@@ -313,7 +315,7 @@
     <!--token list end-->
 
     <!--add token start-->
-    <string name="add_token_token_id">TOKEN ID</string>
+    <string name="add_token_token_id">TOKEN ID or NAME</string>
 
     <!--add token end-->
 
@@ -336,7 +338,7 @@
     <string name="issue_token_review_amount">Issue Amount</string>
     <string name="issue_available_balance">Issue available: %1$s</string>
 
-    <string name="add_token_input_hint">Input the token ID</string>
+    <string name="add_token_input_hint">Input the Token ID or Name</string>
     <string name="add_token_add">Add</string>
     <string name="add_token_added">Added</string>
     <string name="add_token_err_id">Token does not exist!</string>

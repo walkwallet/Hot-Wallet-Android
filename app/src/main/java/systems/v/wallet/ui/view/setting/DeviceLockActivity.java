@@ -105,6 +105,7 @@ public class DeviceLockActivity extends BaseActivity implements View.OnClickList
             mSelectBinding.tvCancel.setTextColor(ContextCompat.getColor(this, R.color.color_orange_strong));
             mSelectBinding.tvTop.setText(R.string.setting_5_min);
             mSelectBinding.tvBottom.setText(R.string.setting_10_min);
+            mSelectBinding.tvThird.setVisibility(View.GONE);
             mSelectDialog = new Dialog(mActivity, R.style.BottomDialog);
             mSelectDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             if (mSelectBinding.getRoot().getParent() != null) {

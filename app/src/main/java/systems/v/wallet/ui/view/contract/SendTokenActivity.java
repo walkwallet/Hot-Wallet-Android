@@ -38,6 +38,7 @@ import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
 import systems.v.wallet.ui.view.transaction.ScannerActivity;
 import systems.v.wallet.ui.widget.inputfilter.MaxByteFilter;
+import systems.v.wallet.utils.ClipUtil;
 import systems.v.wallet.utils.ContractUtil;
 import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
@@ -98,10 +99,14 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
                 long value = CoinUtil.parse(mBinding.etAmount.getText().toString(), mToken.getUnity());
                 if(TextUtils.isEmpty(s)){
                     mBinding.tvBalanceError.setVisibility(View.GONE);
-                }else if((mToken.getBalance() >= value) && mAccount.getAvailable() >= Transaction.DEFAULT_TOKEN_TX_FEE) {
-                    mBinding.tvBalanceError.setVisibility(View.GONE);
-                } else {
+                } else if((mToken.getBalance() < value )){
+                    mBinding.tvBalanceError.setText(getString(R.string.send_insufficient_balance_error, mToken.getName() != null ? mToken.getName() : ""));
                     mBinding.tvBalanceError.setVisibility(View.VISIBLE);
+                }else if(mAccount.getAvailable() < Transaction.DEFAULT_TOKEN_TX_FEE) {
+                    mBinding.tvBalanceError.setText(getString(R.string.send_insufficient_balance_error, "VSYS"));
+                    mBinding.tvBalanceError.setVisibility(View.VISIBLE);
+                }else{
+                    mBinding.tvBalanceError.setVisibility(View.GONE);
                 }
             }
 
@@ -140,13 +145,7 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
             }
             break;
             case R.id.btn_paste: {
-                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = cm.getPrimaryClip();
-                if (clipData != null && clipData.getItemCount() > 0) {
-                    ClipData.Item item = clipData.getItemAt(0);
-                    String text = item.getText().toString();
-                    mBinding.etAddress.setText(text);
-                }
+                mBinding.etAddress.setText(ClipUtil.getClip(this));
             }
             break;
             case R.id.btn_scan:
@@ -155,23 +154,23 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
             case R.id.btn_confirm: {
                 String amount = mBinding.etAmount.getText().toString();
                 String address = mBinding.etAddress.getText().toString();
-                int textId = 0;
+                String str = null;
 
                 if (TextUtils.isEmpty(amount)) {
-                    textId = R.string.send_amount_empty_error;
+                    str = getString(R.string.send_amount_empty_error);
                 } else if(!CoinUtil.validate(amount, mToken.getUnity())){
-                    textId = R.string.invalid_precision;
+                    str = getString(R.string.invalid_precision);
                 } else if(mAccount.getAvailable() < Transaction.DEFAULT_TOKEN_TX_FEE) {
-                    textId = R.string.send_insufficient_balance_error;
+                    str = getString(R.string.send_insufficient_balance_error, "VSYS");
                 } else if(new BigDecimal(amount).multiply(BigDecimal.valueOf(mToken.getUnity())).
                         compareTo(BigDecimal.valueOf(mToken.getBalance())) > 0){
-                    textId = R.string.send_insufficient_balance_error;
+                    str = getString(R.string.send_insufficient_balance_error, mToken.getName() != null ? mToken.getName() : "");
                 } else if (!Wallet.validateAddress(address)) {
-                    textId = R.string.send_address_input_error;
+                    str = getString(R.string.send_address_input_error);
                 }
-                if (textId != 0) {
+                if (str != null) {
                     new AlertDialog.Builder(mActivity)
-                            .setMessage(textId)
+                            .setMessage(str)
                             .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -125,7 +126,9 @@ public class ImportSeedActivity extends BaseActivity {
             Log.d(TAG, "scan result is " + qrContents);
             try {
                 Operation op = Operation.parse(qrContents);
-                if (op.validate(Operation.SEED)) {
+                if (op == null){
+                    mBinding.etWord.setText(qrContents);
+                }else if (op.validate(Operation.SEED)) {
                     String seed = op.getString("seed");
                     mBinding.etWord.setText(seed);
                 }

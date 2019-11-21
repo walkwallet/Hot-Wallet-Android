@@ -47,6 +47,7 @@ import systems.v.wallet.databinding.HeaderDetailBinding;
 import systems.v.wallet.databinding.HeaderTokenListBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.contract.adapter.TokenAdapter;
+import systems.v.wallet.ui.view.detail.ReceiveActivity;
 import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
 import systems.v.wallet.ui.widget.wrapper.HeaderAndFooterWrapper;
 import systems.v.wallet.utils.Constants;
@@ -114,6 +115,13 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                         SendTokenActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
                     }
                 }));
+                mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_receive, new TokenOperationFragment.Operation.OperationListener() {
+                    @Override
+                    public void onOperation(TokenOperationFragment dialog) {
+                        ReceiveActivity.launch(TokenListActivity.this, mAccount.getPublicKey());
+                    }
+                }));
+
                 mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_info,new TokenOperationFragment.Operation.OperationListener() {
                     @Override
                     public void onOperation(TokenOperationFragment dialog) {

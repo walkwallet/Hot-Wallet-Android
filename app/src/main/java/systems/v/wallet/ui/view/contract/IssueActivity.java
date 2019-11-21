@@ -120,21 +120,20 @@ public class IssueActivity extends BaseThemedActivity implements View.OnClickLis
         switch (view.getId()){
             case R.id.btn_confirm:
                 String amount = mBinding.etAmount.getText().toString();
-
-                int textId = 0;
+                String str = null;
                 if (TextUtils.isEmpty(amount)) {
-                    textId = R.string.send_amount_empty_error;
+                    str = getString(R.string.send_amount_empty_error);
                 } else if(!CoinUtil.validate(amount, mToken.getUnity())){
-                    textId = R.string.invalid_precision;
+                    str = getString(R.string.invalid_precision);
                 } else if (mAccount.getAvailable() < Transaction.DEFAULT_TOKEN_TX_FEE) {
-                    textId = R.string.send_insufficient_balance_error;
+                    str = getString(R.string.send_insufficient_balance_error, "VSYS");
                 } else if( new BigDecimal(amount).multiply(BigDecimal.valueOf(mToken.getUnity())).
                         compareTo(BigDecimal.valueOf(mIssueMax)) > 0){
-                    textId = R.string.issue_larger_than_max;
+                    str = getString(R.string.issue_larger_than_max);
                 }
-                if (textId != 0) {
+                if (str != null) {
                     new AlertDialog.Builder(mActivity)
-                            .setMessage(textId)
+                            .setMessage(str)
                             .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

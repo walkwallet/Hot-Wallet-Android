@@ -136,19 +136,18 @@ public class CreateTokenActivity extends BaseThemedActivity implements View.OnCl
                 break;
             case R.id.btn_confirm:
                 String amount = mBinding.etTotal.getText().toString();
-                BigDecimal maxValue = BigDecimal.valueOf(2).pow(63).subtract(BigDecimal.valueOf(1));
                 BigDecimal decimal  = CoinUtil.parseBigDecimal(amount, (long)Math.pow(10, unityPower));
-                int textId = 0;
+                String str = null;
                 if (TextUtils.isEmpty(amount)) {
-                    textId = R.string.send_amount_empty_error;
+                    str = getString(R.string.send_amount_empty_error);
                 } else if (mAccount.getAvailable() < Transaction.DEFAULT_CREATE_TOKEN_FEE) {
-                    textId = R.string.send_insufficient_balance_error;
+                    str = getString(R.string.send_insufficient_balance_error, "VSYS");
                 } else if (decimal == null) {
-                    textId = R.string.create_token_exceed_max;
+                    str = getString(R.string.create_token_exceed_max);
                 }
-                if (textId != 0) {
+                if (str != null) {
                     new AlertDialog.Builder(mActivity)
-                            .setMessage(textId)
+                            .setMessage(str)
                             .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

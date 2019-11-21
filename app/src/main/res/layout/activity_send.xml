@@ -79,7 +79,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/send_insufficient_balance_error"
                         android:textColor="@color/error"
                         android:textSize="13sp"
                         android:visibility="gone" />

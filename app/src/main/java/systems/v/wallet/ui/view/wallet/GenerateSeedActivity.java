@@ -8,8 +8,12 @@ import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import systems.v.wallet.R;
+import systems.v.wallet.basic.utils.QRCodeUtil;
 import systems.v.wallet.databinding.ActivityGenerateSeedBinding;
 import systems.v.wallet.ui.BaseActivity;
+import systems.v.wallet.ui.view.transaction.QrCodeFragment;
+import systems.v.wallet.ui.view.transaction.ScannerActivity;
+import systems.v.wallet.ui.view.transaction.TransactionDialogFragment;
 
 public class GenerateSeedActivity extends BaseActivity {
 
@@ -48,6 +52,20 @@ public class GenerateSeedActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 ConfirmSeedActivity.launch(mActivity, mSeeds);
+            }
+        });
+        mBinding.btnExportQrcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                QrCodeFragment fragment = QrCodeFragment.newInstance("", QRCodeUtil.getSeedStr(mSeeds));
+                fragment.show(getSupportFragmentManager(), "seed_qrcode");
+                fragment.setTip("");
+                fragment.setOnNextListener(new TransactionDialogFragment.OnNextListener() {
+                    @Override
+                    public void onNext() {
+                        ConfirmSeedActivity.launch(mActivity, mSeeds);
+                    }
+                });
             }
         });
     }

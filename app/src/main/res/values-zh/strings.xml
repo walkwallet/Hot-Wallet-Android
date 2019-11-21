@@ -197,6 +197,7 @@
     <string name="word_backup_success_tips">请妥善保管你的助记词</string>
     <string name="word_input_in_order">按顺序点击助记词，确认你的助记词备份正确</string>
     <string name="word_backup_word">备份助记词</string>
+    <string name="word_backup_word_export_qrcode">导出助记词二维码</string>
     <!--seed import end-->
 
     <!-- receive start -->
@@ -213,7 +214,7 @@
     <string name="send_lease_title">铸币</string>
     <string name="send_amount">数量</string>
     <string name="send_lease_amount">租赁数量</string>
-    <string name="send_insufficient_balance_error">余额不足</string>
+    <string name="send_insufficient_balance_error">%1$s余额不足</string>
     <string name="send_amount_empty_error">请输入数量</string>
     <string name="send_available_balance">可用余额: %1$s</string>
     <string name="send_payment_to">发送给</string>
@@ -294,6 +295,7 @@
     <string name="token_list_list_title">Token列表</string>
 
     <string name="token_list_send">发送Token</string>
+    <string name="token_list_receive">接收Token</string>
     <string name="token_list_info">Token信息</string>
     <string name="token_list_issue">发行Token</string>
     <string name="token_list_destroy">销毁Token</string>
@@ -302,7 +304,7 @@
     <!--token list end-->
 
     <!--add token start-->
-    <string name="add_token_token_id">Token ID</string>
+    <string name="add_token_token_id">TOKEN ID或名字</string>
 
     <!--add token end-->
 
@@ -325,7 +327,7 @@
     <string name="issue_token_review_amount">发行数额</string>
     <string name="issue_available_balance">可发行量: %1$s</string>
 
-    <string name="add_token_input_hint">输入Token ID</string>
+    <string name="add_token_input_hint">输入Token ID或Token名</string>
     <string name="add_token_add">添加</string>
     <string name="add_token_added">已添加</string>
     <string name="add_token_err_id">Token不存在！</string>

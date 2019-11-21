@@ -31,6 +31,7 @@ import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.databinding.ActivitySendBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.widget.inputfilter.MaxByteFilter;
+import systems.v.wallet.utils.ClipUtil;
 import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
 
@@ -101,6 +102,7 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                 if (TextUtils.isEmpty(s) || (mAccount.getAvailable() - value) >= Transaction.DEFAULT_FEE) {
                     mBinding.tvBalanceError.setVisibility(View.GONE);
                 } else {
+                    mBinding.tvBalanceError.setText(getString(R.string.send_insufficient_balance_error, "VSYS"));
                     mBinding.tvBalanceError.setVisibility(View.VISIBLE);
                 }
             }
@@ -140,13 +142,7 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
             }
             break;
             case R.id.btn_paste: {
-                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = cm.getPrimaryClip();
-                if (clipData != null && clipData.getItemCount() > 0) {
-                    ClipData.Item item = clipData.getItemAt(0);
-                    String text = item.getText().toString();
-                    mBinding.etAddress.setText(text);
-                }
+                mBinding.etAddress.setText(ClipUtil.getClip(this));
             }
             break;
             case R.id.btn_scan:
@@ -155,20 +151,20 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
             case R.id.btn_confirm: {
                 String amount = mBinding.etAmount.getText().toString();
                 String address = mBinding.etAddress.getText().toString();
-                int textId = 0;
+                String str = null;
                 if (TextUtils.isEmpty(amount)) {
-                    textId = R.string.send_amount_empty_error;
+                    str = getString(R.string.send_amount_empty_error);
                 } else if ((mAccount.getAvailable() - CoinUtil.parse(amount)) < Transaction.DEFAULT_FEE) {
-                    textId = R.string.send_insufficient_balance_error;
+                    str = getString(R.string.send_insufficient_balance_error, "VSYS");
                 } else if (!Wallet.validateAddress(address)) {
-                    textId = R.string.send_address_input_error;
+                    str = getString(R.string.send_address_input_error);
                 }
                 if (mType == Transaction.LEASE && address.equals(mAccount.getAddress())){
-                    textId = R.string.send_lease_to_self_error;
+                    str = getString(R.string.send_lease_to_self_error);
                 }
-                if (textId != 0) {
+                if (str != null) {
                     new AlertDialog.Builder(mActivity)
-                            .setMessage(textId)
+                            .setMessage(str)
                             .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

@@ -72,6 +72,7 @@ import systems.v.wallet.ui.view.contract.adapter.AddTokenAdapter;
 import systems.v.wallet.ui.view.contract.adapter.TokenAdapter;
 import systems.v.wallet.ui.view.transaction.ScannerActivity;
 import systems.v.wallet.utils.AssetJsonUtil;
+import systems.v.wallet.utils.ClipUtil;
 import systems.v.wallet.utils.Constants;
 import systems.v.wallet.utils.LogUtil;
 import systems.v.wallet.utils.SPUtils;
@@ -118,24 +119,23 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                 List<Token> tokens = TokenHelper.getVerifiedFromCache(this, mAccount.getNetwork());
                 String name = null;
                 String tokenId = mBinding.etTokenId.getText().toString();
+                boolean verified = false;
                 if(tokens != null) {
                     for (Token token : tokens) {
-                        if (token.getName().equals(tokenId)) {
+                        if (token.getTokenId().equals(tokenId) ||
+                                (token.getName() + " Token").toLowerCase().equals(tokenId.toLowerCase()) ||
+                                token.getName().toLowerCase().equals(tokenId.toLowerCase())){
                             name = token.getName();
+                            tokenId = token.getTokenId();
+                            verified = true;
                             break;
                         }
                     }
                 }
-                addWatchedToken(name, tokenId, false);
+                addWatchedToken(name, tokenId, verified);
                 break;
             case R.id.btn_paste: {
-                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = cm.getPrimaryClip();
-                if (clipData != null && clipData.getItemCount() > 0) {
-                    ClipData.Item item = clipData.getItemAt(0);
-                    String text = item.getText().toString();
-                    mBinding.etTokenId.setText(text);
-                }
+                mBinding.etTokenId.setText(ClipUtil.getClip(this));
             }
                 break;
             case R.id.btn_scan:
