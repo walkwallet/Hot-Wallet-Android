@@ -57,13 +57,14 @@ public class GenerateSeedActivity extends BaseActivity {
         mBinding.btnExportQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QrCodeFragment fragment = QrCodeFragment.newInstance("", QRCodeUtil.getSeedStr(mSeeds));
+                final QrCodeFragment fragment = QrCodeFragment.newInstance("", QRCodeUtil.getSeedStr(mSeeds));
                 fragment.show(getSupportFragmentManager(), "seed_qrcode");
                 fragment.setTip("");
+                fragment.setBtnNextText(getString(R.string.complete));
                 fragment.setOnNextListener(new TransactionDialogFragment.OnNextListener() {
                     @Override
                     public void onNext() {
-                        ConfirmSeedActivity.launch(mActivity, mSeeds);
+                        fragment.dismiss();
                     }
                 });
             }
@@ -79,3 +80,4 @@ public class GenerateSeedActivity extends BaseActivity {
         return formattedSeed.toString();
     }
 }
+

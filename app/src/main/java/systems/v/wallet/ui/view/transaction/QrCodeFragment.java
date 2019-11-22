@@ -33,6 +33,7 @@ public class QrCodeFragment extends TransactionDialogFragment {
     private FragmentSendQrCodeBinding binding;
     private final static String TAG = "QrCodeFragment";
     private String mTip = null;
+    private String mNextStr = null;
 
     @Nullable
     @Override
@@ -80,6 +81,9 @@ public class QrCodeFragment extends TransactionDialogFragment {
         }else {
             binding.tvTip.setText(mTip);
         }
+        if(mNextStr != null){
+            binding.btnNext.setText(mNextStr);
+        }
         binding.ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,5 +102,9 @@ public class QrCodeFragment extends TransactionDialogFragment {
 
     public void setTip(String tips){
         mTip = tips;
+    }
+
+    public void setBtnNextText(String text){
+        mNextStr = text;
     }
 }

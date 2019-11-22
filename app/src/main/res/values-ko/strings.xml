@@ -192,7 +192,7 @@
     <string name="word_backup_success_tips">니모닉 단어 관리에 유의하십시오.</string>
     <string name="word_input_in_order">순서대로 니모닉 단어를 입력하십시오.</string>
     <string name="word_backup_word">백업 니모닉</string>
-    <string name="word_backup_word_export_qrcode">백업 니모닉 QR 코드</string>
+    <string name="word_backup_word_export_qrcode">키워드 QR코드 생성하기</string>
     <!--seed import end-->
 
     <!--receive start-->
