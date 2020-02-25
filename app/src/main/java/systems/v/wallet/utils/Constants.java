@@ -21,4 +21,7 @@ public class Constants {
 
     public static final String PUBLIC_API_SERVER = "https://explorer.v.systems";
     public static final String PUBLIC_API_SERVER_TEST = "https://testexplorer.v.systems";
+
+    public static final String RATE_API_SERVER = " https://vsysrate.com";
+    public static final String RATE_API_SERVER_TEST = "http://test-rate.virtualeconomytech.com";
 }

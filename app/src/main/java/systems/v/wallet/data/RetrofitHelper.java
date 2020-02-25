@@ -9,9 +9,11 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.data.api.IMainNetNodeAPI;
 import systems.v.wallet.data.api.IPublicApi;
+import systems.v.wallet.data.api.IRateAPI;
 import systems.v.wallet.data.api.ITestNetNodeAPI;
 import systems.v.wallet.data.api.NodeAPI;
 import systems.v.wallet.data.api.PublicApi;
+import systems.v.wallet.data.api.RateAPI;
 import systems.v.wallet.data.converter.JsonConverterFactory;
 import systems.v.wallet.utils.Constants;
 
@@ -29,6 +31,7 @@ public class RetrofitHelper {
 
     private NodeAPI mNodeAPI = null;
     private PublicApi mPublicAPI = null;
+    private RateAPI mRateAPI = null;
 
     private RetrofitHelper(boolean isTest) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -64,6 +67,15 @@ public class RetrofitHelper {
                 .build();
 
         mPublicAPI = new PublicApi(retrofitPublic.create(IPublicApi.class));
+
+        Retrofit retrofitRate = new Retrofit.Builder()
+                .baseUrl(isTest ? Constants.RATE_API_SERVER_TEST : Constants.RATE_API_SERVER)
+                .client(client)
+                .addConverterFactory(JsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+
+        mRateAPI = new RateAPI(retrofitRate.create(IRateAPI.class));
     }
 
     public NodeAPI getNodeAPI() {
@@ -72,6 +84,10 @@ public class RetrofitHelper {
 
     public PublicApi getPublicAPI() {
         return mPublicAPI;
+    }
+
+    public RateAPI getRateAPI() {
+        return mRateAPI;
     }
 
 }
