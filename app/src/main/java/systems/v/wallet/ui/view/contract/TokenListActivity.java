@@ -53,6 +53,7 @@ import systems.v.wallet.ui.widget.wrapper.HeaderAndFooterWrapper;
 import systems.v.wallet.utils.Constants;
 import systems.v.wallet.utils.LogUtil;
 import systems.v.wallet.utils.SPUtils;
+import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.bus.AppEvent;
 import systems.v.wallet.utils.bus.annotation.Subscribe;
 import vsys.Vsys;
@@ -289,7 +290,12 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                             mAdapter.notifyDataSetChanged();
                         }
                     }
-                });
+                }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
+                    @Override
+                    public void onError(int code, String msg) {
+                        ToastUtil.showToast(msg);
+                    }
+                }));
 
     }
 

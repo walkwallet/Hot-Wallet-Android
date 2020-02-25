@@ -52,6 +52,7 @@ public class TokenInfoActivity extends BaseThemedActivity {
         super.onCreate(savedInstanceState);
         mToken = JSON.parseObject(getIntent().getStringExtra("token"), Token.class);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_token_info);
+        setAppBar(mBinding.toolbar);
         initData();
     }
 
