@@ -22,6 +22,7 @@ import systems.v.wallet.ui.BaseActivity;
 import systems.v.wallet.ui.view.transaction.ScannerActivity;
 import systems.v.wallet.utils.UIUtil;
 import vsys.Account;
+import vsys.Vsys;
 
 public class AddColdAccountActivity extends BaseActivity {
 
@@ -96,6 +97,15 @@ public class AddColdAccountActivity extends BaseActivity {
                     UIUtil.showInfo(mActivity, R.string.add_cold_account_address_exist_error);
                     return;
                 }
+                if(!mWallet.getNetwork().equals(Vsys.getNetworkFromAddress(address))) {
+                    if (mWallet.getNetwork().equals(Vsys.NetworkMainnet)) {
+                        UIUtil.showInconsistentNetworkMainnetDialog(this);
+                    }else {
+                        UIUtil.showInconsistentNetworkTestnetDialog(this);
+                    }
+                    return;
+                }
+
                 mBinding.etAddress.setText(address);
                 mBinding.etPublicKey.setText(publicKey);
             } else {

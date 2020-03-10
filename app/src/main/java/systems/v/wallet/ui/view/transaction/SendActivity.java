@@ -2,33 +2,48 @@ package systems.v.wallet.ui.view.transaction;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.PopupWindow;
 
 import com.alibaba.fastjson.JSON;
+import com.anupcowkur.reservoir.Reservoir;
+import com.anupcowkur.reservoir.ReservoirPutCallback;
+import com.google.gson.reflect.TypeToken;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import androidx.annotation.Dimension;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.ListPopupWindow;
 import androidx.databinding.DataBindingUtil;
 
+import org.bouncycastle.util.Strings;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -54,6 +69,7 @@ import systems.v.wallet.ui.widget.inputfilter.MaxByteFilter;
 import systems.v.wallet.utils.ClipUtil;
 import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
+import vsys.Vsys;
 
 public class SendActivity extends BaseThemedActivity implements View.OnClickListener {
 
@@ -105,7 +121,7 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
             mListPopupWindow = new ListPopupWindow(this);
             mListPopupWindow.setAnchorView(mBinding.etAddress);
             mListPopupWindow.setModal(true);
-            mListPopupWindow.setAdapter(new SuperNodeDetailAdapter(this, new ArrayList<SuperNodeInfo>()));
+            initSuperNodeData();
         } else {
             mBinding.toolbar.setTitle(R.string.send_payment_title);
             mBinding.flLeaseTips.setVisibility(View.GONE);
@@ -114,7 +130,6 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
         }
         mBinding.etAttachment.setFilters(new InputFilter[]{new MaxByteFilter()});
         initListener();
-        initData();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -217,7 +232,7 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                 String str = null;
                 if (TextUtils.isEmpty(amount)) {
                     str = getString(R.string.send_amount_empty_error);
-                } else if ((mAccount.getAvailable() - CoinUtil.parse(amount)) < Transaction.DEFAULT_FEE) {
+                } else if ((mAccount.getAvailable() - CoinUtil.parse(amount)) < CoinUtil.parse(mBinding.tvFee.getText().toString(), (long)Math.pow(10, 8))) {
                     str = getString(R.string.send_insufficient_balance_error, "VSYS");
                 } else if (!Wallet.validateAddress(address)) {
                     str = getString(R.string.send_address_input_error);
@@ -280,8 +295,17 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                     UIUtil.showUnsupportQrCodeDialog(this);
                     return;
                 }
+
                 if (op.get("address") != null) {
                     String address = op.getString("address");
+                    if(!mWallet.getNetwork().equals(Vsys.getNetworkFromAddress(address))) {
+                        if (mWallet.getNetwork().equals(Vsys.NetworkMainnet)) {
+                            UIUtil.showInconsistentNetworkMainnetDialog(this);
+                        }else {
+                            UIUtil.showInconsistentNetworkTestnetDialog(this);
+                        }
+                        return;
+                    }
                     mBinding.etAddress.setText(address);
                 }
                 if (op.get("amount") != null) {
@@ -308,64 +332,120 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
         mTransaction.setRecipient(mBinding.etAddress.getText().toString());
         mTransaction.setAttachment(mBinding.etAttachment.getText().toString());
         mTransaction.setTimestamp(System.currentTimeMillis());
+        mTransaction.setFee(CoinUtil.parse(mBinding.tvFee.getText().toString(), (long)Math.pow(10, 8)));
     }
 
-    private void initData() {
-        final RateAPI rateAPI = RetrofitHelper.getInstance().getRateAPI();
-        Disposable d = rateAPI.getSupderNodeDetail()
-                .compose(this.<RespBean>bindLoading())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<RespBean>() {
-                    @Override
-                    public void accept(RespBean respBean) throws Exception {
-                        SuperNodeDetailsRespBean resp = JSON.parseObject(respBean.getData(), SuperNodeDetailsRespBean.class);
-                        if (resp != null && resp.getCode() == 0) {
-                            final List<SuperNodeInfo> superNodeInfoList = new ArrayList<SuperNodeInfo>();
-                            for (SuperNodeDetailsBean nodeDetail : resp.getData()) {
-                                if (!nodeDetail.isSuperNode()) {
-                                    continue;
-                                }
-                                SuperNodeInfo superNode = new SuperNodeInfo(nodeDetail.getName(), nodeDetail.getAddress());
-                                superNodeInfoList.add(superNode);
-                                if (nodeDetail.getSubNode() != null) {
-                                    for (SubNodeBean one : nodeDetail.getSubNode()) {
-                                        SuperNodeInfo subNode = new SuperNodeInfo(nodeDetail.getName(), nodeDetail.getAddress(), one.getName(), one.getId());
-                                        superNodeInfoList.add(subNode);
+    private void initSuperNodeData() {
+        if(mType == Transaction.LEASE) {
+            final RateAPI rateAPI = RetrofitHelper.getInstance().getRateAPI();
+            Observable<RespBean> obser = rateAPI.getSupderNodeDetail();
+            if (getSuperNodeInfoList().size() != 0) {
+                updateSuperNodeInfoAdapter(getSuperNodeInfoList());
+            } else {
+                obser = obser.compose(this.<RespBean>bindLoading());
+                try {
+                    Reservoir.init(this, 1024 * 10); //in bytes
+                } catch (IOException e) {
+                    //failure
+                    obser = obser.compose(this.<RespBean>bindLoading());
+                }
+            }
+            Disposable d = obser.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<RespBean>() {
+                        @Override
+                        public void accept(RespBean respBean) throws Exception {
+                            SuperNodeDetailsRespBean resp = JSON.parseObject(respBean.getData(), SuperNodeDetailsRespBean.class);
+                            if (resp != null && resp.getCode() == 0) {
+                                final List<SuperNodeInfo> superNodeInfoList = new ArrayList<SuperNodeInfo>();
+                                for (SuperNodeDetailsBean nodeDetail : resp.getData()) {
+                                    if (!nodeDetail.isSuperNode()) {
+                                        continue;
+                                    }
+                                    SuperNodeInfo superNode = new SuperNodeInfo(nodeDetail.getName(), nodeDetail.getAddress());
+                                    superNodeInfoList.add(superNode);
+                                    if (nodeDetail.getSubNode() != null) {
+                                        for (SubNodeBean one : nodeDetail.getSubNode()) {
+                                            SuperNodeInfo subNode = new SuperNodeInfo(nodeDetail.getName(), nodeDetail.getAddress(), one.getName(), one.getId());
+                                            superNodeInfoList.add(subNode);
+                                        }
                                     }
                                 }
+                                setSuperNodeInfoList(superNodeInfoList);
                             }
-                            mListPopupWindow.setAdapter(new SuperNodeDetailAdapter(SendActivity.this, superNodeInfoList));
+                        }
+                    }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
+                        @Override
+                        public void onError(int code, String msg) {
                             mListPopupWindow.setWidth(mBinding.etAddress.getWidth());
                             mListPopupWindow.setHeight(500);
-
-                            mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    SuperNodeInfo nodeInfo = superNodeInfoList.get(i);
-
-                                    mBinding.etAddress.setText(nodeInfo.address);
-                                    String fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_FEE);
-                                    if (nodeInfo.isSubNode) {
-                                        fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_FEE + nodeInfo.subNodeId);
-                                    }
-                                    mBinding.tvFee.setText(fee);
-
-                                    if (mListPopupWindow.isShowing()) {
-                                        mListPopupWindow.dismiss();
-                                    }
-                                }
-                            });
-
                         }
-                    }
-                }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
-                    @Override
-                    public void onError(int code, String msg) {
-                        mListPopupWindow.setWidth(mBinding.etAddress.getWidth());
-                        mListPopupWindow.setHeight(500);
-                        ToastUtil.showToast(msg);
-                    }
-                }));
+                    }));
+        }
     }
+
+    private List<SuperNodeInfo> getSuperNodeInfoList() {
+        Type resultType = new TypeToken<List<SuperNodeInfo>>() {}.getType();
+        try {
+           return Reservoir.get("superNodeInfoList", resultType);
+        } catch (Exception e) {
+            return new ArrayList<SuperNodeInfo>();
+        }
+    }
+
+    private void setSuperNodeInfoList(final List<SuperNodeInfo> superNodeInfoList) {
+        updateSuperNodeInfoAdapter(superNodeInfoList);
+        try {
+            Reservoir.putAsync("superNodeInfoList", superNodeInfoList, new ReservoirPutCallback() {
+                @Override
+                public void onSuccess() { }
+
+                @Override
+                public void onFailure(Exception e) { }
+            });
+        }catch (Exception e) {
+        }
+    }
+
+    private void updateSuperNodeInfoAdapter(final List<SuperNodeInfo> superNodeInfoList){
+        int mListPopupWindowWidth;
+        if(mBinding.etAddress.getWidth() != 0){
+            mListPopupWindowWidth = mBinding.etAddress.getWidth();
+        }else {
+            int deviceWidth;
+            WindowManager wm = (WindowManager) mBinding.etAddress.getContext().getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+                Point size = new Point();
+                display.getSize(size);
+                deviceWidth = size.x;
+            } else {
+                deviceWidth = display.getWidth();
+            }
+            int padding = (int) getResources().getDimension(R.dimen.activity_horizontal_margin);
+            mListPopupWindowWidth = deviceWidth-padding*2;
+        }
+        mListPopupWindow.setAdapter(new SuperNodeDetailAdapter(SendActivity.this, superNodeInfoList));
+        mListPopupWindow.setWidth(mListPopupWindowWidth);
+        mListPopupWindow.setHeight(500);
+
+        mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                SuperNodeInfo nodeInfo = superNodeInfoList.get(i);
+
+                mBinding.etAddress.setText(nodeInfo.address);
+                String fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_FEE);
+                if (nodeInfo.isSubNode) {
+                    fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_FEE + nodeInfo.subNodeId);
+                }
+                mBinding.tvFee.setText(fee);
+
+                if (mListPopupWindow.isShowing()) {
+                    mListPopupWindow.dismiss();
+                }
+            }
+        });
+    }
+
 }

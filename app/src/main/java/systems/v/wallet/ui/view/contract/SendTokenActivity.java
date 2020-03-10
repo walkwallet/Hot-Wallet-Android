@@ -212,6 +212,14 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
                 }
                 if (op.get("address") != null) {
                     String address = op.getString("address");
+                    if(!mWallet.getNetwork().equals(Vsys.getNetworkFromAddress(address))) {
+                        if (mWallet.getNetwork().equals(Vsys.NetworkMainnet)) {
+                            UIUtil.showInconsistentNetworkMainnetDialog(this);
+                        }else {
+                            UIUtil.showInconsistentNetworkTestnetDialog(this);
+                        }
+                        return;
+                    }
                     mBinding.etAddress.setText(address);
                 }
                 if (op.get("amount") != null) {

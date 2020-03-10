@@ -12,6 +12,8 @@
     <string name="complete">完成</string>
     <string name="done">完成</string>
     <string name="unsupported_qrcode">不支持的二维码类型</string>
+    <string name="inconsistent_network_testnet">请提供一个测试网的VSYS地址</string>
+    <string name="inconsistent_network_mainnet">请提供一个主网的VSYS地址</string>
     <string name="official_warning">官方提示</string>
     <string name="got_it">知道了</string>
     <string name="refresh">刷新</string>

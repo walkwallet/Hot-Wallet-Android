@@ -7,7 +7,7 @@ android {
         minSdkVersion versions.min_sdk
         targetSdkVersion versions.target_sdk
         versionCode 6
-        versionName "1.0.7"
+        versionName "1.0.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -50,4 +50,5 @@ dependencies {
     implementation project(':basic')
     implementation deps.picasso
     implementation deps.picasso_transform
+    implementation 'com.anupcowkur:reservoir:3.1.0'
 }

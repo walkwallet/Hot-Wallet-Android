@@ -2,6 +2,10 @@ package systems.v.wallet.ui.view;
 
 import android.os.Bundle;
 
+import com.anupcowkur.reservoir.Reservoir;
+
+import java.io.IOException;
+
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.FileUtil;
 import systems.v.wallet.ui.BaseActivity;
@@ -16,6 +20,11 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        try {
+            Reservoir.init(this, 1024 * 10); //in bytes
+        } catch (IOException e) {
+            //failure
+        }
         if (!PermissionUtil.permissionGranted(this)) {
             PermissionUtil.checkPermissions(this);
         } else {
