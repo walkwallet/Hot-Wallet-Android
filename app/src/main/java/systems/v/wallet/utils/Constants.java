@@ -15,6 +15,7 @@ public class Constants {
     public static final int LAN_ZH_CN = 1;
     public static final int LAN_EN_US = 2;
     public static final int LAN_KO = 3;
+    public static final int LAN_ZH_TW = 4;
     public static final String FIRST_ENTER = "first_enter";
 
     public static final String ALIAS = "alias";

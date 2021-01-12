@@ -2,25 +2,12 @@ package systems.v.wallet.ui.view.detail;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -28,6 +15,14 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -41,7 +36,6 @@ import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.wallet.Token;
-import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.PublicApi;
 import systems.v.wallet.data.bean.AccountBean;
@@ -55,21 +49,19 @@ import systems.v.wallet.databinding.ActivityWalletDetailBinding;
 import systems.v.wallet.databinding.HeaderDetailBinding;
 import systems.v.wallet.entity.RecordEntity;
 import systems.v.wallet.ui.BaseThemedActivity;
-import systems.v.wallet.ui.view.contract.CreateTokenActivity;
 import systems.v.wallet.ui.view.contract.TokenListActivity;
 import systems.v.wallet.ui.view.detail.adapter.RecordAdapter;
 import systems.v.wallet.ui.view.records.TransactionDetailActivity;
 import systems.v.wallet.ui.view.records.TransactionRecordsActivity;
-import systems.v.wallet.ui.view.records.fragment.RecordFragment;
 import systems.v.wallet.ui.view.setting.AddressManagementDetailActivity;
 import systems.v.wallet.ui.view.transaction.SendActivity;
+import systems.v.wallet.ui.view.wallet.SignMessageActivity;
 import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
 import systems.v.wallet.ui.widget.wrapper.HeaderAndFooterWrapper;
 import systems.v.wallet.utils.Constants;
 import systems.v.wallet.utils.DataUtil;
 import systems.v.wallet.utils.LogUtil;
 import systems.v.wallet.utils.SPUtils;
-import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
 import systems.v.wallet.utils.bus.AppEvent;
 import systems.v.wallet.utils.bus.annotation.Subscribe;
@@ -137,6 +129,9 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                 break;
             case R.id.nav_records:
                 TransactionRecordsActivity.launch(mActivity, mAccount.getPublicKey());
+                break;
+            case R.id.nav_sign:
+                SignMessageActivity.launch(mActivity, mAccount.getPublicKey());
                 break;
         }
         return true;

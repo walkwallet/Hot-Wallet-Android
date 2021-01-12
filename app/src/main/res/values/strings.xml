@@ -85,6 +85,7 @@
     <string name="detail_lease">Leasing</string>
     <string name="detail_cancel_lease">Cancel leasing</string>
     <string name="detail_records">Records</string>
+    <string name="sign_message">Sign Message</string>
     <string name="detail_token">Token</string>
     <string name="detail_sent">Sent</string>
     <string name="detail_received">Received</string>
@@ -159,6 +160,7 @@
     <string name="setting_lan_cn">简体中文</string>
     <string name="setting_lan_en">English</string>
     <string name="setting_lan_ko">한국어</string>
+    <string name="setting_lan_tw">繁體中文</string>
     <string name="setting_logout">Logout</string>
     <!--end>>>  setting -->
 
@@ -355,5 +357,15 @@
 
     <string name="invalid_precision">The number of digits after the decimal point may be larger than the token precision.</string>
     <!--token operation end-->
+
+    <!--    sign message-->
+    <string name="sign_message_title">Sign Message</string>
+    <string name="sign_message_content">Sign Content</string>
+    <string name="sign_message_content_desc">Input Message</string>
+    <string name="sign_message_copy">Copy</string>
+    <string name="sign_message_signature">Signature</string>
+    <string name="sign_message_sign">Sign</string>
+    <string name="sign_message_toast_empty">Cannot sign empty message</string>
+    <string name="sign_message_toast_wrong_content">Request failed, only support alphanumeric, space, and some special characters.</string>
 
 </resources>

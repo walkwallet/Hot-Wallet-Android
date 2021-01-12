@@ -11,6 +11,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.alibaba.fastjson.JSON;
 import com.google.android.material.tabs.TabLayout;
 
@@ -18,12 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.StringRes;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import systems.v.wallet.App;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.wallet.Account;
@@ -170,6 +171,8 @@ public class MainActivity extends BaseActivity {
             config.locale = Locale.SIMPLIFIED_CHINESE;
         } else if(languageType == Constants.LAN_KO){
             config.locale = Locale.KOREAN;
+        } else if(languageType == Constants.LAN_ZH_TW){
+            config.locale = Locale.TRADITIONAL_CHINESE;
         } else {
             config.locale = Locale.ENGLISH;
         }

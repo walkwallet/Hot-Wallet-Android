@@ -82,6 +82,7 @@
     <string name="detail_lease">铸币</string>
     <string name="detail_cancel_lease">取消铸币</string>
     <string name="detail_records">记录</string>
+    <string name="sign_message">消息签名</string>
     <string name="detail_token">Token</string>
     <string name="detail_sent">发送</string>
     <string name="detail_received">接收</string>

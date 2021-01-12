@@ -52,6 +52,8 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
             mBinding.ciLanguage.setRightText(R.string.setting_lan_en);
         } else if (lan == Constants.LAN_ZH_CN){
             mBinding.ciLanguage.setRightText(R.string.setting_lan_cn);
+        } else if (lan == Constants.LAN_ZH_TW){
+            mBinding.ciLanguage.setRightText(R.string.setting_lan_tw);
         } else if (lan == Constants.LAN_KO){
             mBinding.ciLanguage.setRightText(R.string.setting_lan_ko);
         }
@@ -141,6 +143,22 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
                 }
                 break;
             case R.id.tv_third:
+                if (SPUtils.getInt(Constants.LANGUAGE) == Constants.LAN_ZH_TW) {
+                    if (mSelectDialog.isShowing()) {
+                        mSelectDialog.dismiss();
+                    }
+                    return;
+                }
+                SPUtils.setInt(Constants.LANGUAGE, Constants.LAN_ZH_TW);
+                mBinding.ciLanguage.setRightText(R.string.setting_lan_tw);
+                if (mSelectDialog.isShowing()) {
+                    mSelectDialog.dismiss();
+                }
+                if (mActivity instanceof MainActivity) {
+                    ((MainActivity) mActivity).changeLanguage();
+                }
+                break;
+            case R.id.tv_forth:
                 if (SPUtils.getInt(Constants.LANGUAGE) == Constants.LAN_KO) {
                     if (mSelectDialog.isShowing()) {
                         mSelectDialog.dismiss();
@@ -173,7 +191,8 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
             mSelectBinding.tvCancel.setTextColor(ContextCompat.getColor(mActivity, R.color.color_orange_strong));
             mSelectBinding.tvTop.setText(R.string.setting_lan_en);
             mSelectBinding.tvBottom.setText(R.string.setting_lan_cn);
-            mSelectBinding.tvThird.setText(R.string.setting_lan_ko);
+            mSelectBinding.tvThird.setText(R.string.setting_lan_tw);
+            mSelectBinding.tvForth.setText(R.string.setting_lan_ko);
             mSelectDialog = new Dialog(mActivity, R.style.BottomDialog);
             mSelectDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             if (mSelectBinding.getRoot().getParent() != null) {
@@ -200,6 +219,7 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
         mSelectBinding.tvBottom.setTextColor(getResources().getColor(R.color.color_orange_strong));
         mSelectBinding.tvCancel.setTextColor(getResources().getColor(R.color.color_orange_strong));
         mSelectBinding.tvThird.setTextColor(getResources().getColor(R.color.color_orange_strong));
+        mSelectBinding.tvForth.setTextColor(getResources().getColor(R.color.color_orange_strong));
         int lan = SPUtils.getInt(Constants.LANGUAGE, Constants.LAN_EN_US);
         switch (lan) {
             case Constants.LAN_EN_US:
@@ -208,8 +228,11 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
             case Constants.LAN_ZH_CN:
                 mSelectBinding.tvBottom.setTextColor(getResources().getColor(R.color.text_strong));
                 break;
-            case Constants.LAN_KO:
+            case Constants.LAN_ZH_TW:
                 mSelectBinding.tvThird.setTextColor(getResources().getColor(R.color.text_strong));
+                break;
+            case Constants.LAN_KO:
+                mSelectBinding.tvForth.setTextColor(getResources().getColor(R.color.text_strong));
                 break;
         }
     }
