@@ -2,7 +2,6 @@ package systems.v.wallet;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -10,25 +9,21 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.LinkedList;
-import java.util.Locale;
-import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.TimeUnit;
-
 import androidx.multidex.MultiDex;
-
 
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
+
+import java.lang.ref.WeakReference;
+import java.util.LinkedList;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
 import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.ui.view.VerifyActivity;
@@ -94,6 +89,8 @@ public class App extends Application {
                         languageType = Constants.LAN_ZH_CN;
                     } else if (langStr.contains(Locale.KOREAN.getLanguage())){
                         languageType = Constants.LAN_KO;
+                    } else if (langStr.contains(Locale.TRADITIONAL_CHINESE.getLanguage())){
+                        languageType = Constants.LAN_ZH_TW;
                     } else{
                         languageType = Constants.LAN_EN_US;
                     }
@@ -105,6 +102,8 @@ public class App extends Application {
                     config.locale = Locale.SIMPLIFIED_CHINESE;
                 } else if (languageType == Constants.LAN_KO){
                     config.locale = Locale.KOREAN;
+                } else if (languageType == Constants.LAN_ZH_TW) {
+                    config.locale = Locale.TRADITIONAL_CHINESE;
                 }
                 resources.updateConfiguration(config, dm);
                 addActivity(activity);

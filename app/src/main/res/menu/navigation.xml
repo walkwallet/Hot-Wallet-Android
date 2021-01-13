@@ -14,5 +14,9 @@
         android:id="@+id/nav_records"
         android:title="@string/detail_records"
         android:icon="@drawable/ico_records"/>
+    <item
+        android:id="@+id/nav_sign"
+        android:title="@string/sign_message"
+        android:icon="@drawable/ico_sign_msg"/>
 
 </menu>

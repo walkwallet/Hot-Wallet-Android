@@ -76,6 +76,7 @@
     <string name="detail_receive">수신</string>
     <string name="detail_lease">주조</string>
     <string name="detail_records">기록</string>
+    <string name="sign_message">Sign Message</string>
     <string name="detail_token">토큰</string>
     <string name="detail_sent">전송됨</string>
     <string name="detail_received">수신됨</string>
