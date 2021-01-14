@@ -18,5 +18,13 @@
         android:id="@+id/nav_sign"
         android:title="@string/sign_message"
         android:icon="@drawable/ico_sign_msg"/>
+    <item
+        android:id="@+id/nav_deposit_to_contract"
+        android:title="@string/nav_deposit_to_contract"
+        android:icon="@drawable/ico_deposit_to_contract"/>
+    <item
+        android:id="@+id/nav_withdraw_from_contract"
+        android:title="@string/nav_withdraw_from_contract"
+        android:icon="@drawable/ico_withdraw_from_contract"/>
 
 </menu>

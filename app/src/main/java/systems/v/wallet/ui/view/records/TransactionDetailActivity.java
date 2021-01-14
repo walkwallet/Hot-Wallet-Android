@@ -4,31 +4,27 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alibaba.fastjson.JSON;
+import androidx.databinding.DataBindingUtil;
 
-import org.w3c.dom.Text;
+import com.alibaba.fastjson.JSON;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-import androidx.databinding.DataBindingUtil;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.utils.TxUtil;
 import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.databinding.ActivityTransactionDetailBinding;
-import systems.v.wallet.databinding.ItemInfoVerticalBinding;
 import systems.v.wallet.entity.RecordEntity;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
-import systems.v.wallet.utils.LogUtil;
 import systems.v.wallet.utils.TxRecordUtil;
 import systems.v.wallet.utils.UIUtil;
 
@@ -69,20 +65,14 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
             String senderPublicKey = mRecord.getProofs().get(0).getPublicKey();
             senderAddress = Wallet.getAddress(mWallet.getNetwork(), senderPublicKey);
         }
-        UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_txid,
-                mRecord.getId());
-        UIUtil.addItemVertical(inflater, container, senderAddress.equals(mAccount.getAddress()) ? R.string.send_review_my_address : R.string.send_review_from,
+//        UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_txid, mRecord.getId());
+        UIUtil.addItemVerticalCopyable(mActivity, inflater, container, R.string.transaction_detail_txid, mRecord.getId());
+        UIUtil.addItemVerticalCopyable(mActivity,inflater, container, senderAddress.equals(mAccount.getAddress()) ? R.string.send_review_my_address : R.string.send_review_from,
                 senderAddress);
         if(mRecord.getRecipient() != null && !TextUtils.isEmpty(mRecord.getRecipient())){
-            ItemInfoVerticalBinding bindingTo = UIUtil.addItemVertical(inflater, container,
+            UIUtil.addItemVerticalCopyable(mActivity, inflater, container,
                     mAccount.getAddress().equals(mRecord.getRecipient()) ? R.string.send_review_to_my_address : R.string.transaction_detail_to,
                     mRecord.getRecipient());
-            bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    UIUtil.copyToClipboard(mActivity, mRecord.getRecipient());
-                }
-            });
         }
         UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_type,
                 TxRecordUtil.getTypeText(this, mRecord.getRecordType()));

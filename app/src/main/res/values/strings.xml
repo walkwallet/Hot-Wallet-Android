@@ -85,7 +85,6 @@
     <string name="detail_lease">Leasing</string>
     <string name="detail_cancel_lease">Cancel leasing</string>
     <string name="detail_records">Records</string>
-    <string name="sign_message">Sign Message</string>
     <string name="detail_token">Token</string>
     <string name="detail_sent">Sent</string>
     <string name="detail_received">Received</string>
@@ -359,6 +358,7 @@
     <!--token operation end-->
 
     <!--    sign message-->
+    <string name="sign_message">Sign Message</string>
     <string name="sign_message_title">Sign Message</string>
     <string name="sign_message_content">Sign Content</string>
     <string name="sign_message_content_desc">Input Message</string>
@@ -367,5 +367,10 @@
     <string name="sign_message_sign">Sign</string>
     <string name="sign_message_toast_empty">Cannot sign empty message</string>
     <string name="sign_message_toast_wrong_content">Request failed, only support alphanumeric, space, and some special characters.</string>
+
+    <string name="nav_deposit_to_contract">Deposit to Contract</string>
+    <string name="nav_withdraw_from_contract">Withdraw from Contract</string>
+    <string name="deposit_to_contract">Deposit to contract</string>
+    <string name="deposit_to_contract_hint">Payment channel contract or Lock contract</string>
 
 </resources>

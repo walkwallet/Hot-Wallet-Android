@@ -13,13 +13,14 @@ import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.alibaba.fastjson.JSON;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,9 +29,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
-import androidx.databinding.DataBindingUtil;
 import systems.v.wallet.App;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
@@ -40,6 +38,7 @@ import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.databinding.ItemInfoHorizontalBinding;
 import systems.v.wallet.databinding.ItemInfoVerticalBinding;
+import systems.v.wallet.databinding.ItemInfoVerticalCopyableBinding;
 import vsys.Vsys;
 
 public class UIUtil {
@@ -56,6 +55,20 @@ public class UIUtil {
         ItemInfoVerticalBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_info_vertical, null, false);
         binding.tvTitle.setText(resId);
         binding.tvText.setText(text);
+        container.addView(binding.getRoot());
+        return binding;
+    }
+
+    public static ItemInfoVerticalCopyableBinding addItemVerticalCopyable(final Activity activity, LayoutInflater inflater, ViewGroup container, @StringRes int resId, final String text) {
+        ItemInfoVerticalCopyableBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_info_vertical_copyable, null, false);
+        binding.tvTitle.setText(resId);
+        binding.tvText.setText(text);
+        binding.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIUtil.copyToClipboard(activity, text);
+            }
+        });
         container.addView(binding.getRoot());
         return binding;
     }

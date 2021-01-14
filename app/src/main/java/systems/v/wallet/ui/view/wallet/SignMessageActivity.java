@@ -65,7 +65,7 @@ public class SignMessageActivity extends BaseThemedActivity implements View.OnCl
     }
 
     private boolean validateSignMsg(String msg) {
-        return msg != null && msg.matches("^[a-zA-Z0-9-/@#$%^&_+=() ]*$");
+        return msg != null && msg != "" && msg.matches("^[a-zA-Z0-9-/@#$%^&_+=() ]*$");
     }
 
 }
