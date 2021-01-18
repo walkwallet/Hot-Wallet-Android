@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
-import com.alibaba.fastjson.JSON;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -87,6 +86,7 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                DepositToContractActivity.this.showLoading();
                 if (TextUtils.isEmpty(s) || Wallet.validateAddress(s.toString())) {
                     mBinding.tvAddressError.setVisibility(View.GONE);
                 } else {

@@ -22,6 +22,11 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.PopupWindow;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.ListPopupWindow;
+import androidx.databinding.DataBindingUtil;
+
 import com.alibaba.fastjson.JSON;
 import com.anupcowkur.reservoir.Reservoir;
 import com.anupcowkur.reservoir.ReservoirPutCallback;
@@ -29,21 +34,12 @@ import com.google.gson.reflect.TypeToken;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import androidx.annotation.Dimension;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.ListPopupWindow;
-import androidx.databinding.DataBindingUtil;
-
-import org.bouncycastle.util.Strings;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -94,6 +90,7 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
     private Transaction mTransaction;
     private int mType;
     private ListPopupWindow mListPopupWindow;
+    private long mFee = Transaction.DEFAULT_FEE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +103,7 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
         // set balance and fee
         String balance = CoinUtil.formatWithUnit(mAccount.getAvailable());
         mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, balance));
-        String fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_FEE);
+        String fee = CoinUtil.formatWithUnit(mFee);
         mBinding.tvFee.setText(fee);
 
         if (mType == Transaction.LEASE) {
@@ -144,7 +141,7 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 long value = CoinUtil.parse(s.toString());
-                if (TextUtils.isEmpty(s) || (mAccount.getAvailable() - value) >= Transaction.DEFAULT_FEE) {
+                if (TextUtils.isEmpty(s) || (mAccount.getAvailable() - value) >= mFee) {
                     mBinding.tvBalanceError.setVisibility(View.GONE);
                 } else {
                     mBinding.tvBalanceError.setText(getString(R.string.send_insufficient_balance_error, "VSYS"));
@@ -216,7 +213,7 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_max: {
-                mBinding.etAmount.setText(CoinUtil.format(mAccount.getAvailable() - Transaction.DEFAULT_FEE));
+                mBinding.etAmount.setText(CoinUtil.format(mAccount.getAvailable() - mFee));
             }
             break;
             case R.id.btn_paste: {
@@ -435,9 +432,10 @@ public class SendActivity extends BaseThemedActivity implements View.OnClickList
                 SuperNodeInfo nodeInfo = superNodeInfoList.get(i);
 
                 mBinding.etAddress.setText(nodeInfo.address);
-                String fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_FEE);
+                String fee = CoinUtil.formatWithUnit(mFee);
                 if (nodeInfo.isSubNode) {
-                    fee = CoinUtil.formatWithUnit(Transaction.DEFAULT_FEE + nodeInfo.subNodeId);
+                    mFee = Transaction.DEFAULT_FEE + nodeInfo.subNodeId;
+                    fee = CoinUtil.formatWithUnit(mFee);
                 }
                 mBinding.tvFee.setText(fee);
 

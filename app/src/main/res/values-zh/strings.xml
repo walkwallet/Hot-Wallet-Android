@@ -82,7 +82,6 @@
     <string name="detail_lease">铸币</string>
     <string name="detail_cancel_lease">取消铸币</string>
     <string name="detail_records">记录</string>
-    <string name="sign_message">消息签名</string>
     <string name="detail_token">Token</string>
     <string name="detail_sent">发送</string>
     <string name="detail_received">接收</string>
@@ -345,6 +344,22 @@
 
     <string name="invalid_precision">数额精度超出上限.</string>
     <!--token operation end-->
+
+    <!--    sign message-->
+    <string name="sign_message">消息签名</string>
+    <string name="sign_message_title">消息签名</string>
+    <string name="sign_message_content">签名内容</string>
+    <string name="sign_message_content_desc">输入内容</string>
+    <string name="sign_message_copy">复制</string>
+    <string name="sign_message_signature">签名</string>
+    <string name="sign_message_sign">签名</string>
+    <string name="sign_message_toast_empty">签名内容不能为空</string>
+    <string name="sign_message_toast_wrong_content">请求失败，仅支持签名英文，数字以及部分特殊字符</string>
+
+    <string name="nav_deposit_to_contract">向合约充值</string>
+    <string name="nav_withdraw_from_contract">从合约提款</string>
+    <string name="deposit_to_contract">合约充值</string>
+    <string name="deposit_to_contract_hint">Payment channel contract or Lock contract</string>
 
 
 </resources>

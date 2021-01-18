@@ -18,6 +18,7 @@
     <color name="color_orange_strong">#FF8737</color>
     <color name="color_blue_weak">#708CFE</color>
     <color name="color_blue_strong">#526BCE</color>
+    <color name="color_blue_deep">#4d54b4</color>
     <color name="color_white">#FFFFFF</color>
     <color name="text_white">@color/color_white</color>
     <color name="color_white_5">#88FFFFFF</color>

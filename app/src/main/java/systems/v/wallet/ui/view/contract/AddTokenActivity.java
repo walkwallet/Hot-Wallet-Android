@@ -1,58 +1,40 @@
 package systems.v.wallet.ui.view.contract;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import org.reactivestreams.Subscriber;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
-import go.error;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.HttpException;
 import systems.v.wallet.R;
-import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.TxUtil;
 import systems.v.wallet.basic.wallet.ContractFunc;
 import systems.v.wallet.basic.wallet.Token;
-import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.data.BaseErrorConsumer;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.NodeAPI;
@@ -60,7 +42,6 @@ import systems.v.wallet.data.api.PublicApi;
 import systems.v.wallet.data.bean.ContractBean;
 import systems.v.wallet.data.bean.ContractContentBean;
 import systems.v.wallet.data.bean.ContractInfoBean;
-import systems.v.wallet.data.bean.ErrorBean;
 import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.bean.TokenBean;
 import systems.v.wallet.data.bean.publicApi.ListRespBean;
@@ -69,18 +50,16 @@ import systems.v.wallet.data.statics.TokenHelper;
 import systems.v.wallet.databinding.ActivityAddTokenBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.contract.adapter.AddTokenAdapter;
-import systems.v.wallet.ui.view.contract.adapter.TokenAdapter;
 import systems.v.wallet.ui.view.transaction.ScannerActivity;
-import systems.v.wallet.utils.AssetJsonUtil;
 import systems.v.wallet.utils.ClipUtil;
 import systems.v.wallet.utils.Constants;
-import systems.v.wallet.utils.LogUtil;
 import systems.v.wallet.utils.SPUtils;
 import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.bus.AppBus;
 import systems.v.wallet.utils.bus.AppEvent;
 import systems.v.wallet.utils.bus.AppEventType;
 import vsys.Vsys;
+
 
 public class AddTokenActivity extends BaseThemedActivity implements View.OnClickListener{
 
@@ -230,7 +209,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                                             tokens = new ArrayList<>();
                                         }
                                         ContractContentBean contract = JSON.parseObject(respBean.getData(), ContractContentBean.class);
-                                        List<ContractFunc> funcs = new ArrayList<>((JSON.parseArray(Vsys.decodeContractTextrue(contract.getTextual().getDescriptors()), ContractFunc.class)));
+                                        List<ContractFunc> funcs = new ArrayList<>((JSON.parseArray(Vsys.decodeContractTexture(contract.getTextual().getDescriptors()), ContractFunc.class)));
                                         for (ContractFunc func : funcs){
                                             if (func.getName().equals("split")){
                                                 newToken.setSpilt(true);

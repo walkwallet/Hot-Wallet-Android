@@ -22,9 +22,12 @@ import systems.v.wallet.basic.utils.TxUtil;
 import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.basic.wallet.Wallet;
 import systems.v.wallet.databinding.ActivityTransactionDetailBinding;
+import systems.v.wallet.databinding.ItemInfoVerticalCopyableBinding;
 import systems.v.wallet.entity.RecordEntity;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
+import systems.v.wallet.utils.Constants;
+import systems.v.wallet.utils.IntentUtil;
 import systems.v.wallet.utils.TxRecordUtil;
 import systems.v.wallet.utils.UIUtil;
 
@@ -66,7 +69,17 @@ public class TransactionDetailActivity extends BaseThemedActivity implements Vie
             senderAddress = Wallet.getAddress(mWallet.getNetwork(), senderPublicKey);
         }
 //        UIUtil.addItemVertical(inflater, container, R.string.transaction_detail_txid, mRecord.getId());
-        UIUtil.addItemVerticalCopyable(mActivity, inflater, container, R.string.transaction_detail_txid, mRecord.getId());
+        ItemInfoVerticalCopyableBinding item =  UIUtil.addItemVerticalCopyable(mActivity, inflater, container, R.string.transaction_detail_txid, mRecord.getId());
+        if (mRecord.getId() != null && !TextUtils.isEmpty(mRecord.getId())) {
+            item.tvText.setTextColor(getResources().getColor(R.color.color_blue_deep));
+            item.tvText.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    String baseUrl = Wallet.TEST_NET.equals(mWallet.getNetwork())? Constants.PUBLIC_API_SERVER_TEST : Constants.PUBLIC_API_SERVER;
+                    IntentUtil.OpenLinkInBrowser(mActivity, baseUrl + "/transactions/" + mRecord.getId());
+                }
+            });
+        }
         UIUtil.addItemVerticalCopyable(mActivity,inflater, container, senderAddress.equals(mAccount.getAddress()) ? R.string.send_review_my_address : R.string.send_review_from,
                 senderAddress);
         if(mRecord.getRecipient() != null && !TextUtils.isEmpty(mRecord.getRecipient())){
