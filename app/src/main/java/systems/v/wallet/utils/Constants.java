@@ -2,7 +2,7 @@ package systems.v.wallet.utils;
 
 public class Constants {
     public static final String MAIN_NET_API_SERVER = "https://wallet.v.systems/api/";
-    public static final String TEST_NET_API_SERVER = "http://test.v.systems:9922";
+    public static final String TEST_NET_API_SERVER = "https://test.v.systems/api/";
 //    public static final String TEST_NET_API_SERVER = "http://3.19.103.180:29928";
     public static final String NETWORK_ENVIRONMENT = "network";
     public static final String MONITOR = "monitor";

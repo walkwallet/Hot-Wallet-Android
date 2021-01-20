@@ -14,19 +14,37 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
+import com.alibaba.fastjson.JSON;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
-import systems.v.wallet.basic.utils.JsonUtil;
-import systems.v.wallet.basic.wallet.Operation;
+import systems.v.wallet.basic.wallet.ContractFunc;
 import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.basic.wallet.Transaction;
-import systems.v.wallet.basic.wallet.Wallet;
+import systems.v.wallet.data.BaseErrorConsumer;
+import systems.v.wallet.data.RetrofitHelper;
+import systems.v.wallet.data.api.NodeAPI;
+import systems.v.wallet.data.bean.ContractBean;
+import systems.v.wallet.data.bean.ContractContentBean;
+import systems.v.wallet.data.bean.ContractInfoBean;
+import systems.v.wallet.data.bean.RespBean;
+import systems.v.wallet.data.bean.TokenBalanceBean;
 import systems.v.wallet.databinding.ActivityDepositToContractBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
@@ -59,8 +77,7 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_deposit_to_contract);
 
-        mType = getIntent().getIntExtra("type", Transaction.PAYMENT);
-//        mToken = JSON.parseObject(getIntent().getStringExtra("token"), Token.class);
+        mType = getIntent().getIntExtra("type", Transaction.CONTRACT_EXECUTE);
 
         initView();
         initListener();
@@ -70,11 +87,15 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
         setAppBar(mBinding.toolbar);
         mBinding.setClick(this);
 
-        mBinding.tvFee.setText(CoinUtil.formatWithUnit(Transaction.DEFAULT_TOKEN_TX_FEE));
         mBinding.toolbar.setTitle(R.string.deposit_to_contract);
         mBinding.etAddress.setHint(R.string.deposit_to_contract_hint);
         mBinding.tvSendToLabel.setText(R.string.send_payment_to);
-//        mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, CoinUtil.format(mToken.getBalance(), mToken.getUnity())));
+        mBinding.tvFee.setText(CoinUtil.formatWithUnit(Transaction.DEFAULT_TOKEN_TX_FEE));
+        mBinding.llTransactionFee.setVisibility(View.GONE);
+        mBinding.llAmount.setVisibility(View.GONE);
+        mBinding.btnConfirm.setVisibility(View.GONE);
+        mBinding.btnNextStep.setVisibility(View.VISIBLE);
+        mBinding.tvAddressError.setVisibility(View.GONE);
     }
 
     private void initListener() {
@@ -86,12 +107,6 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                DepositToContractActivity.this.showLoading();
-                if (TextUtils.isEmpty(s) || Wallet.validateAddress(s.toString())) {
-                    mBinding.tvAddressError.setVisibility(View.GONE);
-                } else {
-                    mBinding.tvAddressError.setVisibility(View.VISIBLE);
-                }
             }
 
             @Override
@@ -99,7 +114,6 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
 
             }
         });
-//        UIUtil.setAmountInputFilterWithScale(mBinding.etAmount, mToken.getUnity());
 
         mBinding.etAmount.addTextChangedListener(new TextWatcher() {
             @Override
@@ -133,6 +147,9 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btn_next_step: {
+                getAvailableBalance(mBinding.etAddress.getText().toString());
+            }
             case R.id.btn_max: {
                 mBinding.etAmount.setText(CoinUtil.format(mToken.getBalance(), mToken.getUnity()));
             }
@@ -158,8 +175,6 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
                 } else if(new BigDecimal(amount).multiply(BigDecimal.valueOf(mToken.getUnity())).
                         compareTo(BigDecimal.valueOf(mToken.getBalance())) > 0){
                     str = getString(R.string.send_insufficient_balance_error, mToken.getName() != null ? mToken.getName() : "");
-                } else if (!Wallet.validateAddress(address)) {
-                    str = getString(R.string.send_address_input_error);
                 }
                 if (str != null) {
                     new AlertDialog.Builder(mActivity)
@@ -191,63 +206,150 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
             String qrContents = result.getContents();
             if (!TextUtils.isEmpty(qrContents)) {
                 // scan receive address
-                Operation op = null;
-                if (JsonUtil.isJsonString(qrContents)) {
-                    op = Operation.parse(qrContents);
-                } else if (Wallet.validateAddress(qrContents)) {
-                    op = new Operation(Operation.ACCOUNT);
-                    op.set("address", qrContents);
-                }
-                if (op == null || !op.validate(Operation.ACCOUNT)) {
-                    Log.e(TAG, "scan result is not an account opc");
-                    UIUtil.showUnsupportQrCodeDialog(this);
-                    return;
-                }
-                if (op.get("address") != null) {
-                    String address = op.getString("address");
-                    if(!mWallet.getNetwork().equals(Vsys.getNetworkFromAddress(address))) {
-                        if (mWallet.getNetwork().equals(Vsys.NetworkMainnet)) {
-                            UIUtil.showInconsistentNetworkMainnetDialog(this);
-                        }else {
-                            UIUtil.showInconsistentNetworkTestnetDialog(this);
-                        }
-                        return;
-                    }
-                    mBinding.etAddress.setText(address);
-                }
-                if (op.get("amount") != null) {
-                    long amount = op.getLong("amount");
-                    String text = null;
-                    if (amount != 0) {
-                        text = CoinUtil.format(amount);
-                    }
-                    mBinding.etAmount.setText(text);
-                }
-                if (op.get("invoice") != null){
-                    String invoice = op.getString("invoice");
-//                    mBinding.etAttachment.setText(invoice);
-                }
+                mBinding.etAddress.setText(qrContents);
             }
         }
     }
 
+    private void getAvailableBalance(String contractId) {
+        final NodeAPI nodeApi = RetrofitHelper.getInstance().getNodeAPI();
+        mToken = new Token();
+        Disposable d = nodeApi.contractInfo(contractId)// request contract info
+                .compose(this.<RespBean>bindLoading())
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(new Function<RespBean, Observable<RespBean>>() {// request contract info
+                    @Override
+                    public Observable<RespBean> apply(final RespBean respBean) throws Exception {
+
+                        if(respBean != null) {
+                            ContractBean contractBean = JSON.parseObject(respBean.getData(), ContractBean.class);
+                            // 非合法contract
+                            Log.e(TAG,  contractBean.getType());
+                            if (!contractBean.getType().equals("LockContract") || contractBean.getType().equals("PaymentChannelContract")) {
+                                return Observable.create(new ObservableOnSubscribe<RespBean>() {
+                                    @Override
+                                    public void subscribe(ObservableEmitter<RespBean> emitter) throws Exception {
+                                        emitter.onError(new Throwable(getString(R.string.invalid_lock_or_payment_channel_contract)));
+                                    }
+                                });
+                            }
+                            for (ContractInfoBean info: contractBean.getInfo()){
+                                if (info.getName().equals("tokenId")){
+                                    mToken.setTokenId(info.getData());
+                                }else if(info.getName().equals("maker")){
+                                    mToken.setMaker(info.getData());
+                                }
+                            }
+//                            return nodeApi.contractContent(contractBean.getContractId());
+                            return nodeApi.contractContent(Vsys.tokenId2ContractId(mToken.getTokenId()));
+                        }else{
+                            return Observable.create(new ObservableOnSubscribe<RespBean>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<RespBean> emitter) throws Exception {
+                                    emitter.onError(new Throwable(respBean.getMsg()));
+                                }
+                            });
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(new Function<RespBean, Observable<RespBean>>() {// request contract info
+                    @Override
+                    public Observable<RespBean> apply(final RespBean respBean) throws Exception {
+                        if(respBean != null) {
+                            ContractContentBean contractContent = JSON.parseObject(respBean.getData(), ContractContentBean.class);
+                            List<ContractFunc> funcs = new ArrayList<>((JSON.parseArray(Vsys.decodeContractTexture(contractContent.getTextual().getDescriptors()), ContractFunc.class)));
+                            mToken.setFuncs(funcs.toArray(new ContractFunc[funcs.size()]));
+//                            String dbKey = Vsys.getContractBalanceDbKey("");
+//                            return nodeApi.contractData(contractBean.getContractId(), dbKey);
+                            return nodeApi.tokenBalance(mAccount.getAddress(), mToken.getTokenId());
+                        }else{
+                            return Observable.create(new ObservableOnSubscribe<RespBean>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<RespBean> emitter) throws Exception {
+                                    emitter.onError(new Throwable(respBean.getMsg()));
+                                }
+                            });
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(new Function<RespBean, Observable<String>>() {// request contract info
+                    @Override
+                    public Observable<String> apply(final RespBean respBean) throws Exception {
+                        if (respBean != null && respBean.getCode() == 0) {
+                            return Observable.create(new ObservableOnSubscribe<String>() {
+                                @Override
+                                public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Exception {
+                                    if (respBean.getCode() == 0) {
+                                        TokenBalanceBean balance = JSON.parseObject(respBean.getData(), TokenBalanceBean.class);
+                                        mToken.setBalance(balance.getBalance());
+                                        mToken.setUnity(balance.getUnity());
+                                        emitter.onNext("");
+                                    } else {
+                                        emitter.onNext(respBean.getMsg());
+                                    }
+                                }
+                            });
+                        }else {
+                            return Observable.create(new ObservableOnSubscribe<String>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                                    emitter.onError(new Throwable(respBean.getMsg()));
+                                }
+                            });
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String result) throws Exception {
+                        if (result.isEmpty()){
+                            mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, CoinUtil.format(mToken.getBalance(), mToken.getUnity())));
+                            UIUtil.setAmountInputFilterWithScale(mBinding.etAmount, mToken.getUnity());
+                            mBinding.llTransactionFee.setVisibility(View.VISIBLE);
+                            mBinding.llAmount.setVisibility(View.VISIBLE);
+                            mBinding.btnConfirm.setVisibility(View.VISIBLE);
+                            mBinding.btnNextStep.setVisibility(View.GONE);
+                        } else{
+                            ToastUtil.showToast("Accept result msg" + result);
+                        }
+                    }
+                }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
+                    @Override
+                    public void onError(int code, String msg) {
+                        ToastUtil.showToast(msg);
+                        mBinding.tvAddressError.setVisibility(View.VISIBLE);
+                        mBinding.tvAddressError.setText(getString(R.string.invalid_lock_or_payment_channel_contract));
+                    }
+                }));;
+    }
+
+    // token 转到合约的交易
     private void generateTransaction() {
         Contract c = new Contract();
-        c.setContractId(Vsys.tokenId2ContractId(mToken.getTokenId()));
-        c.setUnity(mToken.getUnity());
+        c.setContractId(mBinding.etAddress.getText().toString());
+//        c.setRecipient(mBinding.etAddress.getText().toString());
         c.setAmount(CoinUtil.parse(mBinding.etAmount.getText().toString(), mToken.getUnity()));
-        c.setRecipient(mBinding.etAddress.getText().toString());
+        c.setSenderAddr(mAccount.getAddress());
+        c.setUnity(mToken.getUnity());
+
         mTransaction = new Transaction();
-        mTransaction.setActionCode(Vsys.ActionSend);
+        mTransaction.setActionCode(Vsys.ActionDeposit);
         mTransaction.setContractObj(c);
-        mTransaction.setContractId(c.getContractId());
+        mTransaction.setContractId(Vsys.tokenId2ContractId(mToken.getTokenId()));
         mTransaction.setFee(Transaction.DEFAULT_TOKEN_TX_FEE);
         mTransaction.setTransactionType(mType);
         mTransaction.setAddress(mAccount.getAddress());
-        mTransaction.setFunction(Base58.encode(c.buildSendData()));
-        mTransaction.setFunctionId(ContractUtil.getFuncIdxByFuncName(mToken.getFuncs(), Vsys.ActionSend));
-        mTransaction.setFunctionTextual(ContractUtil.getFunctionTextual(Vsys.ActionSend, c.getRecipient(), c.getAmount()));
-        mTransaction.setFunctionExplain(ContractUtil.getFunctionExplain(Vsys.ActionSend, mBinding.etAmount.getText().toString(), c.getRecipient()));
+        mTransaction.setFunction(Base58.encode(c.buildDepositData()));
+        mTransaction.setFunctionId(ContractUtil.getFuncIdxByFuncName(mToken.getFuncs(), Vsys.ActionDeposit));
+        mTransaction.setFunctionTextual(ContractUtil.getFunctionTextual(Vsys.ActionDeposit, c.getRecipient(), c.getAmount()));
+        mTransaction.setFunctionExplain(ContractUtil.getFunctionExplain(Vsys.ActionDeposit, mBinding.etAmount.getText().toString(), c.getRecipient()));
         mTransaction.setSenderPublicKey(mAccount.getPublicKey());
         mTransaction.setTimestamp(System.currentTimeMillis());
 //        mTransaction.setAttachment(mBinding.etAttachment.getText().toString());

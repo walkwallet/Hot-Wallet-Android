@@ -1,9 +1,6 @@
 package systems.v.wallet.ui.view.contract;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,17 +11,16 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
+
 import com.alibaba.fastjson.JSON;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.math.BigDecimal;
-import java.text.Format;
-import java.util.Locale;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.databinding.DataBindingUtil;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
@@ -251,7 +247,11 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
         mTransaction.setFee(Transaction.DEFAULT_TOKEN_TX_FEE);
         mTransaction.setTransactionType(mType);
         mTransaction.setAddress(mAccount.getAddress());
-        mTransaction.setFunction(Base58.encode(c.buildSendData()));
+        if (mToken.isNft()) {
+            mTransaction.setFunction(Base58.encode(c.buildNFTSendData()));
+        }else {
+            mTransaction.setFunction(Base58.encode(c.buildSendData()));
+        }
         mTransaction.setFunctionId(ContractUtil.getFuncIdxByFuncName(mToken.getFuncs(), Vsys.ActionSend));
         mTransaction.setFunctionTextual(ContractUtil.getFunctionTextual(Vsys.ActionSend, c.getRecipient(), c.getAmount()));
         mTransaction.setFunctionExplain(ContractUtil.getFunctionExplain(Vsys.ActionSend, mBinding.etAmount.getText().toString(), c.getRecipient()));

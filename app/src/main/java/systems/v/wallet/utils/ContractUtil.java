@@ -1,14 +1,10 @@
 package systems.v.wallet.utils;
 
 
-import android.util.Log;
-
 import java.util.Locale;
 
 import systems.v.wallet.basic.utils.Base58;
-import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.wallet.ContractFunc;
-import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.data.bean.RecordBean;
 import vsys.Contract;
 import vsys.Vsys;

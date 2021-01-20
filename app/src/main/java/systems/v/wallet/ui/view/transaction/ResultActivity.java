@@ -128,6 +128,16 @@ public class ResultActivity extends BaseThemedActivity {
                         mBinding.tvAddress.setText(mTransaction.getContractObj().getRecipient());
                         mBinding.tvTip.setText("");
                         break;
+                    case Vsys.ActionDeposit:
+                        mBinding.tvInfo.setText(getString(R.string.deposit_payment_success, CoinUtil.format(mTransaction.getContractObj().getAmount(), mTransaction.getContractObj().getUnity())));
+                        mBinding.tvAddress.setText(mTransaction.getContractObj().getRecipient());
+                        mBinding.tvTip.setText("");
+                        break;
+                    case Vsys.ActionWithdraw:
+                        mBinding.tvInfo.setText(getString(R.string.withdraw_payment_success, CoinUtil.format(mTransaction.getContractObj().getAmount(), mTransaction.getContractObj().getUnity())));
+                        mBinding.tvAddress.setText(mTransaction.getContractObj().getRecipient());
+                        mBinding.tvTip.setText("");
+                        break;
                     case Vsys.ActionDestroy:
                         mBinding.ivIconResult.setImageResource(R.drawable.ico_burn_big);
                         mBinding.tvInfo.setText("");
@@ -286,12 +296,14 @@ public class ResultActivity extends BaseThemedActivity {
                         if (resp.getCode() == 0) {
                             setContent();
                         }else{
+                            Log.e(TAG, resp.getMsg());
                             ToastUtil.showToast(resp.getMsg());
                         }
                     }
                 }, BaseErrorConsumer.create(new BaseErrorConsumer.Callback() {
                     @Override
                     public void onError(int code, String msg) {
+                        Log.e(TAG, msg);
                         ToastUtil.showToast(String.format("Failed, please retry!(error:%s)", msg));
                     }
                 }));

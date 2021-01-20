@@ -185,6 +185,42 @@ public class UIUtil {
                 addItemVertical(inflater, container, R.string.send_token_review_amount, CoinUtil.format(tx.getContractObj().getAmount(), tx.getContractObj().getUnity()));
                 addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
                 addItemVertical(inflater, container, R.string.send_description, tx.getAttachment());
+            } else if(action.equals(Vsys.ActionDeposit)){
+                ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.send_review_from, sender.getAddress());
+                bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIUtil.copyToClipboard(container.getContext(), sender.getAddress());
+                    }
+                });
+                ItemInfoVerticalBinding bindingTo = addItemVertical(inflater, container, R.string.send_review_send_to, tx.getContractObj().getRecipient());
+                bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIUtil.copyToClipboard(container.getContext(), tx.getContractObj().getRecipient());
+                    }
+                });
+                addItemVertical(inflater, container, R.string.send_review_type, action);
+                addItemVertical(inflater, container, R.string.send_token_review_amount, CoinUtil.format(tx.getContractObj().getAmount(), tx.getContractObj().getUnity()));
+                addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
+            }else if(action.equals(Vsys.ActionWithdraw)){
+                ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.send_review_from, sender.getAddress());
+                bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIUtil.copyToClipboard(container.getContext(), sender.getAddress());
+                    }
+                });
+                ItemInfoVerticalBinding bindingTo = addItemVertical(inflater, container, R.string.send_review_send_to, tx.getContractObj().getRecipient());
+                bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIUtil.copyToClipboard(container.getContext(), tx.getContractObj().getRecipient());
+                    }
+                });
+                addItemVertical(inflater, container, R.string.send_review_type, action);
+                addItemVertical(inflater, container, R.string.send_token_review_amount, CoinUtil.format(tx.getContractObj().getAmount(), tx.getContractObj().getUnity()));
+                addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
             }
         }
     }

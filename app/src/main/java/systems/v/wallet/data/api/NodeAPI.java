@@ -1,8 +1,5 @@
 package systems.v.wallet.data.api;
 
-import android.util.Log;
-import android.util.LogPrinter;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -126,4 +123,11 @@ public class NodeAPI implements ITestNetNodeAPI, IMainNetNodeAPI {
         return mMainNodeAPI.contractInfo(contractId);
     }
 
+    @Override
+    public Observable<RespBean> contractData(String contractId, String dbKey) {
+        if (mTestNodeAPI != null) {
+            return mTestNodeAPI.contractData(contractId, dbKey);
+        }
+        return mMainNodeAPI.contractData(contractId, dbKey);
+    }
 }

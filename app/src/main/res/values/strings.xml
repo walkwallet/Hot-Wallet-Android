@@ -372,5 +372,8 @@
     <string name="nav_withdraw_from_contract">Withdraw from Contract</string>
     <string name="deposit_to_contract">Deposit to contract</string>
     <string name="deposit_to_contract_hint">Payment channel contract or Lock contract</string>
+    <string name="invalid_lock_or_payment_channel_contract">Invalid payment channel or lock contract</string>
+    <string name="deposit_payment_success">You deposit %1$s to contract: </string>
+    <string name="withdraw_payment_success">You withdraw %1$s from contract: </string>
 
 </resources>

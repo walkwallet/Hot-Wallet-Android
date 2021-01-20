@@ -52,4 +52,7 @@ public interface IMainNetNodeAPI {
 
     @GET("contract/info/{contractId}")
     Observable<RespBean> contractInfo(@Path("contractId") String contractId);
+
+    @GET("contract/data/{contractId}/{dbKey}")
+    Observable<RespBean> contractData(@Path("contractId") String contractId, @Path("dbKey") String dbKey);
 }

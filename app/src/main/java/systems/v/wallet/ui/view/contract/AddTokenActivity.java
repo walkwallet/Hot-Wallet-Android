@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -163,6 +164,7 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                             return Observable.create(new ObservableOnSubscribe<RespBean>() {
                                 @Override
                                 public void subscribe(ObservableEmitter<RespBean> emitter) throws Exception {
+                                    Log.e(TAG, respBean.getMsg());
                                     emitter.onError(new Throwable(respBean.getMsg()));
                                 }
                             });
@@ -182,6 +184,10 @@ public class AddTokenActivity extends BaseThemedActivity implements View.OnClick
                                 }else if(info.getName().equals("maker")){
                                     newToken.setMaker(info.getData());
                                 }
+                            }
+                            Log.i(TAG, contractBean.getType());
+                            if (contractBean.getType().equals("NonFungibleContract")) {
+                                newToken.setNft(true);
                             }
                             return nodeApi.contractContent(Vsys.tokenId2ContractId(tokenId));
                         }else{
