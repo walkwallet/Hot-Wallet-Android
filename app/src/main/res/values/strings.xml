@@ -6,20 +6,13 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="next">Continue</string>
-    <string name="back">Back</string>
     <string name="scan">Scan</string>
     <string name="send">Send</string>
     <string name="complete">Complete</string>
     <string name="done">Done</string>
     <string name="unsupported_qrcode">Unsupported QR code types</string>
-    <string name="inconsistent_network_testnet">Please provide a testnet VSYS address</string>
-    <string name="inconsistent_network_mainnet">Please provide a mainnet VSYS address</string>
     <string name="official_warning">Officials Hint</string>
     <string name="got_it">I got it</string>
-    <string name="i_agree">I agree</string>
-    <string name="i_dont_agree">I do not agree</string>
-    <string name="warning">WARNING</string>
-    <string name="refresh">refresh</string>
 
     <!--other start-->
     <string name="scan_tip">Align QR code within frame to scan</string>
@@ -81,9 +74,7 @@
     <string name="detail_leased_in">Leased In</string>
     <string name="detail_send">Send</string>
     <string name="detail_receive">Receive</string>
-    <string name="detail_payment">Payment</string>
     <string name="detail_lease">Leasing</string>
-    <string name="detail_cancel_lease">Cancel leasing</string>
     <string name="detail_records">Records</string>
     <string name="detail_token">Token</string>
     <string name="detail_sent">Sent</string>
@@ -122,7 +113,6 @@
     <string name="transaction_detail_txid">TxId</string>
     <string name="transaction_detail_amount">Amount</string>
     <string name="transaction_detail_fee">Fee</string>
-    <string name="transaction_detail_status">Status</string>
     <string name="transaction_detail_time">Time</string>
     <string name="transaction_detail_description">Description</string>
     <!--end>>>  transaction detail -->
@@ -156,11 +146,6 @@
     <string name="setting_secret_tips">Please input your password to show</string>
     <string name="setting_delete">Delete</string>
     <string name="setting_delete_monitor_tips">Are you sure you want to remove this address from the cold wallet monitoring list?</string>
-    <string name="setting_lan_cn">简体中文</string>
-    <string name="setting_lan_en">English</string>
-    <string name="setting_lan_ko">한국어</string>
-    <string name="setting_lan_tw">繁體中文</string>
-    <string name="setting_logout">Logout</string>
     <!--end>>>  setting -->
 
     <!-- receive start-->
@@ -231,7 +216,6 @@
     <string name="send_address_input_hint">Receive Address</string>
     <string name="send_lease_address_input_hint">Node Address</string>
     <string name="send_address_input_error">You can only send tokens to an VSYS address.</string>
-    <string name="send_to_self_error">The receiving address is the current address</string>
     <string name="send_max_btn">Max</string>
     <string name="send_paste_btn">PASTE</string>
     <string name="send_scan_btn">SCAN QR</string>
@@ -252,10 +236,8 @@
     <string name="send_generate_qr_code_btn">Generate QR Code</string>
     <string name="send_scan_qr_code_title">Scan QR Code</string>
     <string name="send_scan_qr_code_tip"><![CDATA[1. Please use your <b><font color="#5E78E1">Cold Wallet</font></b> client to scan this QR code.<br><br>2. And click continue after your cold wallet client generates a QR code.]]></string>
-    <string name="send_scan_qr_code_page">Current Page: %1$d Total Page: %2$d </string>
     <string name="send_payment_success">You Sent %1$s to</string>
     <string name="send_lease_success">You Started Leasing  %1$s to</string>
-    <string name="send_lease_to_self_error">You can\'t lease to yourself</string>
     <string name="send_cancel_lease_success">You  Canceled Out Leasing  %1$s to</string>
     <string name="send_success_check_tip">You can check in your transaction records</string>
     <!-- send end -->
@@ -289,14 +271,11 @@
     <string name="create_token_contract_secondary">(Attention: cannot change after create)</string>
     <string name="create_token_transaction_fee_title">Transaction Fee:</string>
     <string name="create_token_available_titlte">Available balance:</string>
-    <string name="create_token">Transaction Fee:</string>
-    <string name="create_token_unitybase">10 ^ %1d (The minimum amount will be %2s Token)</string>
     <string name="create_token_success">You have create a new token, token ID is:</string>
     <string name="create_token_success_tip">You can check in your token watch list</string>
     <string name="create_token_exceed_max">Too many significant digits for amount. Please reduce unity.</string>
     <string name="create_review_token_total_tokens">Total Tokens</string>
     <string name="create_review_token_description">Description</string>
-    <string name="create_token_spilt_alert">Split/Reverse-Split is an experimental token feature requiring exchange support compatible with Unity Token Split Protocol. The proper use of token with split functionality requires due diligence of both the token issuer and the supporting exchanges. Token issuer shall agree to abide by the protocol and convention of proper use of the split/reverse-split functionality. Token issuer shall agree to defend, hold harmless, and indemnify V Systems Limited for damage and loss involving the use of split/reverse-split functionality of the token.</string>
     <!--register end-->
 
     <!--token list start-->
@@ -337,13 +316,11 @@
     <string name="issue_token_title">Issue Token</string>
     <string name="issue_token_amount">ISSUE AMOUNT</string>
     <string name="issue_token_success">Issue amount</string>
-    <string name="issue_larger_than_max">The issued token can not larger than max supply.</string>
     <string name="issue_token_review_amount">Issue Amount</string>
     <string name="issue_available_balance">Issue available: %1$s</string>
 
     <string name="add_token_input_hint">Input the Token ID or Name</string>
     <string name="add_token_add">Add</string>
-    <string name="add_token_added">Added</string>
     <string name="add_token_err_id">Token does not exist!</string>
     <string name="add_token_added_token">Token already added!</string>
     <string name="add_token_success">Successful added</string>
@@ -356,6 +333,31 @@
 
     <string name="invalid_precision">The number of digits after the decimal point may be larger than the token precision.</string>
     <!--token operation end-->
+
+<!--    added-->
+    <string name="add_token_added">Added</string>
+    <string name="send_scan_qr_code_page">Current Page: %1$d Total Page: %2$d </string>
+    <string name="send_to_self_error">The receiving address is the current address</string>
+    <string name="transaction_detail_status">Status</string>
+    <string name="detail_payment">Payment</string>
+    <string name="detail_cancel_lease">Cancel leasing</string>
+    <string name="back">Back</string>
+    <string name="inconsistent_network_testnet">Please provide a testnet VSYS address</string>
+    <string name="inconsistent_network_mainnet">Please provide a mainnet VSYS address</string>
+    <string name="i_agree">I agree</string>
+    <string name="i_dont_agree">I do not agree</string>
+    <string name="warning">WARNING</string>
+    <string name="refresh">refresh</string>
+    <string name="send_lease_to_self_error">You can\'t lease to yourself</string>
+    <string name="issue_larger_than_max">The issued token can not larger than max supply.</string>
+    <string name="create_token">Transaction Fee:</string>
+    <string name="create_token_unitybase">10 ^ %1d (The minimum amount will be %2s Token)</string>
+    <string name="create_token_spilt_alert">Split/Reverse-Split is an experimental token feature requiring exchange support compatible with Unity Token Split Protocol. The proper use of token with split functionality requires due diligence of both the token issuer and the supporting exchanges. Token issuer shall agree to abide by the protocol and convention of proper use of the split/reverse-split functionality. Token issuer shall agree to defend, hold harmless, and indemnify V Systems Limited for damage and loss involving the use of split/reverse-split functionality of the token.</string>
+    <string name="setting_lan_cn">简体中文</string>
+    <string name="setting_lan_en">English</string>
+    <string name="setting_lan_ko">한국어</string>
+    <string name="setting_lan_tw">繁體中文</string>
+    <string name="setting_logout">Logout</string>
 
     <!--    sign message-->
     <string name="sign_message">Sign Message</string>
@@ -375,5 +377,10 @@
     <string name="invalid_lock_or_payment_channel_contract">Invalid payment channel or lock contract</string>
     <string name="deposit_payment_success">You deposit %1$s to contract: </string>
     <string name="withdraw_payment_success">You withdraw %1$s from contract: </string>
+    <string name="deposit_review_deposit_to">To Contract</string>
+    <string name="withdraw_review_withdraw_from">From Contract</string>
+
+    <string name="withdraw_from_contract">Withdraw from contract</string>
+    <string name="withdraw_from_contract_hint">Payment channel contract or Lock contract</string>
 
 </resources>

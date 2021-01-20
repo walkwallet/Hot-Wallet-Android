@@ -193,7 +193,7 @@ public class UIUtil {
                         UIUtil.copyToClipboard(container.getContext(), sender.getAddress());
                     }
                 });
-                ItemInfoVerticalBinding bindingTo = addItemVertical(inflater, container, R.string.send_review_send_to, tx.getContractObj().getRecipient());
+                ItemInfoVerticalBinding bindingTo = addItemVertical(inflater, container, R.string.deposit_review_deposit_to, tx.getContractObj().getContractId());
                 bindingTo.getRoot().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -204,7 +204,7 @@ public class UIUtil {
                 addItemVertical(inflater, container, R.string.send_token_review_amount, CoinUtil.format(tx.getContractObj().getAmount(), tx.getContractObj().getUnity()));
                 addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
             }else if(action.equals(Vsys.ActionWithdraw)){
-                ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.send_review_from, sender.getAddress());
+                ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.withdraw_review_withdraw_from, tx.getContractObj().getRecipient());
                 bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

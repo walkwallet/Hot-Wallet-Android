@@ -296,9 +296,11 @@
     <string name="token_list_create_token">创建Token</string>
     <string name="token_list_list_title">Token列表</string>
 
+    <string name="token_list_supersede">Supersede</string>
     <string name="token_list_send">发送Token</string>
     <string name="token_list_receive">接收Token</string>
     <string name="token_list_info">Token信息</string>
+    <string name="token_list_split">Split Token</string>
     <string name="token_list_issue">发行Token</string>
     <string name="token_list_destroy">销毁Token</string>
     <string name="token_list_remove">隐藏Token</string>
@@ -345,6 +347,21 @@
     <string name="invalid_precision">数额精度超出上限.</string>
     <!--token operation end-->
 
+    <!--    added-->
+    <string name="send_scan_qr_code_page">Current Page: %1$d Total Page: %2$d </string>
+    <string name="i_agree">I agree</string>
+    <string name="i_dont_agree">I do not agree</string>
+    <string name="warning">WARNING</string>
+    <string name="send_lease_to_self_error">You can\'t lease to yourself</string>
+    <string name="create_token">Transaction Fee:</string>
+    <string name="create_token_unitybase">10 ^ %1d (The minimum amount will be %2s Token)</string>
+    <string name="create_token_spilt_alert">Split/Reverse-Split is an experimental token feature requiring exchange support compatible with Unity Token Split Protocol. The proper use of token with split functionality requires due diligence of both the token issuer and the supporting exchanges. Token issuer shall agree to abide by the protocol and convention of proper use of the split/reverse-split functionality. Token issuer shall agree to defend, hold harmless, and indemnify V Systems Limited for damage and loss involving the use of split/reverse-split functionality of the token.</string>
+    <string name="setting_lan_cn">简体中文</string>
+    <string name="setting_lan_en">English</string>
+    <string name="setting_lan_ko">한국어</string>
+    <string name="setting_lan_tw">繁體中文</string>
+
+
     <!--    sign message-->
     <string name="sign_message">消息签名</string>
     <string name="sign_message_title">消息签名</string>
@@ -359,7 +376,15 @@
     <string name="nav_deposit_to_contract">向合约充值</string>
     <string name="nav_withdraw_from_contract">从合约提款</string>
     <string name="deposit_to_contract">合约充值</string>
-    <string name="deposit_to_contract_hint">Payment channel contract or Lock contract</string>
+    <string name="deposit_to_contract_hint">输入Payment channel合约或Lock合约</string>
+    <string name="invalid_lock_or_payment_channel_contract">无效的合约地址或类型</string>
+    <string name="deposit_payment_success">充值 %1$s 到合约: </string>
+    <string name="withdraw_payment_success">提现 %1$s 自合约: </string>
+    <string name="deposit_review_deposit_to">到合约</string>
+    <string name="withdraw_review_withdraw_from">从合约</string>
+
+    <string name="withdraw_from_contract">合约提款</string>
+    <string name="withdraw_from_contract_hint">输入Payment channel合约或Lock合约</string>
 
 
 </resources>

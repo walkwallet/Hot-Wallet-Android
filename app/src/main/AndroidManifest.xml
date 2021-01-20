@@ -125,6 +125,7 @@
         <activity android:name=".ui.view.contract.TokenInfoActivity" />
         <activity android:name=".ui.view.contract.SendTokenActivity"/>
         <activity android:name=".ui.view.contract.DepositToContractActivity" />
+        <activity android:name=".ui.view.contract.WithdrawFromContractActivity" />
     </application>
 
 </manifest>

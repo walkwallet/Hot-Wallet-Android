@@ -76,7 +76,6 @@
     <string name="detail_receive">수신</string>
     <string name="detail_lease">주조</string>
     <string name="detail_records">기록</string>
-    <string name="sign_message">Sign Message</string>
     <string name="detail_token">토큰</string>
     <string name="detail_sent">전송됨</string>
     <string name="detail_received">수신됨</string>
@@ -288,9 +287,11 @@
     <string name="token_list_create_token">토큰 생성</string>
     <string name="token_list_list_title">토큰 관심 리스트</string>
 
+    <string name="token_list_supersede">Supersede</string>
     <string name="token_list_send">토큰 전송</string>
     <string name="token_list_receive">토큰 수신</string>
     <string name="token_list_info">토큰 정보 얻기</string>
+    <string name="token_list_split">Split Token</string>
     <string name="token_list_issue">발행 토큰</string>
     <string name="token_list_destroy">토큰 파괴</string>
     <string name="token_list_remove">토큰숨기기</string>
@@ -332,6 +333,58 @@
 
     <string name="send_token_review_amount">총액</string>
 
+    <string name="invalid_precision">The number of digits after the decimal point may be larger than the token precision.</string>
+
     <!--token operation end-->
+
+    <!--    added-->
+    <string name="add_token_added">Added</string>
+    <string name="send_scan_qr_code_page">Current Page: %1$d Total Page: %2$d </string>
+    <string name="send_to_self_error">The receiving address is the current address</string>
+    <string name="transaction_detail_status">Status</string>
+    <string name="detail_payment">Payment</string>
+    <string name="detail_cancel_lease">Cancel leasing</string>
+    <string name="back">Back</string>
+    <string name="inconsistent_network_testnet">Please provide a testnet VSYS address</string>
+    <string name="inconsistent_network_mainnet">Please provide a mainnet VSYS address</string>
+    <string name="i_agree">I agree</string>
+    <string name="i_dont_agree">I do not agree</string>
+    <string name="warning">WARNING</string>
+    <string name="refresh">refresh</string>
+    <string name="send_lease_to_self_error">You can\'t lease to yourself</string>
+    <string name="issue_larger_than_max">The issued token can not larger than max supply.</string>
+    <string name="create_token_unitybase">10 ^ %1d (The minimum amount will be %2s Token)</string>
+    <string name="create_token_spilt_alert">Split/Reverse-Split is an experimental token feature requiring exchange support compatible with Unity Token Split Protocol. The proper use of token with split functionality requires due diligence of both the token issuer and the supporting exchanges. Token issuer shall agree to abide by the protocol and convention of proper use of the split/reverse-split functionality. Token issuer shall agree to defend, hold harmless, and indemnify V Systems Limited for damage and loss involving the use of split/reverse-split functionality of the token.</string>
+    <string name="setting_lan_cn">简体中文</string>
+    <string name="setting_lan_en">English</string>
+    <string name="setting_lan_ko">한국어</string>
+    <string name="setting_lan_tw">繁體中文</string>
+    <string name="setting_logout">Logout</string>
+
+
+    <!--sign message-->
+    <string name="sign_message">Sign Message</string>
+    <string name="sign_message_title">Sign Message</string>
+    <string name="sign_message_content">Sign Content</string>
+    <string name="sign_message_content_desc">Input Message</string>
+    <string name="sign_message_copy">Copy</string>
+    <string name="sign_message_signature">Signature</string>
+    <string name="sign_message_sign">Sign</string>
+    <string name="sign_message_toast_empty">Cannot sign empty message</string>
+    <string name="sign_message_toast_wrong_content">Request failed, only support alphanumeric, space, and some special characters.</string>
+
+    <string name="nav_deposit_to_contract">Deposit to Contract</string>
+    <string name="nav_withdraw_from_contract">Withdraw from Contract</string>
+    <string name="deposit_to_contract">Deposit to contract</string>
+    <string name="deposit_to_contract_hint">Payment channel contract or Lock contract</string>
+    <string name="invalid_lock_or_payment_channel_contract">Invalid payment channel or lock contract</string>
+    <string name="deposit_payment_success">You deposit %1$s to contract: </string>
+    <string name="withdraw_payment_success">You withdraw %1$s from contract: </string>
+    <string name="deposit_review_deposit_to">To Contract</string>
+    <string name="withdraw_review_withdraw_from">From Contract</string>
+
+    <string name="withdraw_from_contract">Withdraw from contract</string>
+    <string name="withdraw_from_contract_hint">Payment channel contract or Lock contract</string>
+
 
 </resources>

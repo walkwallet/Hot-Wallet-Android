@@ -130,12 +130,12 @@ public class ResultActivity extends BaseThemedActivity {
                         break;
                     case Vsys.ActionDeposit:
                         mBinding.tvInfo.setText(getString(R.string.deposit_payment_success, CoinUtil.format(mTransaction.getContractObj().getAmount(), mTransaction.getContractObj().getUnity())));
-                        mBinding.tvAddress.setText(mTransaction.getContractObj().getRecipient());
+                        mBinding.tvAddress.setText(mTransaction.getContractObj().getContractId());
                         mBinding.tvTip.setText("");
                         break;
                     case Vsys.ActionWithdraw:
                         mBinding.tvInfo.setText(getString(R.string.withdraw_payment_success, CoinUtil.format(mTransaction.getContractObj().getAmount(), mTransaction.getContractObj().getUnity())));
-                        mBinding.tvAddress.setText(mTransaction.getContractObj().getRecipient());
+                        mBinding.tvAddress.setText(mTransaction.getContractObj().getContractId());
                         mBinding.tvTip.setText("");
                         break;
                     case Vsys.ActionDestroy:

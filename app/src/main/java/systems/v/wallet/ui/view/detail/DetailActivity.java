@@ -51,6 +51,7 @@ import systems.v.wallet.entity.RecordEntity;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.contract.DepositToContractActivity;
 import systems.v.wallet.ui.view.contract.TokenListActivity;
+import systems.v.wallet.ui.view.contract.WithdrawFromContractActivity;
 import systems.v.wallet.ui.view.detail.adapter.RecordAdapter;
 import systems.v.wallet.ui.view.records.TransactionDetailActivity;
 import systems.v.wallet.ui.view.records.TransactionRecordsActivity;
@@ -138,7 +139,7 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                 DepositToContractActivity.launch(mActivity, mAccount.getPublicKey());
                 break;
             case R.id.nav_withdraw_from_contract:
-                DepositToContractActivity.launch(mActivity, mAccount.getPublicKey());
+                WithdrawFromContractActivity.launch(mActivity, mAccount.getPublicKey());
                 break;
         }
         return true;
