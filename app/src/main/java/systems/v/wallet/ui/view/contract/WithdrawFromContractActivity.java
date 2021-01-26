@@ -89,7 +89,7 @@ public class WithdrawFromContractActivity extends BaseThemedActivity implements 
 
         mBinding.toolbar.setTitle(R.string.withdraw_from_contract);
         mBinding.etAddress.setHint(R.string.withdraw_from_contract_hint);
-        mBinding.tvSendToLabel.setText(R.string.send_payment_to);
+        mBinding.tvSendToLabel.setText(R.string.withdraw_review_withdraw_from);
         mBinding.tvFee.setText(CoinUtil.formatWithUnit(Transaction.DEFAULT_TOKEN_TX_FEE));
         mBinding.llTransactionFee.setVisibility(View.GONE);
         mBinding.llAmount.setVisibility(View.GONE);
@@ -209,7 +209,7 @@ public class WithdrawFromContractActivity extends BaseThemedActivity implements 
                         if(respBean != null) {
                             ContractBean contractBean = JSON.parseObject(respBean.getData(), ContractBean.class);
                             // 非合法contract
-                            if (!contractBean.getType().equals("LockContract") || contractBean.getType().equals("PaymentChannelContract")) {
+                            if (!contractBean.getType().equals("LockContract") && !contractBean.getType().equals("PaymentChannelContract")) {
                                 return Observable.create(new ObservableOnSubscribe<RespBean>() {
                                     @Override
                                     public void subscribe(ObservableEmitter<RespBean> emitter) throws Exception {
@@ -257,6 +257,7 @@ public class WithdrawFromContractActivity extends BaseThemedActivity implements 
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .compose(this.<RespBean>bindLoading())
                 .concatMap(new Function<RespBean, Observable<RespBean>>() {// request contract info
                     @Override
                     public Observable<RespBean> apply(final RespBean respBean) throws Exception {
@@ -315,6 +316,7 @@ public class WithdrawFromContractActivity extends BaseThemedActivity implements 
                             mBinding.llAmount.setVisibility(View.VISIBLE);
                             mBinding.btnConfirm.setVisibility(View.VISIBLE);
                             mBinding.btnNextStep.setVisibility(View.GONE);
+                            mBinding.tvAddressError.setVisibility(View.GONE);
                         } else{
                             ToastUtil.showToast("Accept result msg" + result);
                         }

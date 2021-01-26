@@ -381,6 +381,8 @@
     <string name="withdraw_review_withdraw_from">From Contract</string>
 
     <string name="withdraw_from_contract">Withdraw from contract</string>
+    <string name="from_contract">From contract</string>
     <string name="withdraw_from_contract_hint">Payment channel contract or Lock contract</string>
 
+    <string name="send_review_send_token">TokenId</string>
 </resources>

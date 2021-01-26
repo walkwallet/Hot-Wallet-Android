@@ -226,7 +226,7 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
                             ContractBean contractBean = JSON.parseObject(respBean.getData(), ContractBean.class);
                             // 非合法contract
                             Log.e(TAG,  contractBean.getType());
-                            if (!contractBean.getType().equals("LockContract") || contractBean.getType().equals("PaymentChannelContract")) {
+                            if (!contractBean.getType().equals("LockContract") && !contractBean.getType().equals("PaymentChannelContract")) {
                                 return Observable.create(new ObservableOnSubscribe<RespBean>() {
                                     @Override
                                     public void subscribe(ObservableEmitter<RespBean> emitter) throws Exception {
@@ -316,6 +316,7 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
                             mBinding.llAmount.setVisibility(View.VISIBLE);
                             mBinding.btnConfirm.setVisibility(View.VISIBLE);
                             mBinding.btnNextStep.setVisibility(View.GONE);
+                            mBinding.tvAddressError.setVisibility(View.GONE);
                         } else{
                             ToastUtil.showToast("Accept result msg" + result);
                         }

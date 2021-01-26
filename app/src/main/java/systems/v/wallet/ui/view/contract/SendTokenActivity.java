@@ -238,6 +238,7 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
         Contract c = new Contract();
         c.setContractId(Vsys.tokenId2ContractId(mToken.getTokenId()));
         c.setUnity(mToken.getUnity());
+        c.setTokenIdx(Vsys.tokenId2TokenIdx(mToken.getTokenId()));
         c.setAmount(CoinUtil.parse(mBinding.etAmount.getText().toString(), mToken.getUnity()));
         c.setRecipient(mBinding.etAddress.getText().toString());
         mTransaction = new Transaction();

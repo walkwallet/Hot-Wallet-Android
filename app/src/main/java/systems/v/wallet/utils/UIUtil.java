@@ -181,6 +181,13 @@ public class UIUtil {
                         UIUtil.copyToClipboard(container.getContext(), tx.getContractObj().getRecipient());
                     }
                 });
+                ItemInfoVerticalBinding bindingToken = addItemVertical(inflater, container, R.string.send_review_send_token, Vsys.contractId2TokenId(tx.getContractObj().getContractId(), tx.getContractObj().getTokenIdx()));
+                bindingToken.getRoot().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIUtil.copyToClipboard(container.getContext(), Vsys.contractId2TokenId(tx.getContractObj().getContractId(), tx.getContractObj().getTokenIdx()));
+                    }
+                });
                 addItemVertical(inflater, container, R.string.send_review_type, action);
                 addItemVertical(inflater, container, R.string.send_token_review_amount, CoinUtil.format(tx.getContractObj().getAmount(), tx.getContractObj().getUnity()));
                 addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
@@ -204,11 +211,11 @@ public class UIUtil {
                 addItemVertical(inflater, container, R.string.send_token_review_amount, CoinUtil.format(tx.getContractObj().getAmount(), tx.getContractObj().getUnity()));
                 addItemVertical(inflater, container, R.string.send_fee, CoinUtil.formatWithUnit(tx.getFee()));
             }else if(action.equals(Vsys.ActionWithdraw)){
-                ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.withdraw_review_withdraw_from, tx.getContractObj().getRecipient());
+                ItemInfoVerticalBinding bindingFrom = addItemVertical(inflater, container, R.string.withdraw_review_withdraw_from, tx.getContractObj().getContractId());
                 bindingFrom.getRoot().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        UIUtil.copyToClipboard(container.getContext(), sender.getAddress());
+                        UIUtil.copyToClipboard(container.getContext(), tx.getContractObj().getContractId());
                     }
                 });
                 ItemInfoVerticalBinding bindingTo = addItemVertical(inflater, container, R.string.send_review_send_to, tx.getContractObj().getRecipient());
