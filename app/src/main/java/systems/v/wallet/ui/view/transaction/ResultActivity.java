@@ -8,28 +8,26 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
-import com.alibaba.fastjson.JSON;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+
+import com.alibaba.fastjson.JSON;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.HttpException;
 import systems.v.wallet.R;
-import systems.v.wallet.basic.utils.Base58;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.utils.JsonUtil;
 import systems.v.wallet.basic.wallet.ContractFunc;
@@ -326,7 +324,7 @@ public class ResultActivity extends BaseThemedActivity {
         newToken.setMax(mTransaction.getContractObj().getMax());
         newToken.setDescription(mTransaction.getContractObj().getTokenDescription());
         newToken.setIssuer(mAccount.getAddress());
-        List<ContractFunc> funcs = new ArrayList<>(JSON.parseArray(Vsys.decodeContractTextrue(texturalDescriptors), ContractFunc.class));
+        List<ContractFunc> funcs = new ArrayList<>(JSON.parseArray(Vsys.decodeContractTexture(texturalDescriptors), ContractFunc.class));
         newToken.setFuncs(funcs.toArray(new ContractFunc[funcs.size()]));
         tokens.add(newToken);
         SPUtils.setString(key, JSON.toJSONString(tokens));

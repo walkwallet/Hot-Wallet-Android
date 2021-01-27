@@ -55,7 +55,6 @@ import systems.v.wallet.ui.view.records.TransactionDetailActivity;
 import systems.v.wallet.ui.view.records.TransactionRecordsActivity;
 import systems.v.wallet.ui.view.setting.AddressManagementDetailActivity;
 import systems.v.wallet.ui.view.transaction.SendActivity;
-import systems.v.wallet.ui.view.wallet.SignMessageActivity;
 import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
 import systems.v.wallet.ui.widget.wrapper.HeaderAndFooterWrapper;
 import systems.v.wallet.utils.Constants;
@@ -130,9 +129,9 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
             case R.id.nav_records:
                 TransactionRecordsActivity.launch(mActivity, mAccount.getPublicKey());
                 break;
-            case R.id.nav_sign:
-                SignMessageActivity.launch(mActivity, mAccount.getPublicKey());
-                break;
+//            case R.id.nav_sign:
+//                SignMessageActivity.launch(mActivity, mAccount.getPublicKey());
+//                break;
         }
         return true;
     }
