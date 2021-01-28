@@ -58,5 +58,5 @@ deps.picasso_transform="jp.wasabeef:picasso-transformations:$versions.picasso_tr
 ext.deps = deps
 
 versions.min_sdk = 19
-versions.target_sdk = 28
+versions.target_sdk = 29
 ext.versions = versions

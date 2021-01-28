@@ -13,18 +13,16 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
+import androidx.databinding.DataBindingUtil;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
-import androidx.databinding.DataBindingUtil;
-import systems.v.wallet.App;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.AlertDialog;
 import systems.v.wallet.basic.utils.FileUtil;
@@ -57,6 +55,7 @@ public class VerifyActivity extends BaseActivity {
 
     private ActivityVerifyBinding mBinding;
     private Dialog mVerifyDialog;
+    private int ErrPwdCount = 0;
     private AsyncTask mLoadBackupTask = null;
 
     @Override
@@ -224,14 +223,18 @@ public class VerifyActivity extends BaseActivity {
                         mBinding.etPassword.setText(null);
                         showKeyboard();
                     }
-                })
-                .setNegativeButton(R.string.setting_logout, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        showLogoutWarningDialog();
-                    }
-                })
-                .confirm();
+                });
+        ErrPwdCount += 1;
+        if (ErrPwdCount > 4) {
+            builder.setNegativeButton(R.string.setting_logout, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    showLogoutWarningDialog();
+                }
+            });
+        }
+        builder.confirm();
+
     }
 
     private void showLogoutWarningDialog() {
