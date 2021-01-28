@@ -1,15 +1,10 @@
 package systems.v.wallet.ui.view.records.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -17,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -34,9 +31,7 @@ import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.statics.TokenHelper;
 import systems.v.wallet.databinding.FragmentRecordBinding;
 import systems.v.wallet.entity.RecordEntity;
-import systems.v.wallet.ui.BaseActivity;
 import systems.v.wallet.ui.BaseFragment;
-import systems.v.wallet.ui.view.detail.DetailActivity;
 import systems.v.wallet.ui.view.detail.adapter.RecordAdapter;
 import systems.v.wallet.ui.view.records.DateSelectActivity;
 import systems.v.wallet.ui.view.records.TransactionDetailActivity;
@@ -245,6 +240,14 @@ public class RecordFragment extends BaseFragment {
                                     RecordEntity entitySend = new RecordEntity(bean, verifiedToken, mAccount.getAddress());
                                     entitySend.setRecordType(RecordEntity.TYPE_EXECUTE_CONTRACT_SENT);
                                     recordEntityList.add(entitySend);
+                                }else if (entity.getRecordType() == RecordEntity.TYPE_EXECUTE_CONTRACT_DEPOSIT) {
+                                    RecordEntity entityWithdraw = new RecordEntity(bean, verifiedToken, mAccount.getAddress());
+                                    entityWithdraw.setRecordType(RecordEntity.TYPE_EXECUTE_CONTRACT_DEPOSIT);
+                                    recordEntityList.add(entityWithdraw);
+                                }else if (entity.getRecordType() == RecordEntity.TYPE_EXECUTE_CONTRACT_WITHDRAW) {
+                                    RecordEntity entityWithdraw = new RecordEntity(bean, verifiedToken, mAccount.getAddress());
+                                    entityWithdraw.setRecordType(RecordEntity.TYPE_EXECUTE_CONTRACT_WITHDRAW);
+                                    recordEntityList.add(entityWithdraw);
                                 }
                             }
                             if(mPageNum == 0){

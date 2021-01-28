@@ -334,10 +334,11 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
     // token 转到合约的交易
     private void generateTransaction() {
         Contract c = new Contract();
-        c.setContractId(mBinding.etAddress.getText().toString());
 //        c.setRecipient(mBinding.etAddress.getText().toString());
         c.setAmount(CoinUtil.parse(mBinding.etAmount.getText().toString(), mToken.getUnity()));
         c.setSenderAddr(mAccount.getAddress());
+        c.setContractId(mBinding.etAddress.getText().toString());
+
         c.setUnity(mToken.getUnity());
 
         mTransaction = new Transaction();

@@ -1,21 +1,12 @@
 package systems.v.wallet.entity;
 
-import android.util.Log;
-
-import com.alibaba.fastjson.JSON;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import systems.v.wallet.R;
-import systems.v.wallet.basic.utils.CoinUtil;
-import systems.v.wallet.basic.wallet.ContractFunc;
 import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.data.bean.RecordBean;
 import systems.v.wallet.utils.ContractUtil;
 import systems.v.wallet.utils.DateUtils;
-import systems.v.wallet.utils.LogUtil;
 import vsys.Vsys;
 
 public class RecordEntity extends RecordBean implements Cloneable{
@@ -31,7 +22,8 @@ public class RecordEntity extends RecordBean implements Cloneable{
     public static final int TYPE_EXECUTE_CONTRACT = 9;
     public static final int TYPE_EXECUTE_CONTRACT_SENT = 91;
     public static final int TYPE_EXECUTE_CONTRACT_RECEIVED = 92;
-
+    public static final int TYPE_EXECUTE_CONTRACT_WITHDRAW = 93;
+    public static final int TYPE_EXECUTE_CONTRACT_DEPOSIT = 94;
 
     public static final int TYPE_NONE = -1;
 
@@ -62,6 +54,7 @@ public class RecordEntity extends RecordBean implements Cloneable{
                 }
             }
         }
+        setFunctionIndex(bean.getFunctionIndex());
         setRecipient(bean.getRecipient());
         setAmount(bean.getAmount());
         setAttachment(bean.getAttachment());
@@ -118,10 +111,38 @@ public class RecordEntity extends RecordBean implements Cloneable{
         } else if (type == Transaction.CONTRACT_EXECUTE){
             recordType = TYPE_EXECUTE_CONTRACT;
             if(getAmount() != 0 && getToken() != null) {
-                if (getAddress().equals(getRecipient())) {
-                    recordType = TYPE_EXECUTE_CONTRACT_RECEIVED;
-                } else {
-                    recordType = TYPE_EXECUTE_CONTRACT_SENT;
+                if (getToken().isSpilt()) {
+                    switch (getFunctionIndex()) {
+                        case 4:
+                            if (getAddress().equals(getRecipient())) {
+                                recordType = TYPE_EXECUTE_CONTRACT_RECEIVED;
+                            } else {
+                                recordType = TYPE_EXECUTE_CONTRACT_SENT;
+                            }
+                            break;
+                        case 6:
+                            recordType = TYPE_EXECUTE_CONTRACT_DEPOSIT;
+                            break;
+                        case 7:
+                            recordType = TYPE_EXECUTE_CONTRACT_WITHDRAW;
+                            break;
+                    }
+                }else{
+                    switch (getFunctionIndex()) {
+                        case 3:
+                            if (getAddress().equals(getRecipient())) {
+                                recordType = TYPE_EXECUTE_CONTRACT_RECEIVED;
+                            } else {
+                                recordType = TYPE_EXECUTE_CONTRACT_SENT;
+                            }
+                            break;
+                        case 5:
+                            recordType = TYPE_EXECUTE_CONTRACT_DEPOSIT;
+                            break;
+                        case 6:
+                            recordType = TYPE_EXECUTE_CONTRACT_WITHDRAW;
+                            break;
+                    }
                 }
             }
         } else{

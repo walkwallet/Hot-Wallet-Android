@@ -387,5 +387,7 @@
     <string name="withdraw_from_contract">合約提款</string>
     <string name="withdraw_from_contract_hint">輸入Payment channel合約或Lock合約</string>
 
+    <string name="detail_execute_contract_deposit">執行合約(充值Token)</string>
+    <string name="detail_execute_contract_withdraw">執行合約(提現Token)</string>
 </resources>
 

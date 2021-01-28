@@ -92,6 +92,8 @@
     <string name="detail_execute_contract">执行合约 </string>
     <string name="detail_execute_contract_sent">执行合约(发送Token)</string>
     <string name="detail_execute_contract_received">执行合约(接收Token)</string>
+    <string name="detail_execute_contract_deposit">执行合约(充值Token)</string>
+    <string name="detail_execute_contract_withdraw">执行合约(提现Token)</string>
     <string name="detail_canceled_int_leasing">取消租入</string>
     <string name="detail_address_management">地址管理</string>
     <string name="detail_copy_address">复制地址</string>
@@ -387,4 +389,5 @@
     <string name="withdraw_from_contract_hint">输入Payment channel合约或Lock合约</string>
 
 
+    <string name="send_review_send_token">TokenId</string>
 </resources>

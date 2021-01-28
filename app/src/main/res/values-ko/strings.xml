@@ -387,4 +387,7 @@
     <string name="withdraw_from_contract_hint">Payment channel contract or Lock contract</string>
 
 
+    <string name="send_review_send_token">TokenId</string>
+    <string name="detail_execute_contract_deposit">Deposit</string>
+    <string name="detail_execute_contract_withdraw">Withdraw</string>
 </resources>

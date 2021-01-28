@@ -42,6 +42,10 @@ public class ContractUtil {
                 return String.format(Locale.US,  "Create token (%s) that max supply is %s", args[0], args[1]);
             case Vsys.ActionSend:
                 return String.format(Locale.US, "Send %s token to %s", args[0], args[1]);
+            case Vsys.ActionDeposit:
+                return String.format(Locale.US, "Deposit %s token to %s", args[0], args[1]);
+            case Vsys.ActionWithdraw:
+                return String.format(Locale.US, "Withdraw %s token from %s", args[0], args[1]);
             case Vsys.ActionIssue:
             case Vsys.ActionDestroy:
                 return String.format(Locale.US, "%s %s token", actionCode, args[0]);
@@ -68,6 +72,16 @@ public class ContractUtil {
                     recordBean.setAmount(c.getAmount());
                     recordBean.setRecipient(c.getRecipient());
                     break;
+                case 6:
+                    c.decodeDeposit(Base58.decode(recordBean.getFunctionData()));
+                    recordBean.setAmount(c.getAmount());
+                    recordBean.setContractId(c.getContractId());
+                    break;
+                case 7:
+                    c.decodeWithdraw(Base58.decode(recordBean.getFunctionData()));
+                    recordBean.setAmount(c.getAmount());
+                    recordBean.setContractId(c.getContractId());
+                    break;
             }
         }else{
             switch (recordBean.getFunctionIndex()){
@@ -75,6 +89,17 @@ public class ContractUtil {
                     c.decodeSend(Base58.decode(recordBean.getFunctionData()));
                     recordBean.setAmount(c.getAmount());
                     recordBean.setRecipient(c.getRecipient());
+                    break;
+                case 5:
+                    c.decodeDeposit(Base58.decode(recordBean.getFunctionData()));
+                    recordBean.setAmount(c.getAmount());
+                    recordBean.setContractId(c.getContractId());
+                    break;
+                case 6:
+                    c.decodeWithdraw(Base58.decode(recordBean.getFunctionData()));
+                    recordBean.setAmount(c.getAmount());
+                    recordBean.setRecipient(c.getRecipient());
+                    recordBean.setContractId(c.getContractId());
                     break;
             }
         }
