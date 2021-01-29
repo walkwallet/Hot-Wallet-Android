@@ -33,7 +33,7 @@ public class RecordAdapter extends BaseAdapter<RecordEntity> {
         ItemRecordsBinding binding = (ItemRecordsBinding) viewDataBinding;
         RecordEntity item = mData.get(position);
         int drawableId = 0;
-        int textId = 0;
+        int textId = R.string.records_title;
         String amount = item.getAmount() + "";
         String address = UIUtil.getMutatedAddress(item.getRecipient());
         switch (item.getRecordType()) {

@@ -258,14 +258,6 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                             RecordEntity entitySend = new RecordEntity(bean, verifiedToken, address);
                             entitySend.setRecordType(RecordEntity.TYPE_EXECUTE_CONTRACT_SENT);
                             recordEntityList.add(entitySend);
-                        }else if (entity.getType() == RecordEntity.TYPE_EXECUTE_CONTRACT_DEPOSIT) {
-                            RecordEntity entityDeposit = new RecordEntity(bean, verifiedToken, address);
-                            entityDeposit.setRecordType(RecordEntity.TYPE_EXECUTE_CONTRACT_DEPOSIT);
-                            recordEntityList.add(entityDeposit);
-                        }else if (entity.getType() == RecordEntity.TYPE_EXECUTE_CONTRACT_WITHDRAW) {
-                            RecordEntity entityWithdraw = new RecordEntity(bean, verifiedToken, address);
-                            entityWithdraw.setRecordType(RecordEntity.TYPE_EXECUTE_CONTRACT_WITHDRAW);
-                            recordEntityList.add(entityWithdraw);
                         }
                     }
                     if(pageNum == 0){
