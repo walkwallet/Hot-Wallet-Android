@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import systems.v.wallet.App;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.AlertDialog;
 import systems.v.wallet.basic.utils.FileUtil;
@@ -62,6 +63,7 @@ public class VerifyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_verify);
+        AutoUnlockWallet();
         initView();
     }
 
@@ -252,6 +254,14 @@ public class VerifyActivity extends BaseActivity {
                         mApp.finishAllActivities();
                     }
                 }).confirm();
+    }
+
+    private void AutoUnlockWallet() {
+        Wallet wallet = App.getInstance().getWallet();
+        if (wallet != null && SPUtils.getInt(Constants.AUTO_LOCK, Constants.AUTOLOCK_CLOSE) == -1) {
+            finish();
+            return;
+        }
     }
 
     private class LoadBackupTask extends AsyncTask<String, Void, Wallet> {

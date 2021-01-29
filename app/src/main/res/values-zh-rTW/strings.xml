@@ -389,5 +389,6 @@
 
     <string name="detail_execute_contract_deposit">執行合約(充值Token)</string>
     <string name="detail_execute_contract_withdraw">執行合約(提現Token)</string>
+    <string name="setting_auto_lock_close">關閉</string>
 </resources>
 

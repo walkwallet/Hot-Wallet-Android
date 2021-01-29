@@ -345,10 +345,13 @@ public class App extends Application {
     }
 
     private void startLockCounter() {
+        final int finalLockTime = SPUtils.getInt(Constants.AUTO_LOCK, Constants.AUTOLOCK_CLOSE);
+        if (finalLockTime == -1) {
+            return;
+        }
         if (mLockDisposable != null) {
             return;
         }
-        final int finalLockTime = SPUtils.getInt(Constants.AUTO_LOCK, Constants.AUTOLOCK_5);
         mLockDisposable = Observable.interval(1000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -372,7 +375,7 @@ public class App extends Application {
 
     public void stopLockCounter() {
         mCounter = 0;
-        if (!mLockDisposable.isDisposed()) {
+        if (mLockDisposable != null && !mLockDisposable.isDisposed()) {
             mLockDisposable.dispose();
         }
         mLockDisposable = null;

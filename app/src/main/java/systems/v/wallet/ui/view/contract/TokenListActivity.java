@@ -7,15 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -28,22 +27,17 @@ import io.reactivex.schedulers.Schedulers;
 import systems.v.wallet.R;
 import systems.v.wallet.basic.utils.CoinUtil;
 import systems.v.wallet.basic.utils.TxUtil;
-import systems.v.wallet.basic.wallet.ContractFunc;
 import systems.v.wallet.basic.wallet.Token;
 import systems.v.wallet.data.BaseErrorConsumer;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.NodeAPI;
-import systems.v.wallet.data.api.PublicApi;
 import systems.v.wallet.data.bean.ContractBean;
-import systems.v.wallet.data.bean.ContractContentBean;
 import systems.v.wallet.data.bean.ContractInfoBean;
 import systems.v.wallet.data.bean.RespBean;
 import systems.v.wallet.data.bean.TokenBalanceBean;
 import systems.v.wallet.data.bean.TokenBean;
-import systems.v.wallet.data.bean.publicApi.TokenInfoBean;
 import systems.v.wallet.data.statics.TokenHelper;
 import systems.v.wallet.databinding.ActivityTokenListBinding;
-import systems.v.wallet.databinding.HeaderDetailBinding;
 import systems.v.wallet.databinding.HeaderTokenListBinding;
 import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.contract.adapter.TokenAdapter;
@@ -51,7 +45,6 @@ import systems.v.wallet.ui.view.detail.ReceiveActivity;
 import systems.v.wallet.ui.widget.wrapper.BaseAdapter;
 import systems.v.wallet.ui.widget.wrapper.HeaderAndFooterWrapper;
 import systems.v.wallet.utils.Constants;
-import systems.v.wallet.utils.LogUtil;
 import systems.v.wallet.utils.SPUtils;
 import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.bus.AppEvent;
@@ -129,7 +122,7 @@ public class TokenListActivity extends BaseThemedActivity implements View.OnClic
                         TokenInfoActivity.launch(TokenListActivity.this, mAccount.getPublicKey(), mData.get(position));
                     }
                 }));
-                if(mData.get(position).getIssuer().equals(mAccount.getAddress())) {
+                if(mData.get(position).getIssuer().equals(mAccount.getAddress()) && !mData.get(position).isNft()) {
 //                    mOperation.add(new TokenOperationFragment.Operation(R.string.token_list_split, new TokenOperationFragment.Operation.OperationListener() {
 //                        @Override
 //                        public void onOperation(TokenOperationFragment dialog) {

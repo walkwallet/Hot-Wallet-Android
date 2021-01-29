@@ -390,4 +390,5 @@
 
 
     <string name="send_review_send_token">TokenId</string>
+    <string name="setting_auto_lock_close">关闭</string>
 </resources>

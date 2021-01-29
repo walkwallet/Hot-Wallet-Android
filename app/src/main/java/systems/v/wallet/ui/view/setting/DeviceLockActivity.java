@@ -48,11 +48,17 @@ public class DeviceLockActivity extends BaseActivity implements View.OnClickList
         } else {
             mBinding.flFingerprint.setVisibility(View.GONE);
         }
-        int autoLockTime = SPUtils.getInt(Constants.AUTO_LOCK, Constants.AUTOLOCK_5);
-        if (autoLockTime == Constants.AUTOLOCK_5) {
-            mBinding.ciAuotoLock.setRightText(R.string.setting_5_min);
-        } else {
-            mBinding.ciAuotoLock.setRightText(R.string.setting_10_min);
+        int autoLockTime = SPUtils.getInt(Constants.AUTO_LOCK, Constants.AUTOLOCK_CLOSE);
+        switch (autoLockTime) {
+            case Constants.AUTOLOCK_5:
+                mBinding.ciAuotoLock.setRightText(R.string.setting_5_min);
+                break;
+            case Constants.AUTOLOCK_10:
+                mBinding.ciAuotoLock.setRightText(R.string.setting_10_min);
+                break;
+            case Constants.AUTOLOCK_CLOSE:
+                mBinding.ciAuotoLock.setRightText(R.string.setting_auto_lock_close);
+                break;
         }
         mBinding.switchFingerprint.setChecked(SPUtils.getBoolean(Constants.FINGERPRINT, true));
         initListener();
@@ -73,6 +79,15 @@ public class DeviceLockActivity extends BaseActivity implements View.OnClickList
             case R.id.tv_bottom:
                 SPUtils.setInt(Constants.AUTO_LOCK, Constants.AUTOLOCK_10);
                 mBinding.ciAuotoLock.setRightText(R.string.setting_10_min);
+                mSelectBinding.tvTop.setTextColor(ContextCompat.getColor(this, R.color.color_orange_strong));
+                mSelectBinding.tvBottom.setTextColor(ContextCompat.getColor(this, R.color.text_strong));
+                if (mSelectDialog.isShowing()) {
+                    mSelectDialog.dismiss();
+                }
+                break;
+            case R.id.tv_third:
+                SPUtils.setInt(Constants.AUTO_LOCK, Constants.AUTOLOCK_CLOSE);
+                mBinding.ciAuotoLock.setRightText(R.string.setting_auto_lock_close);
                 mSelectBinding.tvTop.setTextColor(ContextCompat.getColor(this, R.color.color_orange_strong));
                 mSelectBinding.tvBottom.setTextColor(ContextCompat.getColor(this, R.color.text_strong));
                 if (mSelectDialog.isShowing()) {
@@ -105,7 +120,8 @@ public class DeviceLockActivity extends BaseActivity implements View.OnClickList
             mSelectBinding.tvCancel.setTextColor(ContextCompat.getColor(this, R.color.color_orange_strong));
             mSelectBinding.tvTop.setText(R.string.setting_5_min);
             mSelectBinding.tvBottom.setText(R.string.setting_10_min);
-            mSelectBinding.tvThird.setVisibility(View.GONE);
+            mSelectBinding.tvThird.setText(R.string.setting_auto_lock_close);
+            mSelectBinding.tvForth.setVisibility(View.GONE);
             mSelectDialog = new Dialog(mActivity, R.style.BottomDialog);
             mSelectDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             if (mSelectBinding.getRoot().getParent() != null) {
@@ -130,14 +146,17 @@ public class DeviceLockActivity extends BaseActivity implements View.OnClickList
         }
         mSelectBinding.tvTop.setTextColor(ContextCompat.getColor(this, R.color.color_orange_strong));
         mSelectBinding.tvBottom.setTextColor(ContextCompat.getColor(this, R.color.color_orange_strong));
+        mSelectBinding.tvThird.setTextColor(ContextCompat.getColor(this, R.color.color_orange_strong));
         mSelectBinding.tvCancel.setTextColor(ContextCompat.getColor(this, R.color.color_orange_strong));
-        int autoLockTime = SPUtils.getInt(Constants.AUTO_LOCK, Constants.AUTOLOCK_5);
+        int autoLockTime = SPUtils.getInt(Constants.AUTO_LOCK, Constants.AUTOLOCK_CLOSE);
         switch (autoLockTime) {
             case Constants.AUTOLOCK_5:
                 mSelectBinding.tvTop.setTextColor(ContextCompat.getColor(this, R.color.text_strong));
                 break;
             case Constants.AUTOLOCK_10:
                 mSelectBinding.tvBottom.setTextColor(ContextCompat.getColor(this, R.color.text_strong));
+            case Constants.AUTOLOCK_CLOSE:
+                mSelectBinding.tvThird.setTextColor(ContextCompat.getColor(this, R.color.text_strong));
                 break;
         }
     }

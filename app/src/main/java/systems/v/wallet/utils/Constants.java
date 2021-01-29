@@ -12,6 +12,7 @@ public class Constants {
     public static final String WATCHED_TOKEN = "watched_token";
     public static final int AUTOLOCK_5 = 300;
     public static final int AUTOLOCK_10 = 600;
+    public static final int AUTOLOCK_CLOSE = -1;
     public static final int LAN_ZH_CN = 1;
     public static final int LAN_EN_US = 2;
     public static final int LAN_KO = 3;

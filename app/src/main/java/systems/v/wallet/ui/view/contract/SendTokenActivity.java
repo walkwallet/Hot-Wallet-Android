@@ -80,6 +80,10 @@ public class SendTokenActivity extends BaseThemedActivity implements View.OnClic
         mBinding.etAddress.setHint(R.string.send_address_input_hint);
         mBinding.tvAvailableBalance.setText(getString(R.string.send_available_balance, CoinUtil.format(mToken.getBalance(), mToken.getUnity())));
         mBinding.etAttachment.setFilters(new InputFilter[]{new MaxByteFilter()});
+        if (mToken.isNft()) {
+            mBinding.etAmount.setText(CoinUtil.format(mToken.getBalance(), mToken.getUnity()));
+            mBinding.etAmount.setEnabled(false);
+        }
     }
 
     private void initListener() {
