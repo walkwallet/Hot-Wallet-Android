@@ -83,17 +83,17 @@
     <string name="detail_cancel_lease">取消铸币</string>
     <string name="detail_records">记录</string>
     <string name="detail_token">Token</string>
-    <string name="detail_sent">发送</string>
-    <string name="detail_received">接收</string>
+    <string name="detail_sent">发送 VSYS</string>
+    <string name="detail_received">接收 VSYS</string>
     <string name="detail_start_leasing">租出</string>
     <string name="detail_canceled_out_leasing">取消租出</string>
     <string name="detail_incoming_leasing">租入</string>
     <string name="detail_create_contract">创建合约 </string>
     <string name="detail_execute_contract">执行合约 </string>
-    <string name="detail_execute_contract_sent">执行合约(发送Token)</string>
-    <string name="detail_execute_contract_received">执行合约(接收Token)</string>
-    <string name="detail_execute_contract_deposit">执行合约(充值Token)</string>
-    <string name="detail_execute_contract_withdraw">执行合约(提现Token)</string>
+    <string name="detail_execute_contract_sent">发送Token</string>
+    <string name="detail_execute_contract_received">接收Token</string>
+    <string name="detail_execute_contract_deposit">充值Token</string>
+    <string name="detail_execute_contract_withdraw">提现Token</string>
     <string name="detail_canceled_int_leasing">取消租入</string>
     <string name="detail_address_management">地址管理</string>
     <string name="detail_copy_address">复制地址</string>
@@ -391,4 +391,7 @@
 
     <string name="send_review_send_token">TokenId</string>
     <string name="setting_auto_lock_close">关闭</string>
+
+    <string name="detail_execute_contract_deposit_vsys">充值 VSYS</string>
+    <string name="detail_execute_contract_withdraw_vsys">提现 VSYS</string>
 </resources>

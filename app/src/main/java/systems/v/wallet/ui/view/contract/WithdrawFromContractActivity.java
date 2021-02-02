@@ -191,6 +191,7 @@ public class WithdrawFromContractActivity extends BaseThemedActivity implements 
             if (!TextUtils.isEmpty(qrContents)) {
                 // scan receive address
                 mBinding.etAddress.setText(qrContents);
+                getAvailableBalance(mBinding.etAddress.getText().toString());
             }
         }
     }
@@ -244,7 +245,11 @@ public class WithdrawFromContractActivity extends BaseThemedActivity implements 
                             ContractContentBean contractContent = JSON.parseObject(respBean.getData(), ContractContentBean.class);
                             List<ContractFunc> funcs = new ArrayList<>((JSON.parseArray(Vsys.decodeContractTexture(contractContent.getTextual().getDescriptors()), ContractFunc.class)));
                             mToken.setFuncs(funcs.toArray(new ContractFunc[funcs.size()]));
-                            return nodeApi.tokenBalance(mAccount.getAddress(), mToken.getTokenId());
+                            if (ContractUtil.isVsysToken(mToken.getTokenId())) {
+                                return nodeApi.balance(mAccount.getAddress());
+                            }else {
+                                return nodeApi.tokenBalance(mAccount.getAddress(), mToken.getTokenId());
+                            }
                         }else{
                             return Observable.create(new ObservableOnSubscribe<RespBean>() {
                                 @Override
@@ -262,8 +267,12 @@ public class WithdrawFromContractActivity extends BaseThemedActivity implements 
                     @Override
                     public Observable<RespBean> apply(final RespBean respBean) throws Exception {
                         if(respBean != null) {
-                            TokenBalanceBean tokenBalance = JSON.parseObject(respBean.getData(), TokenBalanceBean.class);
-                            mToken.setUnity(tokenBalance.getUnity());
+                            if (ContractUtil.isVsysToken(mToken.getTokenId())) {
+                                mToken.setUnity(Vsys.VSYS);
+                            }else{
+                                TokenBalanceBean tokenBalance = JSON.parseObject(respBean.getData(), TokenBalanceBean.class);
+                                mToken.setUnity(tokenBalance.getUnity());
+                            }
                             String dbKey = Vsys.getContractBalanceDbKey(mAccount.getAddress());
                             return nodeApi.contractData(contractId, dbKey);
                         }else{

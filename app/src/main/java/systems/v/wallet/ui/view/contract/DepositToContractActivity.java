@@ -40,6 +40,7 @@ import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.data.BaseErrorConsumer;
 import systems.v.wallet.data.RetrofitHelper;
 import systems.v.wallet.data.api.NodeAPI;
+import systems.v.wallet.data.bean.AccountBean;
 import systems.v.wallet.data.bean.ContractBean;
 import systems.v.wallet.data.bean.ContractContentBean;
 import systems.v.wallet.data.bean.ContractInfoBean;
@@ -50,6 +51,7 @@ import systems.v.wallet.ui.BaseThemedActivity;
 import systems.v.wallet.ui.view.transaction.ResultActivity;
 import systems.v.wallet.ui.view.transaction.ScannerActivity;
 import systems.v.wallet.utils.ClipUtil;
+import systems.v.wallet.utils.Constants;
 import systems.v.wallet.utils.ContractUtil;
 import systems.v.wallet.utils.ToastUtil;
 import systems.v.wallet.utils.UIUtil;
@@ -147,11 +149,15 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_next_step: {
+            case R.id.btn_next_step:
                 getAvailableBalance(mBinding.etAddress.getText().toString());
-            }
+                break;
             case R.id.btn_max: {
-                mBinding.etAmount.setText(CoinUtil.format(mToken.getBalance(), mToken.getUnity()));
+                if (ContractUtil.isVsysToken(mToken.getTokenId())) {
+                    mBinding.etAmount.setText(CoinUtil.format(mToken.getBalance() - Transaction.DEFAULT_TOKEN_TX_FEE, mToken.getUnity()));
+                }else{
+                    mBinding.etAmount.setText(CoinUtil.format(mToken.getBalance(), mToken.getUnity()));
+                }
             }
             break;
             case R.id.btn_paste: {
@@ -207,6 +213,7 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
             if (!TextUtils.isEmpty(qrContents)) {
                 // scan receive address
                 mBinding.etAddress.setText(qrContents);
+                getAvailableBalance(mBinding.etAddress.getText().toString());
             }
         }
     }
@@ -241,7 +248,6 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
                                     mToken.setMaker(info.getData());
                                 }
                             }
-//                            return nodeApi.contractContent(contractBean.getContractId());
                             return nodeApi.contractContent(Vsys.tokenId2ContractId(mToken.getTokenId()));
                         }else{
                             return Observable.create(new ObservableOnSubscribe<RespBean>() {
@@ -264,7 +270,11 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
                             mToken.setFuncs(funcs.toArray(new ContractFunc[funcs.size()]));
 //                            String dbKey = Vsys.getContractBalanceDbKey("");
 //                            return nodeApi.contractData(contractBean.getContractId(), dbKey);
-                            return nodeApi.tokenBalance(mAccount.getAddress(), mToken.getTokenId());
+                            if (ContractUtil.isVsysToken(mToken.getTokenId())) {
+                                return nodeApi.balance(mAccount.getAddress());
+                            }else {
+                                return nodeApi.tokenBalance(mAccount.getAddress(), mToken.getTokenId());
+                            }
                         }else{
                             return Observable.create(new ObservableOnSubscribe<RespBean>() {
                                 @Override
@@ -281,6 +291,22 @@ public class DepositToContractActivity extends BaseThemedActivity implements Vie
                     @Override
                     public Observable<String> apply(final RespBean respBean) throws Exception {
                         if (respBean != null && respBean.getCode() == 0) {
+                            // vsys
+                            if (ContractUtil.isVsysToken(mToken.getTokenId())) {
+                                return Observable.create(new ObservableOnSubscribe<String>() {
+                                    @Override
+                                    public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Exception {
+                                        if (respBean.getCode() == 0) {
+                                            AccountBean balance = JSON.parseObject(respBean.getData(), AccountBean.class);
+                                            mToken.setBalance(balance.getAvailable());
+                                            mToken.setUnity(Vsys.VSYS);
+                                            emitter.onNext("");
+                                        } else {
+                                            emitter.onNext(respBean.getMsg());
+                                        }
+                                    }
+                                });
+                            }
                             return Observable.create(new ObservableOnSubscribe<String>() {
                                 @Override
                                 public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Exception {

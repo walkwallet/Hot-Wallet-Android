@@ -35,6 +35,10 @@ public class NodeAPI implements ITestNetNodeAPI, IMainNetNodeAPI {
         return records(address, map);
     }
 
+    public boolean isTestNet() {
+        return mTestNodeAPI != null;
+    }
+
     @Override
     public Observable<RespBean> records(String address, Map<String, Integer> map){
         if (mTestNodeAPI != null) {

@@ -7,6 +7,7 @@ import systems.v.wallet.basic.wallet.Transaction;
 import systems.v.wallet.data.bean.RecordBean;
 import systems.v.wallet.utils.ContractUtil;
 import systems.v.wallet.utils.DateUtils;
+import vsys.Contract;
 import vsys.Vsys;
 
 public class RecordEntity extends RecordBean implements Cloneable{
@@ -24,20 +25,25 @@ public class RecordEntity extends RecordBean implements Cloneable{
     public static final int TYPE_EXECUTE_CONTRACT_RECEIVED = 92;
     public static final int TYPE_EXECUTE_CONTRACT_WITHDRAW = 93;
     public static final int TYPE_EXECUTE_CONTRACT_DEPOSIT = 94;
+    public static final int TYPE_EXECUTE_CONTRACT_WITHDRAW_VSYS = 95;
+    public static final int TYPE_EXECUTE_CONTRACT_DEPOSIT_VSYS = 96;
 
     public static final int TYPE_NONE = -1;
 
     private String address;
     private int recordType;
     private Token token;
+    private String contractType;
+
     private String sender;
 
     public static final String SUCCESS_TX = "Success";
 
     public RecordEntity() {
+
     }
 
-    public RecordEntity(RecordBean bean, List<Token> verifiedTokens, String address) {
+    public RecordEntity(RecordBean bean, List<Token> addedTokens, String address) {
         setType(bean.getType());
         setId(bean.getId());
         setFee(bean.getFee());
@@ -45,12 +51,23 @@ public class RecordEntity extends RecordBean implements Cloneable{
         setProofs(bean.getProofs());
         setLease(bean.getLease());
         // decode token transaction
-        if (bean.getType() == TYPE_EXECUTE_CONTRACT && verifiedTokens != null) {
-            for (Token token : verifiedTokens) {
-                if (Vsys.tokenId2ContractId(token.getTokenId()).equals(bean.getContractId())) {
-                    bean = ContractUtil.decodeRecordData(ContractUtil.generateContract(token.getUnity(), token.getMax(), token.getDescription(), token.isSpilt()), bean);
-                    setToken(token);
-                    break;
+        if (bean.getType() == TYPE_EXECUTE_CONTRACT && addedTokens != null) {
+            // decode vsys contract transaction
+            if (ContractUtil.isVsysContract(bean.getContractId())) {
+                Contract contract = ContractUtil.generateVsysContract();
+                bean = ContractUtil.decodeRecordData(contract, bean);
+                setToken(ContractUtil.generateVsysToken());
+                setContractType(contract.getType());
+            } else {
+                // decode added token contract transaction
+                for (Token token : addedTokens) {
+                    if (Vsys.tokenId2ContractId(token.getTokenId()).equals(bean.getContractId())) {
+                        Contract contract = ContractUtil.generateTokenContract(token);
+                        bean = ContractUtil.decodeRecordData(contract, bean);
+                        setToken(token);
+                        setContractType(contract.getType());
+                        break;
+                    }
                 }
             }
         }
@@ -84,6 +101,14 @@ public class RecordEntity extends RecordBean implements Cloneable{
         this.address = address;
     }
 
+    public String getContractType() {
+        return contractType;
+    }
+
+    public void setContractType(String contractType) {
+        this.contractType = contractType;
+    }
+
     public void initRecordType() {
         int type = getType();
         if (type == Transaction.PAYMENT) {
@@ -111,7 +136,32 @@ public class RecordEntity extends RecordBean implements Cloneable{
         } else if (type == Transaction.CONTRACT_EXECUTE){
             recordType = TYPE_EXECUTE_CONTRACT;
             if(getAmount() != 0 && getToken() != null) {
-                if (getToken().isSpilt()) {
+                if (getToken().isVsys()) {
+                    switch (getFunctionIndex()) {
+                        case 1:
+                            recordType = TYPE_EXECUTE_CONTRACT_DEPOSIT_VSYS;
+                            break;
+                        case 2:
+                            recordType = TYPE_EXECUTE_CONTRACT_WITHDRAW_VSYS;
+                            break;
+                    }
+                } else if (getToken().isNft()) {
+                    switch (getFunctionIndex()) {
+                        case 2:
+                            if (getAddress().equals(getRecipient())) {
+                                recordType = TYPE_EXECUTE_CONTRACT_RECEIVED;
+                            } else {
+                                recordType = TYPE_EXECUTE_CONTRACT_SENT;
+                            }
+                            break;
+                        case 4:
+                            recordType = TYPE_EXECUTE_CONTRACT_DEPOSIT;
+                            break;
+                        case 5:
+                            recordType = TYPE_EXECUTE_CONTRACT_WITHDRAW;
+                            break;
+                    }
+                } else if (getToken().isSpilt()) {
                     switch (getFunctionIndex()) {
                         case 4:
                             if (getAddress().equals(getRecipient())) {

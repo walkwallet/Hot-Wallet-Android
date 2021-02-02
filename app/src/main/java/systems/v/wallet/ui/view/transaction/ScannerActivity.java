@@ -5,11 +5,12 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.journeyapps.barcodescanner.CaptureManager;
 
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import systems.v.wallet.R;
 import systems.v.wallet.databinding.ActivityScannerBinding;
 import systems.v.wallet.ui.BaseActivity;
@@ -54,7 +55,6 @@ public class ScannerActivity extends BaseActivity {
         } else {
             mBinding.ivTorch.setVisibility(View.GONE);
         }
-
         mBinding.ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

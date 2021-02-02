@@ -83,8 +83,8 @@
     <string name="detail_cancel_lease">取消鑄幣</string>
     <string name="detail_records">記錄</string>
     <string name="detail_token">Token</string>
-    <string name="detail_sent">發送</string>
-    <string name="detail_received">接收</string>
+    <string name="detail_sent">發送 VSYS</string>
+    <string name="detail_received">接收 VSYS</string>
     <string name="detail_start_leasing">租出</string>
     <string name="detail_canceled_out_leasing">取消租出</string>
     <string name="detail_incoming_leasing">租入</string>

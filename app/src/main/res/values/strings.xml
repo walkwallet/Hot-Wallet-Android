@@ -77,8 +77,8 @@
     <string name="detail_lease">Leasing</string>
     <string name="detail_records">Records</string>
     <string name="detail_token">Token</string>
-    <string name="detail_sent">Sent</string>
-    <string name="detail_received">Received</string>
+    <string name="detail_sent">Sent VSYS</string>
+    <string name="detail_received">Received VSYS</string>
     <string name="detail_start_leasing">Start Leasing</string>
     <string name="detail_canceled_out_leasing">Canceled Out Leasing</string>
     <string name="detail_incoming_leasing">Incoming Leasing</string>
@@ -385,7 +385,10 @@
     <string name="withdraw_from_contract_hint">Payment channel contract or Lock contract</string>
 
     <string name="send_review_send_token">TokenId</string>
-    <string name="detail_execute_contract_deposit">Deposit</string>
-    <string name="detail_execute_contract_withdraw">Withdraw</string>
+    <string name="detail_execute_contract_deposit">Deposit token</string>
+    <string name="detail_execute_contract_withdraw">Withdraw token</string>
     <string name="setting_auto_lock_close">Never</string>
+
+    <string name="detail_execute_contract_deposit_vsys">Deposit VSYS</string>
+    <string name="detail_execute_contract_withdraw_vsys">Withdraw VSYS</string>
 </resources>

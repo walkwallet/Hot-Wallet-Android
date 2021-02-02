@@ -239,10 +239,10 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                 if (resp.getTransactions() != null && resp.getTransactions().size() > 0){
                     List<RecordBean> list = resp.getTransactions();
                     List<RecordEntity> recordEntityList = new ArrayList<>();
-                    List<Token> verifiedToken = TokenHelper.getAddedVerifiedTokens(DetailActivity.this, mAccount.getPublicKey());
+                    List<Token> addedToken = TokenHelper.getAddedTokens(DetailActivity.this, mAccount.getPublicKey());
                     for (int i = 0; i < list.size(); i++) {
                         RecordBean bean = list.get(i);
-                        RecordEntity entity = new RecordEntity(bean, verifiedToken, address);
+                        RecordEntity entity = new RecordEntity(bean, addedToken, address);
 
                         if (entity.getRecordType() != RecordEntity.TYPE_NONE) {
                             recordEntityList.add(entity);
@@ -250,12 +250,12 @@ public class DetailActivity extends BaseThemedActivity implements View.OnClickLi
                         //add one more tx when sent to self
                         if (entity.getRecordType() == RecordEntity.TYPE_RECEIVED &&
                                 entity.getSender().equals(entity.getRecipient())){
-                            RecordEntity entitySend = new RecordEntity(bean, verifiedToken, address);
+                            RecordEntity entitySend = new RecordEntity(bean, addedToken, address);
                             entitySend.setRecordType(RecordEntity.TYPE_SENT);
                             recordEntityList.add(entitySend);
                         } else if(entity.getRecordType() == RecordEntity.TYPE_EXECUTE_CONTRACT_RECEIVED &&
                                     entity.getSender().equals(entity.getRecipient())){
-                            RecordEntity entitySend = new RecordEntity(bean, verifiedToken, address);
+                            RecordEntity entitySend = new RecordEntity(bean, addedToken, address);
                             entitySend.setRecordType(RecordEntity.TYPE_EXECUTE_CONTRACT_SENT);
                             recordEntityList.add(entitySend);
                         }

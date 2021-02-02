@@ -77,8 +77,8 @@
     <string name="detail_lease">주조</string>
     <string name="detail_records">기록</string>
     <string name="detail_token">토큰</string>
-    <string name="detail_sent">전송됨</string>
-    <string name="detail_received">수신됨</string>
+    <string name="detail_sent">전송됨 VSYS</string>
+    <string name="detail_received">수신됨 VSYS</string>
     <string name="detail_start_leasing">리스 시작</string>
     <string name="detail_canceled_out_leasing">리스 취소</string>
     <string name="detail_incoming_leasing">인커밍 리스 </string>
@@ -391,4 +391,7 @@
     <string name="detail_execute_contract_deposit">Deposit</string>
     <string name="detail_execute_contract_withdraw">Withdraw</string>
     <string name="setting_auto_lock_close">Never</string>
+
+    <string name="detail_execute_contract_deposit_vsys">Deposit VSYS</string>
+    <string name="detail_execute_contract_withdraw_vsys">Withdraw VSYS</string>
 </resources>
