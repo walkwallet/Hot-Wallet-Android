@@ -83,8 +83,8 @@
     <string name="detail_cancel_lease">取消铸币</string>
     <string name="detail_records">记录</string>
     <string name="detail_token">Token</string>
-    <string name="detail_sent">发送 VSYS</string>
-    <string name="detail_received">接收 VSYS</string>
+    <string name="detail_sent">发送VSYS</string>
+    <string name="detail_received">接收VSYS</string>
     <string name="detail_start_leasing">租出</string>
     <string name="detail_canceled_out_leasing">取消租出</string>
     <string name="detail_incoming_leasing">租入</string>
@@ -93,7 +93,7 @@
     <string name="detail_execute_contract_sent">发送Token</string>
     <string name="detail_execute_contract_received">接收Token</string>
     <string name="detail_execute_contract_deposit">充值Token</string>
-    <string name="detail_execute_contract_withdraw">提现Token</string>
+    <string name="detail_execute_contract_withdraw">提取Token</string>
     <string name="detail_canceled_int_leasing">取消租入</string>
     <string name="detail_address_management">地址管理</string>
     <string name="detail_copy_address">复制地址</string>
@@ -381,7 +381,7 @@
     <string name="deposit_to_contract_hint">输入Payment channel合约或Lock合约</string>
     <string name="invalid_lock_or_payment_channel_contract">无效的合约地址或类型</string>
     <string name="deposit_payment_success">充值 %1$s 到合约: </string>
-    <string name="withdraw_payment_success">提现 %1$s 自合约: </string>
+    <string name="withdraw_payment_success">提取 %1$s 自合约: </string>
     <string name="deposit_review_deposit_to">到合约</string>
     <string name="withdraw_review_withdraw_from">从合约</string>
 
@@ -392,6 +392,6 @@
     <string name="send_review_send_token">TokenId</string>
     <string name="setting_auto_lock_close">关闭</string>
 
-    <string name="detail_execute_contract_deposit_vsys">充值 VSYS</string>
-    <string name="detail_execute_contract_withdraw_vsys">提现 VSYS</string>
+    <string name="detail_execute_contract_deposit_vsys">充值VSYS</string>
+    <string name="detail_execute_contract_withdraw_vsys">提取VSYS</string>
 </resources>

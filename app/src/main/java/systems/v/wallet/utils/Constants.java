@@ -25,7 +25,7 @@ public class Constants {
     public static final String PUBLIC_API_SERVER_TEST = "https://testexplorer.v.systems";
 
     public static final String RATE_API_SERVER = " https://vsysrate.com";
-    public static final String RATE_API_SERVER_TEST = "http://test-rate.virtualeconomytech.com";
+    public static final String RATE_API_SERVER_TEST = "https://test.vsysrate.com";
 
     public static final String MAIN_NET_VSYS_TOKEN_ID = "TWatCreEv7ayv6iAfLgke6ppVV33kDjFqSJn8yicf";
     public static final String TEST_NET_VSYS_TOKEN_ID = "TWuKDNU1SAheHR99s1MbGZLPh1KophEmKk1eeU3mW";

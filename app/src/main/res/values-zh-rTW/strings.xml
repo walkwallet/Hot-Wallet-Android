@@ -90,8 +90,8 @@
     <string name="detail_incoming_leasing">租入</string>
     <string name="detail_create_contract">創建合約 </string>
     <string name="detail_execute_contract">執行合約 </string>
-    <string name="detail_execute_contract_sent">執行合約(發送Token)</string>
-    <string name="detail_execute_contract_received">執行合約(接收Token)</string>
+    <string name="detail_execute_contract_sent">發送Token</string>
+    <string name="detail_execute_contract_received">接收Token</string>
     <string name="detail_canceled_int_leasing">取消租入</string>
     <string name="detail_address_management">地址管理</string>
     <string name="detail_copy_address">復制地址</string>
@@ -387,8 +387,8 @@
     <string name="withdraw_from_contract">合約提款</string>
     <string name="withdraw_from_contract_hint">輸入Payment channel合約或Lock合約</string>
 
-    <string name="detail_execute_contract_deposit">執行合約(充值Token)</string>
-    <string name="detail_execute_contract_withdraw">執行合約(提現Token)</string>
+    <string name="detail_execute_contract_deposit">充值Token</string>
+    <string name="detail_execute_contract_withdraw">提取Token</string>
     <string name="setting_auto_lock_close">關閉</string>
 </resources>
 
